@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124256376996",
+    "project_id": "ru-plumsoftware-coffeeapi",
+    "storage_bucket": "ru-plumsoftware-coffeeapi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124256376996:android:8c281acedb948413d82e31",
+        "android_client_info": {
+          "package_name": "ru.plumsoftware.coffeeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYRAYml4nt0HjMv47zPiJmNZHmbM4xwfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
