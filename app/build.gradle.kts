@@ -101,6 +101,9 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.4.0")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
 
+    //Corner smoothing
+    implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")
+
     //Modules
     project(path=":data")
     project(path=":domain")
