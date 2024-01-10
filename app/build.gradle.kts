@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -9,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "ru.plumsoftware.coffeeapp"
-        minSdk = 30
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -51,6 +53,13 @@ android {
 
 dependencies {
 
+    val yandex_ads_version = "6.3.0"
+    val ui_controller = "0.30.1"
+    val koin_version = "3.4.2"
+    val nav_version = "2.7.6"
+    val room_version = "2.6.1"
+    val ksp_version = "2.6.1"
+
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
@@ -66,4 +75,33 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Yandex Ads
+    implementation("com.yandex.android:mobileads:$yandex_ads_version")
+
+    //UI controller
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$ui_controller")
+
+    //Koin
+    implementation("io.insert-koin:koin-android:$koin_version")
+    implementation("io.insert-koin:koin-core:$koin_version")
+
+    //Navigation
+    implementation("androidx.navigation:navigation-common:$nav_version")
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    //Room database
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+    //KSP
+    ksp("androidx.room:room-compiler:$ksp_version")
+
+    //Firebase Messaging
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
+
+    //Modules
+    project(path=":data")
+    project(path=":domain")
 }
