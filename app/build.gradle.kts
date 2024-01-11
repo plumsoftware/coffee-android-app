@@ -22,6 +22,10 @@ android {
         }
     }
 
+    ksp {
+        "room.schemaLocation" to ("$projectDir/schemas")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -105,6 +109,6 @@ dependencies {
     implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")
 
     //Modules
-    project(path=":data")
-    project(path=":domain")
+    implementation(project(path = ":data"))
+    implementation(project(path = ":domain"))
 }
