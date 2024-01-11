@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
     id("com.google.gms.google-services")
 }
 
@@ -20,10 +20,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-
-    ksp {
-        "room.schemaLocation" to ("$projectDir/schemas")
     }
 
     buildTypes {
@@ -62,11 +58,11 @@ dependencies {
     val koin_version = "3.4.2"
     val nav_version = "2.7.6"
     val room_version = "2.6.1"
-    val ksp_version = "2.6.1"
+    val kapt_version = "2.6.1"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -98,8 +94,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
-    //KSP
-    ksp("androidx.room:room-compiler:$ksp_version")
+    //Kapt
+    kapt("androidx.room:room-compiler:$kapt_version")
 
     //Firebase Messaging
     implementation("com.google.firebase:firebase-messaging:23.4.0")
