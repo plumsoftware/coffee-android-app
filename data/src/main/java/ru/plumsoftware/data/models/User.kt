@@ -6,5 +6,6 @@ data class User(
     override val name: String,
     override val birthday: Long,
     override val theme: Int,
+    override val isFirst: Int,
     override val intolerableIngredients: List<Ingredient>,
 ) : UserModel
