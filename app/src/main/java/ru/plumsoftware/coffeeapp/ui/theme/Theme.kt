@@ -1,4 +1,4 @@
-package com.example.compose
+package ru.plumsoftware.coffeeapp.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
@@ -6,8 +6,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
-
+//region::Color schemes
 val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -72,21 +76,45 @@ val DarkColors = darkColorScheme(
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
 )
+//endregion
+
+data class ExtendedColors(
+    val cardBackground: Color = cardBackgroundLight,
+    val dividerColor: Color = dividerColorLight,
+)
 
 @Composable
+fun getExtendedColors(): ExtendedColors {
+    return if (!isSystemInDarkTheme()) {
+        ExtendedColors(
+            cardBackground = cardBackgroundLight,
+            dividerColor = dividerColorLight,
+        )
+    } else {
+        ExtendedColors(
+            cardBackground = cardBackgroundDark,
+            dividerColor = dividerColorDark,
+        )
+    }
+}
+
+//region::Theme
+@Composable
 fun CoffeeAppTheme(
-//  useDarkTheme: Boolean = isSystemInDarkTheme(),
     colors: ColorScheme = MaterialTheme.colorScheme,
     content: @Composable() () -> Unit
 ) {
-//  val colors = if (!useDarkTheme) {
-//    LightColors
-//  } else {
-//    DarkColors
-//  }
+//    val colors = if (!useDarkTheme) {
+//        LightColors
+//    } else {
+//        DarkColors
+//    }
 
-  MaterialTheme(
-    colorScheme = colors,
-    content = content
-  )
+    MaterialTheme(
+        colorScheme = colors,
+        content = content,
+        typography = Typography,
+        shapes = Shapes
+    )
 }
+//endregion

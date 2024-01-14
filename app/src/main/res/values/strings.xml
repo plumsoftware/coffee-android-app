@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Бариста - кофе и напитки</string>
+
+<!--    Splash screen-->
+    <string name="splash_screen_title_1">Ваш</string>
+    <string name="splash_screen_title_2">персональный бариста</string>
+    <string name="splash_screen_logo_cd">Изображение кружки с кофе</string>
+
+<!--    Components-->
+    <string name="primary_button_text">Далее</string>
+
+<!--    Appearance-->
+    <string name="appearance_text_example">Aa</string>
+    <string name="appearance_title">Оформление</string>
 </resources>

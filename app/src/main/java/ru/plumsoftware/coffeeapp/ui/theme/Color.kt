@@ -1,4 +1,4 @@
-package com.example.compose
+package ru.plumsoftware.coffeeapp.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF9A4600)
@@ -65,6 +65,13 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 
 val seed = Color(0xFFD2691E)
+
+internal val cardBackgroundLight = Color(0xFFFAF2F2)
+internal val cardBackgroundDark = Color(0xFF3D3939)
+
+internal val dividerColorLight = Color (0xFFD9D9D9)
+internal val dividerColorDark = Color (0xFF101010)
+
 val chocolate1 = Color(0xFF964B00)
 val milk1 = Color(0xFFD2B48C)
 val chocolate2 = Color(0xFF8B4513)

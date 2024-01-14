@@ -13,9 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.compose.CoffeeAppTheme
-import com.example.compose.LightColors
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
+import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
