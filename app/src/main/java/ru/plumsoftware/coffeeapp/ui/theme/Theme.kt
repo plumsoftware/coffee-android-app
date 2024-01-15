@@ -84,8 +84,8 @@ data class ExtendedColors(
 )
 
 @Composable
-fun getExtendedColors(): ExtendedColors {
-    return if (!isSystemInDarkTheme()) {
+fun getExtendedColors(background: Color): ExtendedColors {
+    return if (background == md_theme_light_background) {
         ExtendedColors(
             cardBackground = cardBackgroundLight,
             dividerColor = dividerColorLight,
@@ -101,14 +101,14 @@ fun getExtendedColors(): ExtendedColors {
 //region::Theme
 @Composable
 fun CoffeeAppTheme(
-    colors: ColorScheme = MaterialTheme.colorScheme,
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-//    val colors = if (!useDarkTheme) {
-//        LightColors
-//    } else {
-//        DarkColors
-//    }
+    val colors = if (!useDarkTheme) {
+        LightColors
+    } else {
+        DarkColors
+    }
 
     MaterialTheme(
         colorScheme = colors,

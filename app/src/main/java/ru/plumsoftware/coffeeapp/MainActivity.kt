@@ -1,6 +1,7 @@
 package ru.plumsoftware.coffeeapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
@@ -14,7 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
+import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val targetColor by remember {
-                mutableStateOf(LightColors)
+                mutableStateOf(DarkColors)
             }
             val systemUiController = rememberSystemUiController()
             val color = targetColor.background
@@ -43,12 +46,12 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                CoffeeAppTheme(colors = colorScheme) {
+                CoffeeAppTheme(useDarkTheme = colorScheme != LightColors) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-
+                        Profile()
                     }
                 }
             }

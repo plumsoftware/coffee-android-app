@@ -15,7 +15,6 @@ object Size {
     }
 
     object Divider {
-        val width = 100.dp
         val height = 4.dp
     }
 }

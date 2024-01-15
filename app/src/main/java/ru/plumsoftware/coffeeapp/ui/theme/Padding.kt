@@ -9,6 +9,7 @@ object Padding {
     }
 
     object Items {
+        val extraSmallScreenPadding = 4.dp
         val smallScreenPadding = 8.dp
         val mediumScreenPadding = 10.dp
         val largeScreenPadding = 16.dp
@@ -19,5 +20,9 @@ object Padding {
     object ButtonP {
         val vertical = 14.dp
         val horizontal = 50.dp
+    }
+
+    object TextField {
+        val mediumPadding = 16.dp
     }
 }

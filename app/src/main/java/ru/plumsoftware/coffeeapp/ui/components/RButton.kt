@@ -26,7 +26,7 @@ fun RButton(selected: MutableState<Boolean>) {
 @Composable
 @Preview(showBackground = true)
 private fun RButtonPreview() {
-    CoffeeAppTheme(colors = DarkColors) {
+    CoffeeAppTheme() {
         RButton(selected = remember { mutableStateOf(true) })
     }
 }

@@ -38,7 +38,7 @@ fun PrimaryButton(onClick: () -> Unit) {
 @Composable
 @Preview(showBackground = true)
 private fun PrimaryButtonPreview() {
-    CoffeeAppTheme(colors = LightColors) {
+    CoffeeAppTheme() {
         PrimaryButton(onClick = {})
     }
 }

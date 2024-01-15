@@ -3,6 +3,7 @@ package ru.plumsoftware.coffeeapp.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
+import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
@@ -51,7 +54,7 @@ fun Dividers(selected: Int) {
             if (selected == i) {
                 Card(
                     modifier = Modifier
-                        .width(Size.Divider.width)
+                        .weight(weight = 0.3f, fill = true)
                         .height(Size.Divider.height),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -62,10 +65,10 @@ fun Dividers(selected: Int) {
             } else {
                 Card(
                     modifier = Modifier
-                        .width(Size.Divider.width)
+                        .weight(weight = 0.3f, fill = true)
                         .height(Size.Divider.height),
                     colors = CardDefaults.cardColors(
-                        containerColor = getExtendedColors().dividerColor
+                        containerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).dividerColor
                     ),
                     shape = MaterialTheme.shapes.extraSmall,
                     content = {}
@@ -78,7 +81,12 @@ fun Dividers(selected: Int) {
 @Composable
 @Preview(showBackground = true)
 private fun DividersPreview() {
-    CoffeeAppTheme(colors = LightColors) {
-        Dividers(selected = 0)
+    CoffeeAppTheme(useDarkTheme = false) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Dividers(selected = 0)
+        }
     }
 }

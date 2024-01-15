@@ -12,4 +12,9 @@
 <!--    Appearance-->
     <string name="appearance_text_example">Aa</string>
     <string name="appearance_title">Оформление</string>
+
+<!--    Name register-->
+    <string name="name_register">Регистрация</string>
+    <string name="name_placeholder">Имя</string>
+    <string name="age_placeholder">Возраст</string>
 </resources>

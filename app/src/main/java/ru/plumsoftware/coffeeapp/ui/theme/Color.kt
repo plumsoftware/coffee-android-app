@@ -70,7 +70,7 @@ internal val cardBackgroundLight = Color(0xFFFAF2F2)
 internal val cardBackgroundDark = Color(0xFF3D3939)
 
 internal val dividerColorLight = Color (0xFFD9D9D9)
-internal val dividerColorDark = Color (0xFF101010)
+internal val dividerColorDark = Color(0xFF303030)
 
 val chocolate1 = Color(0xFF964B00)
 val milk1 = Color(0xFFD2B48C)
