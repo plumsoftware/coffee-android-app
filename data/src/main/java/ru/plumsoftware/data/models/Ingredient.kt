@@ -5,6 +5,5 @@ import ru.plumsoftware.domain.models.IngredientModel
 data class Ingredient(
     override val id: Int,
     override val name: String,
-    override val description: String,
-    override val measure: String
+    override val iconId: Int = 0,
 ) : IngredientModel
