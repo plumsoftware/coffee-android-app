@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
 import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        Profile()
+                        Appearance()
                     }
                 }
             }

@@ -81,19 +81,22 @@ val DarkColors = darkColorScheme(
 data class ExtendedColors(
     val cardBackground: Color = cardBackgroundLight,
     val dividerColor: Color = dividerColorLight,
+    val themePreviewStroke: Color = themePreviewStrokeColorLight
 )
 
 @Composable
-fun getExtendedColors(background: Color): ExtendedColors {
-    return if (background == md_theme_light_background) {
+fun getExtendedColors(background: Color = MaterialTheme.colorScheme.background): ExtendedColors {
+    return if (MaterialTheme.colorScheme.background == md_theme_light_background) {
         ExtendedColors(
             cardBackground = cardBackgroundLight,
             dividerColor = dividerColorLight,
+            themePreviewStroke = themePreviewStrokeColorLight
         )
     } else {
         ExtendedColors(
             cardBackground = cardBackgroundDark,
             dividerColor = dividerColorDark,
+            themePreviewStroke = themePreviewStrokeColorDark
         )
     }
 }

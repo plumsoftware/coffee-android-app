@@ -1,6 +1,5 @@
 package ru.plumsoftware.coffeeapp.ui.screens.profile
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,16 +18,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.ui.components.AgeHint
 import ru.plumsoftware.coffeeapp.ui.components.Dividers
 import ru.plumsoftware.coffeeapp.ui.components.PrimaryButton
 import ru.plumsoftware.coffeeapp.ui.components.TextField
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
-import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
-import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
 @Composable
@@ -67,12 +67,21 @@ fun Profile() {
                 onValueChange = {
                     text = it
                 },
-                leadingIcon = {})
+                leadingIcon = {},
+                trailingIcon = {})
             TextField(
                 text = "",
                 label = stringResource(id = R.string.age_placeholder),
                 onValueChange = {},
-                leadingIcon = {})
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.calendar_icon),
+                        contentDescription = stringResource(id = R.string.calendar_content_description)
+                    )
+                },
+                trailingIcon = {
+                    AgeHint(age = 20)
+                })
         }
 
         Column(
@@ -85,7 +94,7 @@ fun Profile() {
                 .fillMaxHeight()
         ) {
             Dividers(selected = 1)
-            PrimaryButton(onClick = {})
+            PrimaryButton(onClick = {}, isActive = false)
         }
     }
 }
@@ -93,7 +102,7 @@ fun Profile() {
 @Composable
 @Preview
 private fun ProfilePreview() {
-    CoffeeAppTheme() {
+    CoffeeAppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

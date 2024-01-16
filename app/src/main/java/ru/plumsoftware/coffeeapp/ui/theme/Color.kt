@@ -72,6 +72,9 @@ internal val cardBackgroundDark = Color(0xFF3D3939)
 internal val dividerColorLight = Color (0xFFD9D9D9)
 internal val dividerColorDark = Color(0xFF303030)
 
+internal val themePreviewStrokeColorLight = Color(0xFF000000)
+internal val themePreviewStrokeColorDark = Color(0xFFFFFFFF)
+
 val chocolate1 = Color(0xFF964B00)
 val milk1 = Color(0xFFD2B48C)
 val chocolate2 = Color(0xFF8B4513)

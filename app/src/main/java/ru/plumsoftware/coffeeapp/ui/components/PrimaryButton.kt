@@ -16,9 +16,10 @@ import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
 @Composable
-fun PrimaryButton(onClick: () -> Unit) {
+fun PrimaryButton(isActive: Boolean = true, onClick: () -> Unit) {
     Button(
         onClick = onClick,
+        enabled = isActive,
         contentPadding = PaddingValues(
             horizontal = Padding.ButtonP.horizontal,
             vertical = Padding.ButtonP.vertical

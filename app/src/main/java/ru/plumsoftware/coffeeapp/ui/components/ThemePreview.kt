@@ -27,53 +27,55 @@ import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
 @Composable
 fun ThemePreview(colorScheme: ColorScheme) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(
-            Padding.Items.mediumScreenPadding,
-            Alignment.Top
-        ),
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .width(Size.AppearancePreview.width)
-            .height(Size.AppearancePreview.height)
-            .border(
-                width = Size.Stroke.smallStrokeSize,
-                color = MaterialTheme.colorScheme.scrim,
-                shape = MaterialTheme.shapes.small
-            )
-            .background(
-                color = MaterialTheme.colorScheme.background,
-                shape = MaterialTheme.shapes.small
-            )
-            .padding(all = Padding.Screens.extraSmallScreenPadding)
-    ) {
-        Text(
-            text = stringResource(id = R.string.appearance_text_example),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground,
+    CoffeeAppTheme (useDarkTheme = colorScheme != LightColors) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(
+                Padding.Items.mediumScreenPadding,
+                Alignment.Top
             ),
-            shape = MaterialTheme.shapes.small,
+            horizontalAlignment = Alignment.Start,
             modifier = Modifier
-                .height(height = Size.AppearancePreview.cardHeight)
-                .fillMaxWidth(),
-            content = {}
-        )
+                .width(Size.AppearancePreview.width)
+                .height(Size.AppearancePreview.height)
+                .border(
+                    width = Size.Stroke.smallStrokeSize,
+                    color = getExtendedColors(background = MaterialTheme.colorScheme.background).themePreviewStroke,
+                    shape = MaterialTheme.shapes.small
+                )
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = MaterialTheme.shapes.small
+                )
+                .padding(all = Padding.Screens.extraSmallScreenPadding)
+        ) {
+            Text(
+                text = stringResource(id = R.string.appearance_text_example),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
 
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground
-            ),
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier
-                .height(height = Size.AppearancePreview.cardHeight)
-                .fillMaxWidth(),
-            content = {}
-        )
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground,
+                ),
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier
+                    .height(height = Size.AppearancePreview.cardHeight)
+                    .fillMaxWidth(),
+                content = {}
+            )
+
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground
+                ),
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier
+                    .height(height = Size.AppearancePreview.cardHeight)
+                    .fillMaxWidth(),
+                content = {}
+            )
+        }
     }
 }
 

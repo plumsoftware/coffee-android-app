@@ -1,6 +1,5 @@
 package ru.plumsoftware.coffeeapp.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,8 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
-import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
-import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
@@ -28,7 +25,8 @@ fun TextField(
     text: String,
     label: String,
     onValueChange: (String) -> Unit,
-    leadingIcon: @Composable () -> Unit
+    leadingIcon: @Composable () -> Unit,
+    trailingIcon: @Composable () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(
@@ -49,11 +47,12 @@ fun TextField(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground,
-                unfocusedBorderColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground,
-                focusedContainerColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground.copy(alpha = 0.7f),
-                focusedBorderColor = getExtendedColors(background = MaterialTheme.colorScheme.background).cardBackground.copy(alpha = 0.7f),
+                unfocusedContainerColor = getExtendedColors().cardBackground,
+                unfocusedBorderColor = getExtendedColors().cardBackground,
+                focusedContainerColor = getExtendedColors().cardBackground.copy(alpha = 0.7f),
+                focusedBorderColor = getExtendedColors().cardBackground.copy(alpha = 0.7f),
             ),
+            trailingIcon = trailingIcon,
             onValueChange = onValueChange,
             leadingIcon = leadingIcon
         )
@@ -72,7 +71,8 @@ private fun TextFieldPreview() {
                 text = "",
                 label = stringResource(id = R.string.name_placeholder),
                 onValueChange = {},
-                leadingIcon = {}
+                leadingIcon = {},
+                trailingIcon = {}
             )
         }
     }

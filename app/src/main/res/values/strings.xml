@@ -17,4 +17,7 @@
     <string name="name_register">Регистрация</string>
     <string name="name_placeholder">Имя</string>
     <string name="age_placeholder">Возраст</string>
+
+<!--    Content descriptions-->
+    <string name="calendar_content_description">Иконка календаря для указания возраста</string>
 </resources>
