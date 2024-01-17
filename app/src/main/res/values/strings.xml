@@ -18,6 +18,9 @@
     <string name="name_placeholder">Имя</string>
     <string name="age_placeholder">Возраст</string>
 
+    <!--    Intolerable ingredients-->
+    <string name="intolerable_ingredients">Непеносимость компонентов</string>
+
     <!--    Content descriptions-->
     <string name="calendar_content_description">Иконка календаря для указания возраста</string>
 

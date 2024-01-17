@@ -13,8 +13,11 @@ object Padding {
         val smallScreenPadding = 8.dp
         val mediumScreenPadding = 10.dp
         val largeScreenPadding = 16.dp
-
         val splashScreenPadding = 64.dp
+
+        val extraLargeScreenTopPadding = 118.dp
+        val extraLargeScreenTopPadding_2 = 80.dp
+        val extraLargeScreenBottomPadding = 90.dp
     }
 
     object ButtonP {

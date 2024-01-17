@@ -14,12 +14,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
+import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredients
 import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
+import ru.plumsoftware.data.models.Ingredient
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val targetColor by remember {
-                mutableStateOf(DarkColors)
+                mutableStateOf(LightColors)
             }
             val systemUiController = rememberSystemUiController()
             val color = targetColor.background
@@ -52,7 +55,20 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        Appearance()
+
+                        val array: Array<String> = stringArrayResource(R.array.ingredients)
+                        val ingredients = mutableListOf<Ingredient>()
+                        var id = 0
+
+                        array.forEach { ingredient ->
+                            ingredients.add(Ingredient(id = id, name = ingredient))
+                            id++
+                        }
+
+                        IntolerableIngredients(
+                            ingredients = ingredients.toList(),
+                            firstSetup = false
+                        )
                     }
                 }
             }
