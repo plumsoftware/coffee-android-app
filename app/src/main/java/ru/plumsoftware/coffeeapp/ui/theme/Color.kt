@@ -1,4 +1,5 @@
 package ru.plumsoftware.coffeeapp.ui.theme
+
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF9A4600)
@@ -69,11 +70,17 @@ val seed = Color(0xFFD2691E)
 internal val cardBackgroundLight = Color(0xFFFAF2F2)
 internal val cardBackgroundDark = Color(0xFF3D3939)
 
-internal val dividerColorLight = Color (0xFFD9D9D9)
+internal val dividerColorLight = Color(0xFFD9D9D9)
 internal val dividerColorDark = Color(0xFF303030)
 
 internal val themePreviewStrokeColorLight = Color(0xFF000000)
 internal val themePreviewStrokeColorDark = Color(0xFFFFFFFF)
+
+internal val light_onchocolate2Container = Color(0xFF321200)
+internal val dark_onchocolate2Container = Color(0xFFFFDBC9)
+
+internal val bottomBarBackgroundLightColor = Color.White
+internal val bottomBarBackgroundDarkColor = Color.Black
 
 val chocolate1 = Color(0xFF964B00)
 val milk1 = Color(0xFFD2B48C)
@@ -103,11 +110,10 @@ val dark_onmilk1Container = Color(0xFFFFDDB1)
 val light_chocolate2 = Color(0xFF96480E)
 val light_onchocolate2 = Color(0xFFFFFFFF)
 val light_chocolate2Container = Color(0xFFFFDBC9)
-val light_onchocolate2Container = Color(0xFF321200)
 val dark_chocolate2 = Color(0xFFFFB68C)
 val dark_onchocolate2 = Color(0xFF532200)
 val dark_chocolate2Container = Color(0xFF753400)
-val dark_onchocolate2Container = Color(0xFFFFDBC9)
+
 val light_velvet1 = Color(0xFFB22B1D)
 val light_onvelvet1 = Color(0xFFFFFFFF)
 val light_velvet1Container = Color(0xFFFFDAD4)

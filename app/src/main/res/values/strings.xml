@@ -24,6 +24,12 @@
     <!--    Content descriptions-->
     <string name="calendar_content_description">Иконка календаря для указания возраста</string>
 
+    <!--    Bottom nav bar-->
+    <string name="home">Главная</string>
+    <string name="liked">Избранное</string>
+    <string name="profile">Профиль</string>
+    <string name="search">Поиск</string>
+
     <!--    Ingredients-->
     <string name="coffee_beans">Кофейные зерна</string>
     <string name="milk">Молоко</string>

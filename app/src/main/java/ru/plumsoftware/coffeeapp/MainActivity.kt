@@ -14,8 +14,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.plumsoftware.coffeeapp.dto.BottomBarDto
+import ru.plumsoftware.coffeeapp.ui.components.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
 import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredients
 import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
@@ -30,7 +34,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val targetColor by remember {
-                mutableStateOf(LightColors)
+                mutableStateOf(DarkColors)
             }
             val systemUiController = rememberSystemUiController()
             val color = targetColor.background
@@ -56,18 +60,37 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
 
-                        val array: Array<String> = stringArrayResource(R.array.ingredients)
-                        val ingredients = mutableListOf<Ingredient>()
-                        var id = 0
+//                        val array: Array<String> = stringArrayResource(R.array.ingredients)
+//                        val ingredients = mutableListOf<Ingredient>()
+//                        var id = 0
+//
+//                        array.forEach { ingredient ->
+//                            ingredients.add(Ingredient(id = id, name = ingredient))
+//                            id++
+//                        }
+//
+//                        IntolerableIngredients(
+//                            ingredients = ingredients.toList(),
+//                            firstSetup = false
+//                        )
 
-                        array.forEach { ingredient ->
-                            ingredients.add(Ingredient(id = id, name = ingredient))
-                            id++
-                        }
+                        val list = listOf<BottomBarDto>(
+                            BottomBarDto(
+                                name = stringResource(id = R.string.home),
+                                painter = painterResource(id = R.drawable.coffee_cup_icon)
+                            ),
+                            BottomBarDto(
+                                name = stringResource(id = R.string.liked),
+                                painter = painterResource(id = R.drawable.liked)
+                            ),
+                            BottomBarDto(
+                                name = stringResource(id = R.string.profile),
+                                painter = painterResource(id = R.drawable.profile)
+                            )
+                        )
 
-                        IntolerableIngredients(
-                            ingredients = ingredients.toList(),
-                            firstSetup = false
+                        BottomNavBar(
+                            list = list,
                         )
                     }
                 }
