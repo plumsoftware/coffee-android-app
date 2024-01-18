@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.plumsoftware.coffeeapp.R
@@ -44,26 +45,13 @@ import ru.plumsoftware.coffeeapp.ui.theme.getMediumWeight
 import ru.plumsoftware.data.models.Coffee
 
 @Composable
-fun RowScope.CoffeeCard() {
-    val mockCoffeeModel = Coffee(
-        id = -1,
-        name = "Капучино",
-        imageResId = R.drawable.mock_coffee_drink,
-        isLiked = 1,
-        history = "asdvefbrgnthmyj,uki.ukjyhtgfdsafwergthyjukyilo;ulkyjthgbfdvbrthyjuki",
-        roastingLevel = "Средняя прожарка",
-        tastes = "",
-        cookingMethod = "",
-        description = "adsafdgehrtyjukil",
-        ageRating = "14+",
-        ingredients = emptyList()
-    )
+fun CoffeeCard(
+    coffee: Coffee,
+    modifier: Modifier = Modifier
+) {
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .weight(weight = 1.0f),
+        modifier = modifier,
         shape = MaterialTheme.shapes.small,
         colors = CardDefaults.cardColors(
             containerColor = getExtendedColors().cardBackground,
@@ -71,7 +59,8 @@ fun RowScope.CoffeeCard() {
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(
-                space = Padding.Items.mediumScreenPadding, alignment = Alignment.CenterVertically
+                space = Padding.Items.mediumScreenPadding,
+                alignment = Alignment.CenterVertically
             ),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -92,7 +81,7 @@ fun RowScope.CoffeeCard() {
                         .fillMaxWidth()
                         .height(Size.Coffee.coffeePreviewImageHeight),
                     contentScale = ContentScale.Crop,
-                    painter = painterResource(id = mockCoffeeModel.imageResId),
+                    painter = painterResource(id = coffee.imageResId),
                     contentDescription = stringResource(
                         id = R.string.coffee_image__content_description
                     ),
@@ -110,18 +99,26 @@ fun RowScope.CoffeeCard() {
                     .wrapContentHeight()
             ) {
                 Text(
-                    text = mockCoffeeModel.name, style = MaterialTheme.typography.labelMedium.copy(
+                    text = coffee.name, style = MaterialTheme.typography.labelMedium.copy(
                         fontWeight = getMediumWeight(),
                         color = MaterialTheme.colorScheme.onBackground
-                    )
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    textAlign = TextAlign.Start
                 )
 
                 Text(
-                    text = mockCoffeeModel.name, style = MaterialTheme.typography.labelSmall.copy(
+                    text = coffee.name, style = MaterialTheme.typography.labelSmall.copy(
                         color = MaterialTheme.colorScheme.onBackground.copy(
                             alpha = 0.3f
                         )
-                    )
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    textAlign = TextAlign.Start
                 )
             }
 
@@ -135,13 +132,13 @@ fun RowScope.CoffeeCard() {
                     .wrapContentHeight()
             ) {
                 Icon(
-                    painter = if (mockCoffeeModel.isLiked == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
+                    painter = if (coffee.isLiked == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
                         id = R.drawable.liked
                     ),
                     contentDescription = stringResource(
                         id = R.string.coffee_like_content_description
                     ),
-                    tint = if (mockCoffeeModel.isLiked == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
+                    tint = if (coffee.isLiked == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .size(size = Size.Coffee.likeSize)
                         .clip(MaterialTheme.shapes.medium)
@@ -164,6 +161,21 @@ fun RowScope.CoffeeCard() {
 @Composable
 @Preview(showBackground = true)
 private fun CoffeeCardPreview() {
+
+    val mockCoffeeModel = Coffee(
+        id = -1,
+        name = "Капучино",
+        imageResId = R.drawable.mock_coffee_drink,
+        isLiked = 1,
+        history = "asdvefbrgnthmyj,uki.ukjyhtgfdsafwergthyjukyilo;ulkyjthgbfdvbrthyjuki",
+        roastingLevel = "Средняя прожарка",
+        tastes = "",
+        cookingMethod = "",
+        description = "adsafdgehrtyjukil",
+        ageRating = "14+",
+        ingredients = emptyList()
+    )
+
     CoffeeAppTheme(useDarkTheme = true) {
         Surface(contentColor = MaterialTheme.colorScheme.background) {
             Row(
@@ -172,8 +184,20 @@ private fun CoffeeCardPreview() {
                     space = Padding.Items.mediumScreenPadding, alignment = Alignment.Start
                 )
             ) {
-                CoffeeCard()
-                CoffeeCard()
+                CoffeeCard(
+                    coffee = mockCoffeeModel,
+                    modifier = Modifier
+                        .weight(1.0f)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                )
+                CoffeeCard(
+                    coffee = mockCoffeeModel,
+                    modifier = Modifier
+                        .weight(1.0f)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                )
             }
         }
     }
