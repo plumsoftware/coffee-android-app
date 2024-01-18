@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.theme
 
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 
 object Size {
@@ -16,5 +17,11 @@ object Size {
 
     object Divider {
         val height = 4.dp
+    }
+
+    object Coffee {
+        val coffeePreviewImageHeight = 130.dp
+
+        val likeSize = DpSize(width = 13.dp, height = 15.dp)
     }
 }

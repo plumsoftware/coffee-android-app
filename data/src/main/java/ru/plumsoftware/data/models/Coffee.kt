@@ -5,6 +5,8 @@ import ru.plumsoftware.domain.models.CoffeeModel
 data class Coffee(
     override val id: Int,
     override val name: String,
+    override val imageResId: Int,
+    override val isLiked: Int,
     override val history: String,
     override val roastingLevel: String,
     override val tastes: String,

@@ -82,6 +82,9 @@ internal val dark_onchocolate2Container = Color(0xFFFFDBC9)
 internal val bottomBarBackgroundLightColor = Color.White
 internal val bottomBarBackgroundDarkColor = Color.Black
 
+internal val likedLightColor = Color(0xFFEEF159)
+internal val likedDarkColor = Color(0xFFEEF159)
+
 val chocolate1 = Color(0xFF964B00)
 val milk1 = Color(0xFFD2B48C)
 val chocolate2 = Color(0xFF8B4513)

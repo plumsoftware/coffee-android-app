@@ -25,6 +25,8 @@
     <string name="calendar_content_description">Иконка календаря для указания возраста</string>
     <string name="close_content_description">Кнопка очистки текстового поля</string>
     <string name="search_content_description">Иконка поиска</string>
+    <string name="coffee_image__content_description">Изображение кофейного напитка</string>
+    <string name="coffee_like_content_description">Кнопка для добавления напитка в избранное</string>
 
     <!--    Bottom nav bar-->
     <string name="home">Главная</string>
