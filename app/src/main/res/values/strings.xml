@@ -34,6 +34,18 @@
     <!--    Search-->
     <string name="search">Поиск</string>
 
+    <!--    Tag list-->
+    <array name="tag_list">
+        <item>Все</item>
+        <item>Капучино</item>
+        <item>Мокачино</item>
+        <item>Раф</item>
+        <item>Эспрессо</item>
+        <item>Холодное</item>
+        <item>Какао</item>
+        <item>Алкогольное</item>
+    </array>
+
     <!--    Ingredients-->
     <string name="coffee_beans">Кофейные зерна</string>
     <string name="milk">Молоко</string>
