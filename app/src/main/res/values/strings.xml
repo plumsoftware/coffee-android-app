@@ -23,11 +23,15 @@
 
     <!--    Content descriptions-->
     <string name="calendar_content_description">Иконка календаря для указания возраста</string>
+    <string name="close_content_description">Кнопка очистки текстового поля</string>
+    <string name="search_content_description">Иконка поиска</string>
 
     <!--    Bottom nav bar-->
     <string name="home">Главная</string>
     <string name="liked">Избранное</string>
     <string name="profile">Профиль</string>
+
+    <!--    Search-->
     <string name="search">Поиск</string>
 
     <!--    Ingredients-->
