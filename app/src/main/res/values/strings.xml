@@ -36,6 +36,10 @@
     <!--    Search-->
     <string name="search">Поиск</string>
 
+    <!--    Settings-->
+    <string name="settings">Профиль</string>
+    <string name="appearance">Оформление</string>
+
     <!--    Tag list-->
     <array name="tag_list">
         <item>Все</item>
