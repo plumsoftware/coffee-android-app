@@ -24,5 +24,7 @@ object Size {
         val coffeeCardWidth = 200.dp
 
         val likeSize = DpSize(width = 13.dp, height = 15.dp)
+
+        val coffeeOfTheDayImageHeight = 180.dp
     }
 }

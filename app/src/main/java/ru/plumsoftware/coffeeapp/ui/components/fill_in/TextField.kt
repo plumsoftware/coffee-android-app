@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp.ui.components
+package ru.plumsoftware.coffeeapp.ui.components.fill_in
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

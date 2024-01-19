@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp.ui.components
+package ru.plumsoftware.coffeeapp.ui.components.groups
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

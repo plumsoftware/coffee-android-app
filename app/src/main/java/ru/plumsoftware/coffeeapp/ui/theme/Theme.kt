@@ -85,6 +85,8 @@ data class ExtendedColors(
     val bottomIconColor: Color = light_onchocolate2Container,
     val bottomBarBackground: Color = bottomBarBackgroundLightColor,
     val likeColor: Color = likedLightColor,
+    val welcomeBackgroundColor: Color = welcomeLightBackgroundColor,
+    val welcomeTextColor: Color = welcomeLightTextColor
 )
 
 @Composable
@@ -95,7 +97,9 @@ fun getExtendedColors(background: Color = MaterialTheme.colorScheme.background):
             dividerColor = dividerColorLight,
             themePreviewStroke = themePreviewStrokeColorLight,
             bottomIconColor = light_onchocolate2Container,
-            likeColor = likedLightColor
+            likeColor = likedLightColor,
+            welcomeBackgroundColor = welcomeLightBackgroundColor,
+            welcomeTextColor = welcomeLightTextColor,
         )
     } else {
         ExtendedColors(
@@ -103,7 +107,9 @@ fun getExtendedColors(background: Color = MaterialTheme.colorScheme.background):
             dividerColor = dividerColorDark,
             themePreviewStroke = themePreviewStrokeColorDark,
             bottomIconColor = dark_onchocolate2Container,
-            likeColor = likedDarkColor
+            likeColor = likedDarkColor,
+            welcomeBackgroundColor = welcomeDarkBackgroundColor,
+            welcomeTextColor = welcomeDarkTextColor,
         )
     }
 }

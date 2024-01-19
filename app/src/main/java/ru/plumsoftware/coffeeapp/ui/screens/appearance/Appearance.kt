@@ -24,10 +24,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.plumsoftware.coffeeapp.R
-import ru.plumsoftware.coffeeapp.ui.components.Dividers
-import ru.plumsoftware.coffeeapp.ui.components.PrimaryButton
-import ru.plumsoftware.coffeeapp.ui.components.RButton
-import ru.plumsoftware.coffeeapp.ui.components.ThemePreview
+import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
+import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
+import ru.plumsoftware.coffeeapp.ui.components.buttons.RButton
+import ru.plumsoftware.coffeeapp.ui.components.groups.ThemePreview
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors

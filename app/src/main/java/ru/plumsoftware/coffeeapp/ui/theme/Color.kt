@@ -85,6 +85,12 @@ internal val bottomBarBackgroundDarkColor = Color.Black
 internal val likedLightColor = Color(0xFFEEF159)
 internal val likedDarkColor = Color(0xFFEEF159)
 
+internal val welcomeLightBackgroundColor = Color(0xFFFFD9DE)
+internal val welcomeDarkBackgroundColor = Color(0xFF7C293F)
+
+internal val welcomeLightTextColor = Color(0xFF3F0016)
+internal val welcomeDarkTextColor = Color(0xFFFFD9DE)
+
 val chocolate1 = Color(0xFF964B00)
 val milk1 = Color(0xFFD2B48C)
 val chocolate2 = Color(0xFF8B4513)

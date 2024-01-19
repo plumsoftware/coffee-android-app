@@ -27,6 +27,7 @@
     <string name="search_content_description">Иконка поиска</string>
     <string name="coffee_image__content_description">Изображение кофейного напитка</string>
     <string name="coffee_like_content_description">Кнопка для добавления напитка в избранное</string>
+    <string name="coffee_of_the_day_content_description">изображение кофе дня</string>
 
     <!--    Bottom nav bar-->
     <string name="home">Главная</string>
@@ -39,6 +40,10 @@
     <!--    Settings-->
     <string name="settings">Профиль</string>
     <string name="appearance">Оформление</string>
+
+    <!--    Home-->
+    <string name="welcome">Доброе утро,</string>
+    <string name="coffee_of_the_day">Кофе дня</string>
 
     <!--    Tag list-->
     <array name="tag_list">

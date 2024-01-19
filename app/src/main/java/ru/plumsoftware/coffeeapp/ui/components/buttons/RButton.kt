@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp.ui.components
+package ru.plumsoftware.coffeeapp.ui.components.buttons
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -9,8 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
-import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
-import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 
 @Composable
 fun RButton(selected: MutableState<Boolean>) {

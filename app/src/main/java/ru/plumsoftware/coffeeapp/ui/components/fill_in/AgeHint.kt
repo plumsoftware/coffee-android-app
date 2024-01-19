@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp.ui.components
+package ru.plumsoftware.coffeeapp.ui.components.fill_in
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

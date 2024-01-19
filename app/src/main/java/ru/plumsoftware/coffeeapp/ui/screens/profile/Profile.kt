@@ -23,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
-import ru.plumsoftware.coffeeapp.ui.components.AgeHint
-import ru.plumsoftware.coffeeapp.ui.components.Dividers
-import ru.plumsoftware.coffeeapp.ui.components.PrimaryButton
-import ru.plumsoftware.coffeeapp.ui.components.TextField
+import ru.plumsoftware.coffeeapp.ui.components.fill_in.AgeHint
+import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
+import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
+import ru.plumsoftware.coffeeapp.ui.components.fill_in.TextField
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
