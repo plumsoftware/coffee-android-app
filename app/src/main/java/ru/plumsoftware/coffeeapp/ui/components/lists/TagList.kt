@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryChip
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
 @Composable
 fun TagList() {
-    val tagArray = stringArrayResource(id = R.array.tag_list)
+    val tagArray = stringArrayResource(id = C.array.tag_list)
     var selectedTagIndex by remember {
         mutableIntStateOf(0)
     }

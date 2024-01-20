@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryChip
@@ -180,7 +181,7 @@ fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
 @Preview(showBackground = true)
 private fun IntolerableIngredientsPreview() {
 
-    val array: Array<String> = stringArrayResource(R.array.ingredients)
+    val array: Array<String> = stringArrayResource(C.array.ingredients)
     val ingredients = mutableListOf<Ingredient>()
     var id = 0
 

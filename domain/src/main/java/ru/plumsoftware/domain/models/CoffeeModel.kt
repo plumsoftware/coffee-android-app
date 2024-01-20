@@ -4,12 +4,10 @@ interface CoffeeModel {
     val id: Int
     val name: String
     val imageResId: Int
+    val type: String
     val isLiked: Int
-    val history: String
     val roastingLevel: String
-    val tastes: String
-    val cookingMethod: String
     val description: String
-    val ageRating: String
+    val ageRating: Int
     val ingredients: List<IngredientModel>
 }

@@ -18,3 +18,4 @@ rootProject.name = "Бариста - кофе и напитки"
 include(":app")
 include(":data")
 include(":domain")
+include(":coffee")

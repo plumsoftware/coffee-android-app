@@ -163,12 +163,10 @@ private fun CoffeeCardPreview() {
         name = "Капучино",
         imageResId = R.drawable.mock_coffee_drink,
         isLiked = 1,
-        history = "asdvefbrgnthmyj,uki.ukjyhtgfdsafwergthyjukyilo;ulkyjthgbfdvbrthyjuki",
         roastingLevel = "Средняя прожарка",
-        tastes = "",
-        cookingMethod = "",
         description = "adsafdgehrtyjukil",
-        ageRating = "14+",
+        ageRating = 12,
+        type = "Капучино",
         ingredients = emptyList()
     )
 

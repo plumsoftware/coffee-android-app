@@ -107,4 +107,5 @@ dependencies {
     //Modules
     implementation(project(path = ":data"))
     implementation(project(path = ":domain"))
+    implementation(project(path = ":coffee"))
 }

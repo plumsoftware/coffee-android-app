@@ -108,7 +108,7 @@ fun CoffeeOfTheDayCard(coffee: Coffee) {
                             style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.onBackground)
                         )
                         Text(
-                            text = coffee.tastes,
+                            text = stringResource(id = R.string.taste),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                             )
@@ -129,12 +129,10 @@ private fun CoffeeOfTheDayCardPreview() {
         name = "Капучино",
         imageResId = R.drawable.mock_coffee_drink,
         isLiked = 1,
-        history = "asdvefbrgnthmyj,uki.ukjyhtgfdsafwergthyjukyilo;ulkyjthgbfdvbrthyjuki",
         roastingLevel = "Средняя прожарка",
-        tastes = "Изысканный вкус",
-        cookingMethod = "",
+        type = "Капучино",
         description = "adsafdgehrtyjukil",
-        ageRating = "14+",
+        ageRating = 14,
         ingredients = emptyList()
     )
 

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeOfTheDayCard
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
@@ -90,12 +91,10 @@ private fun HomePreview() {
         name = "Капучино",
         imageResId = R.drawable.mock_coffee_drink,
         isLiked = 1,
-        history = "asdvefbrgnthmyj,uki.ukjyhtgfdsafwergthyjukyilo;ulkyjthgbfdvbrthyjuki",
+        type = "Капучино",
         roastingLevel = "Средняя прожарка",
-        tastes = "Изысканный вкус",
-        cookingMethod = "",
         description = "adsafdgehrtyjukil",
-        ageRating = "14+",
+        ageRating = 14,
         ingredients = emptyList()
     )
 
@@ -127,7 +126,7 @@ private fun HomePreview() {
         mockList,
     )
 
-    val tagList = stringArrayResource(id = R.array.tag_list)
+    val tagList = stringArrayResource(id = C.array.tag_list)
 
     CoffeeAppTheme(useDarkTheme = false) {
         Surface(contentColor = MaterialTheme.colorScheme.background) {

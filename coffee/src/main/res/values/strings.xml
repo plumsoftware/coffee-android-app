@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Coffee-->
+    <array name="coffee_names">
+        <item>Капучино</item>
+    </array>
+
+    <!--    Tag list-->
+    <array name="tag_list">
+        <item>Все</item>
+        <item>Капучино</item>
+        <item>Латте</item>
+        <item>Мокачино</item>
+        <item>Флэт уайт</item>
+        <item>Раф</item>
+        <item>Гляссе</item>
+        <item>Американо</item>
+        <item>Эспрессо</item>
+        <item>Какао</item>
+        <item>Холодное</item>
+        <item>Алкогольное</item>
+    </array>
+
+    <string name="cappuccino">Капучино</string>
+    <string name="latte">Латте</string>
+    <string name="mochachino">Мокачино</string>
+    <string name="flat_white">Флэт уайт</string>
+    <string name="raf">Раф</string>
+    <string name="glace">Гляссе</string>
+    <string name="americano">Американо</string>
+    <string name="espresso">Эспрессо</string>
+    <string name="cacao">Какао</string>
+    <string name="cold">Холодное</string>
+    <string name="alcohol">Алкогольное</string>
+
+    <array name="roasting_levels">
+        <item>слабая прожарка</item>
+        <item>средняя прожарка</item>
+        <item>сильная прожарка</item>
+    </array>
+
+    <array name="descriptions">
+        <item>
+            Приготовьте двойной эспрессо, затем добавьте равное количество молока, вспененного с помощью пара
+        </item>
+    </array>
+
+    <!--    Ingredients-->
+    <string name="espresso_">Эспрессо</string>
+    <string name="milk">Молоко</string>
+    <string name="coffee_beans">Кофейные зерна</string>
+    <string name="sugar">Сахар</string>
+    <string name="cream">Крем</string>
+    <string name="chocolate">Шоколад</string>
+    <string name="cinnamon">Корица</string>
+    <string name="vanilla">Ваниль</string>
+    <string name="cocoa_powder">Какао-порошок</string>
+    <string name="syrup">Сироп</string>
+    <string name="nutmeg">Мускатный орех</string>
+    <string name="coconut_oil">Кокосовое масло</string>
+    <string name="cardamom">Кардамон</string>
+    <string name="whipping_cream">Сливки</string>
+    <string name="confectioners_cream">Кондитерский крем</string>
+    <string name="caramel">Карамель</string>
+    <string name="chocolate_syrup">Шоколадный сироп</string>
+    <string name="irish_cream">Ирландский крем</string>
+    <string name="coffee_liqueur">Кофейный ликер</string>
+    <string name="coffee_extract">Кофейный экстракт</string>
+    <string name="whipped_cream">Взбитые сливки</string>
+    <string name="soy_milk">Соевое молоко</string>
+    <string name="honey">Мед</string>
+    <string name="coriander">Кориандр</string>
+    <string name="lemon_zest">Лимонная цедра</string>
+    <string name="mint">Мята</string>
+    <string name="lemon_juice">Лимонный сок</string>
+    <string name="grapefruit_juice">Грейпфрутовый сок</string>
+    <string name="orange_juice">Апельсиновый сок</string>
+    <string name="citrus_zest">Цитрусовая цедра</string>
+    <string name="banana">Банан</string>
+    <string name="coconut">Кокос</string>
+    <string name="buttermilk">Пахта</string>
+    <string name="ginger">Имбирь</string>
+    <string name="cocoa_beans">Какао-бобы</string>
+    <string name="honey_glaze">Медовая глазурь</string>
+    <string name="coconut_sugar">Кокосовый сахар</string>
+    <string name="black_pepper">Черный перец</string>
+    <string name="coffee_powder">Кофейный порошок</string>
+    <string name="fresh_berries">Свежие ягоды</string>
+    <string name="coconut_milk">Кокосовое молоко</string>
+    <string name="nut_syrup">Ореховый сироп</string>
+    <string name="powdered_sugar">Айсинг сахар</string>
+    <string name="marshmallow">Маршмеллоу</string>
+    <string name="maple_syrup">Кленовый сироп</string>
+    <string name="pomegranate_juice">Гранатовый сок</string>
+    <string name="whipped_cream_with_chocolate">Взбитые сливки с шоколадом</string>
+    <string name="brown_sugar">Коричневый сахар</string>
+    <string name="soft_cream_cheese">Мягкий творожный сыр</string>
+    <string name="sesame_oil">Кунжутное масло</string>
+    <string name="pistachios">Фисташки</string>
+    <string name="shortbread_cookies">Песочное печенье</string>
+    <string name="rose_water">Розовая вода</string>
+    <string name="red_halva">Красный халва</string>
+    <string name="poppy_seed">Макка</string>
+    <string name="breadcrumb">Панировочные сухари</string>
+    <string name="grated_nutmeg">Тертый мускатный орех</string>
+    <string name="aloe">Алоэ</string>
+    <string name="milk_glaze">Молочная глазурь</string>
+    <string name="organic_chocolate">Органический шоколад</string>
+    <string name="vanillin">Ванилин</string>
+    <string name="fructose">Фруктоза</string>
+    <string name="buckwheat">Гречиха</string>
+    <string name="green_tea_leaves">Листья зеленого чая</string>
+    <string name="raspberry_leaves">Листья малины</string>
+    <string name="tonic">Тоник</string>
+    <string name="grenadine">Гренадин</string>
+    <string name="fruit_juice">Фруктовый сок</string>
+    <string name="pineapple_juice">Сок ананаса</string>
+    <string name="blackcurrant_syrup">Сироп черной смородины</string>
+    <string name="natural_chocolate">Натуральный шоколад</string>
+    <string name="crushed_nuts">Дробленый орех</string>
+    <string name="dark_chocolate">Горький шоколад</string>
+    <string name="alternative_milk">Дифферентное молоко</string>
+    <string name="milk_chocolate">Молочный шоколад</string>
+    <string name="chewing_gum">Ментоловые резинки</string>
+    <string name="drunken_cherry">Пьяная вишня</string>
+    <string name="walnuts">Грецкие орехи</string>
+    <string name="brandy">Коньяк</string>
+    <string name="spices">Специи</string>
+    <string name="cherinda">Черинда</string>
+    <string name="almond">Миндаль</string>
+    <string name="pastry_baskets">Корзиночки из теста</string>
+    <string name="pecan">Пекан</string>
+    <string name="cranberry">Клюква</string>
+    <string name="baraquial_gruel">Кипрошная каша</string>
+    <string name="yellow_bean">Желтая фасоль</string>
+    <string name="rum">Ром</string>
+    <string name="brandy_liqueur">Конячный ликер</string>
+    <string name="sugar_syrup">Сахарный сироп</string>
+
+    <string-array name="ingredients">
+        <item quantity="espresso_">Эспрессо</item>
+        <item quantity="milk">Молоко</item>
+        <item quantity="sugar">Сахар</item>
+        <item quantity="coffee_beans">Кофейные зерна</item>
+        <item quantity="water">Вода</item>
+        <item quantity="cream">Крем</item>
+        <item quantity="chocolate">Шоколад</item>
+        <item quantity="cinnamon">Корица</item>
+        <item quantity="vanilla">Ваниль</item>
+        <item quantity="cocoa_powder">Какао-порошок</item>
+        <item quantity="syrup">Сироп</item>
+        <item quantity="nutmeg">Мускатный орех</item>
+        <item quantity="coconut_oil">Кокосовое масло</item>
+        <item quantity="cardamom">Кардамон</item>
+        <item quantity="cream">Сливки</item>
+        <item quantity="pastry_cream">Кондитерский крем</item>
+        <item quantity="caramel">Карамель</item>
+        <item quantity="chocolate_syrup">Шоколадный сироп</item>
+        <item quantity="Irish_cream">Ирландский крем</item>
+        <item quantity="coffee_liqueur">Кофейный ликер</item>
+        <item quantity="coffee_extract">Кофейный экстракт</item>
+        <item quantity="whipped_cream">Взбитые сливки</item>
+        <item quantity="soy_milk">Соевое молоко</item>
+        <item quantity="honey">Мед</item>
+        <item quantity="coriander">Кориандр</item>
+        <item quantity="lemon_zest">Лимонная цедра</item>
+        <item quantity="mint">Мята</item>
+        <item quantity="lemon_juice">Лимонный сок</item>
+        <item quantity="grapefruit_juice">Грейпфрутовый сок</item>
+        <item quantity="orange_juice">Апельсиновый сок</item>
+        <item quantity="citrus_zest">Цитрусовая цедра</item>
+        <item quantity="banana">Банан</item>
+        <item quantity="coconut">Кокос</item>
+        <item quantity="buttermilk">Пахта</item>
+        <item quantity="ginger">Имбирь</item>
+        <item quantity="cocoa_beans">Какао-бобы</item>
+        <item quantity="honey_glaze">Медовая глазурь</item>
+        <item quantity="coconut_sugar">Кокосовый сахар</item>
+        <item quantity="black_pepper">Черный перец</item>
+        <item quantity="coffee_powder">Кофейный порошок</item>
+        <item quantity="fresh_berries">Свежие ягоды</item>
+        <item quantity="coconut_milk">Кокосовое молоко</item>
+        <item quantity="nutmeg">Мускатный орех</item>
+        <item quantity="cardamom">Кардамон</item>
+        <item quantity="nut_syrup">Ореховый сироп</item>
+        <item quantity="maple_syrup">Кленовый сироп</item>
+        <item quantity="icing_sugar">Айсинг сахар</item>
+        <item quantity="marshmallow">Маршмеллоу</item>
+        <item quantity="maple_syrup">Кленовый сироп</item>
+        <item quantity="pomegranate_juice">Гранатовый сок</item>
+        <item quantity="whipped_cream_with_chocolate">Взбитые сливки с шоколадом</item>
+        <item quantity="brown_sugar">Коричневый сахар</item>
+        <item quantity="soft_cream_cheese">Мягкий творожный сыр</item>
+        <item quantity="sesame_oil">Кунжутное масло</item>
+        <item quantity="pistachios">Фисташки</item>
+        <item quantity="shortbread_cookies">Песочное печенье</item>
+        <item quantity="rose_water">Розовая вода</item>
+        <item quantity="red_halva">Красный халва</item>
+        <item quantity="poppy_seeds">Макка</item>
+        <item quantity="mint">Мята</item>
+        <item quantity="breadcrumbs">Панировочные сухари</item>
+        <item quantity="grated_nutmeg">Тертый мускатный орех</item>
+        <item quantity="aloe">Алоэ</item>
+        <item quantity="milk_glaze">Молочная глазурь</item>
+        <item quantity="milk">Молоко</item>
+        <item quantity="sugar">Сахар</item>
+        <item quantity="organic_chocolate">Органический шоколад</item>
+        <item quantity="vanillin">Ванилин</item>
+        <item quantity="cinnamon">Корица</item>
+        <item quantity="fructose">Фруктоза</item>
+        <item quantity="buckwheat">Гречиха</item>
+        <item quantity="green_tea_leaves">Листья зеленого чая</item>
+        <item quantity="raspberry_leaves">Листья малины</item>
+        <item quantity="tonic">Тоник</item>
+        <item quantity="grenadine">Гренадин</item>
+        <item quantity="fruit_juice">Фруктовый сок</item>
+        <item quantity="pineapple_juice">Сок ананаса</item>
+        <item quantity="blackcurrant_syrup">Сироп черной смородины</item>
+        <item quantity="natural_chocolate">Натуральный шоколад</item>
+        <item quantity="chopped_nuts">Дробленый орех</item>
+        <item quantity="dark_chocolate">Горький шоколад</item>
+        <item quantity="alternative_milk">Дифферентное молоко</item>
+        <item quantity="milk_chocolate">Молочный шоколад</item>
+        <item quantity="menthol_gum">Ментоловые резинки</item>
+        <item quantity="drunken_cherry">Пьяная вишня</item>
+        <item quantity="mint">Мята</item>
+        <item quantity="walnuts">Грецкие орехи</item>
+        <item quantity="brandy">Коньяк</item>
+        <item quantity="spices">Специи</item>
+        <item quantity="cherries">Черинда</item>
+        <item quantity="almonds">Миндаль</item>
+        <item quantity="pastry_baskets">Корзиночки из теста</item>
+        <item quantity="pecans">Пекан</item>
+        <item quantity="nutmeg">Мускатный орех</item>
+        <item quantity="cappuccino">Капучино</item>
+        <item quantity="cranberries">Клюква</item>
+        <item quantity="kasha">Кипрошная каша</item>
+        <item quantity="yellow_beans">Желтая фасоль</item>
+        <item quantity="rum">Ром</item>
+        <item quantity="brandy_liqueur">Конячный ликер</item>
+        <item quantity="sugar_syrup">Сахарный сироп</item>
+    </string-array>
+</resources>
