@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,7 +31,11 @@ import ru.plumsoftware.coffeeapp.ui.theme.getRegularWeight
 import ru.plumsoftware.coffeeapp.ui.theme.getSplashScreenTitleFont
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(splashScreenViewModel: SplashScreenViewModel) {
+
+    LaunchedEffect(key1 = Unit, block = {
+        splashScreenViewModel.onOutput(output = SplashScreenViewModel.Output.GetUser(user = splashScreenViewModel.getUser()))
+    })
 
     val annotatedText = buildAnnotatedString {
         withStyle(
@@ -83,5 +88,5 @@ fun SplashScreen() {
 @Composable
 @Preview(showBackground = true)
 private fun SplashScreenPreview() {
-    SplashScreen()
+    SplashScreen(splashScreenViewModel = SplashScreenViewModel(output = {}))
 }

@@ -15,5 +15,5 @@ interface UserModelDao {
     suspend fun delete(user: User)
 
     @Query("SELECT * FROM User")
-    suspend fun get(): User
+    suspend fun get(): User?
 }
