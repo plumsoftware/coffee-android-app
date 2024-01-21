@@ -1,6 +1,7 @@
 package ru.plumsoftware.coffeeapp.ui.screens.main
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +24,8 @@ import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.AppearanceViewModel
+import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
+import ru.plumsoftware.coffeeapp.ui.screens.profile.ProfileViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
@@ -42,6 +45,10 @@ class MainActivity : ComponentActivity(), KoinComponent {
             val mainState = mainViewModel.state.collectAsState()
             val systemUiController = rememberSystemUiController()
             val navController = rememberNavController()
+
+            LaunchedEffect(key1 = Unit, block = {
+                Log.v("TAG", userDatabase.dao.get().toString())
+            })
 
             Crossfade(
                 targetState = mainState.value.targetColorScheme,
@@ -80,6 +87,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                                         )
                                                     )
                                                     navController.navigate(route = if (mainState.value.user?.name?.isEmpty()!!) Screens.APPEARANCE else Screens.HOME)
+                                                    navController.clearBackStack(route = Screens.SPLASH)
                                                 }
                                             }
                                         }
@@ -100,11 +108,31 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                                     )
                                                 )
                                             }
+
+                                            AppearanceViewModel.Output.Go -> {
+                                                navController.navigate(route = Screens.NAME)
+                                            }
                                         }
                                     }
                                 )
                                 Appearance(
                                     appearanceViewModel = viewModel,
+                                    onEvent = viewModel::onEvent
+                                )
+                            }
+                            composable(route = Screens.NAME) {
+                                val viewModel = ProfileViewModel(
+                                    userDatabase = userDatabase,
+                                    output = { output ->
+                                        when (output) {
+                                            ProfileViewModel.Output.Go -> {
+
+                                            }
+                                        }
+                                    }
+                                )
+                                Profile(
+                                    profileViewModel = viewModel,
                                     onEvent = viewModel::onEvent
                                 )
                             }

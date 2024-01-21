@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.data.database.UserDatabase
@@ -14,7 +13,7 @@ import ru.plumsoftware.data.models.User
 
 class MainViewModel(
     private val userDatabase: UserDatabase
-) : ViewModel(), KoinComponent {
+) : ViewModel() {
 
     val state = MutableStateFlow(MainState())
 

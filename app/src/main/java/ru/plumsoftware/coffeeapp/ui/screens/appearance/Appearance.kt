@@ -123,7 +123,9 @@ fun Appearance(
                 .fillMaxHeight()
         ) {
             Dividers(selected = 0)
-            PrimaryButton(onClick = {})
+            PrimaryButton(onClick = {
+                appearanceViewModel.onOutput(AppearanceViewModel.Output.Go)
+            })
         }
     }
 }

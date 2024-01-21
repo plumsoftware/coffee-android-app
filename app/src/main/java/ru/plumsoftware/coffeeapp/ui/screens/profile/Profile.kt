@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.profile
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,10 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,16 +24,20 @@ import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.AgeHint
 import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
+import ru.plumsoftware.coffeeapp.ui.components.fill_in.DateDefaults
+import ru.plumsoftware.coffeeapp.ui.components.fill_in.MaskVisualTransformation
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.TextField
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
+@SuppressLint("SimpleDateFormat")
 @Composable
-fun Profile() {
+fun Profile(
+    profileViewModel: ProfileViewModel,
+    onEvent: (ProfileViewModel.Event) -> Unit
+) {
 
-    var text by remember {
-        mutableStateOf("")
-    }
+    val state = profileViewModel.state.collectAsState().value
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -62,17 +64,19 @@ fun Profile() {
                 .wrapContentHeight()
         ) {
             TextField(
-                text = text,
+                text = state.name,
                 label = stringResource(id = R.string.name_placeholder),
                 onValueChange = {
-                    text = it
-                },
-                leadingIcon = {},
-                trailingIcon = {})
+                    onEvent(ProfileViewModel.Event.ChangeName(name = it))
+                }
+            )
             TextField(
-                text = "",
+                text = state.birthday,
                 label = stringResource(id = R.string.age_placeholder),
-                onValueChange = {},
+                mask = MaskVisualTransformation(DateDefaults.DATE_MASK),
+                onValueChange = {
+                    onEvent(ProfileViewModel.Event.ChangeBirthday(birthday = it))
+                },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.calendar_icon),
@@ -80,7 +84,7 @@ fun Profile() {
                     )
                 },
                 trailingIcon = {
-                    AgeHint(age = 20)
+                    AgeHint(age = state.age)
                 })
         }
 
@@ -94,7 +98,15 @@ fun Profile() {
                 .fillMaxHeight()
         ) {
             Dividers(selected = 1)
-            PrimaryButton(onClick = {}, isActive = false)
+            PrimaryButton(onClick = {
+                onEvent(
+                    ProfileViewModel.Event.SaveData(
+                        birthday = state.birthday,
+                        name = state.name
+                    )
+                )
+                profileViewModel.onOutput(ProfileViewModel.Output.Go)
+            }, isActive = state.isActive)
         }
     }
 }
@@ -107,7 +119,13 @@ private fun ProfilePreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Profile()
+            Profile(
+                profileViewModel = ProfileViewModel(
+                    userDatabase = null,
+                    {}
+                ),
+                onEvent = {}
+            )
         }
     }
 }

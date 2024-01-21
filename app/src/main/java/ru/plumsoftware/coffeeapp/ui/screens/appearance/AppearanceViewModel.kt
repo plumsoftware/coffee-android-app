@@ -25,7 +25,7 @@ class AppearanceViewModel(
         )
     )
 
-    private fun onOutput(o: Output) {
+    fun onOutput(o: Output) {
         output(o)
     }
 
@@ -64,8 +64,7 @@ class AppearanceViewModel(
                         )
                     )
                     userDatabase!!.dao.upsert(
-                        User(
-                            id = 0,
+                        user = User(
                             theme = false
                         )
                     )
@@ -81,8 +80,7 @@ class AppearanceViewModel(
                         )
                     )
                     userDatabase!!.dao.upsert(
-                        User(
-                            id = 0,
+                        user = User(
                             theme = true
                         )
                     )
@@ -112,6 +110,7 @@ class AppearanceViewModel(
 
     sealed class Output {
         data class ChangeTheme(val targetColorScheme: ColorScheme, val useDark: Boolean) : Output()
+        data object Go : Output()
     }
 
     sealed class Event {

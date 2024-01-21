@@ -9,6 +9,6 @@ import ru.plumsoftware.data.models.dao.UserModelDao
     entities = [User::class],
     version = 1
 )
-abstract class UserDatabase :  RoomDatabase() {
+abstract class UserDatabase : RoomDatabase() {
     abstract val dao: UserModelDao
 }

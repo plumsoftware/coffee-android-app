@@ -100,7 +100,7 @@ fun Settings() {
                     )
                 },
                 trailingIcon = {
-                    AgeHint(age = 20)
+                    AgeHint(age = "20")
                 }
             )
 

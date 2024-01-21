@@ -8,12 +8,14 @@ import ru.plumsoftware.data.models.User
 
 @Dao
 interface UserModelDao {
-    @Upsert
+    @Upsert(User::class)
     suspend fun upsert(user: User)
 
     @Delete
     suspend fun delete(user: User)
 
-    @Query("SELECT * FROM User ")
+    @Query("SELECT * FROM User")
     suspend fun get(): User?
+
+
 }

@@ -5,9 +5,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun AgeHint(age: Int) {
+fun AgeHint(age: String) {
     Text(
-        text = "$age",
+        text = age,
         style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.outline)
     )
 }
