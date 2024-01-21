@@ -4,6 +4,6 @@ interface UserModel {
     val id: Int
     val name: String
     val birthday: Long
-    val theme: Int
+    val theme: Boolean
     val isFirst: Int
 }

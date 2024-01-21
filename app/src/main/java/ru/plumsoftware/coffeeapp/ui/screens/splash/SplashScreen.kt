@@ -88,5 +88,9 @@ fun SplashScreen(splashScreenViewModel: SplashScreenViewModel) {
 @Composable
 @Preview(showBackground = true)
 private fun SplashScreenPreview() {
-    SplashScreen(splashScreenViewModel = SplashScreenViewModel(output = {}))
+    SplashScreen(
+        splashScreenViewModel = SplashScreenViewModel(
+            userDatabase = null,
+            output = {})
+    )
 }

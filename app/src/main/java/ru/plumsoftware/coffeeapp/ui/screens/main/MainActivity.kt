@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp
+package ru.plumsoftware.coffeeapp.ui.screens.main
 
 import android.os.Bundle
 import android.widget.Toast
@@ -11,30 +11,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.plumsoftware.coffeeapp.application.App
-import ru.plumsoftware.coffeeapp.ui.screens.MainViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
+import ru.plumsoftware.coffeeapp.ui.screens.appearance.AppearanceViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
-import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
-import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.User
 
@@ -42,24 +34,27 @@ class MainActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mainViewModel = MainViewModel()
+        val userDatabase by inject<UserDatabase>()
+
+        val mainViewModel = MainViewModel(userDatabase = userDatabase)
 
         setContent {
+            val mainState = mainViewModel.state.collectAsState()
             val systemUiController = rememberSystemUiController()
             val navController = rememberNavController()
 
             Crossfade(
-                targetState = mainViewModel.targetColor,
+                targetState = mainState.value.targetColorScheme,
                 animationSpec = tween(400),
                 label = "change theme"
             ) { colorScheme ->
 
                 SideEffect {
                     systemUiController.setStatusBarColor(
-                        color = mainViewModel.statusBarColor,
+                        color = mainState.value.statusBarColor,
                     )
                     systemUiController.setNavigationBarColor(
-                        color = mainViewModel.navColor
+                        color = mainState.value.navColor
                     )
                 }
 
@@ -75,20 +70,43 @@ class MainActivity : ComponentActivity(), KoinComponent {
                             composable(route = Screens.SPLASH) {
                                 SplashScreen(
                                     splashScreenViewModel = SplashScreenViewModel(
+                                        userDatabase = userDatabase,
                                         output = { output ->
                                             when (output) {
                                                 is SplashScreenViewModel.Output.GetUser -> {
-                                                    navController.navigate(route = if (output.user?.name?.isEmpty()!!) Screens.APPEARANCE else Screens.HOME)
+                                                    mainViewModel.onEvent(
+                                                        MainViewModel.Event.SetUser(
+                                                            user = output.user
+                                                        )
+                                                    )
+                                                    navController.navigate(route = if (mainState.value.user?.name?.isEmpty()!!) Screens.APPEARANCE else Screens.HOME)
                                                 }
-
-                                                else -> {}
                                             }
                                         }
                                     )
                                 )
                             }
                             composable(route = Screens.APPEARANCE) {
-                                Appearance()
+                                val viewModel = AppearanceViewModel(
+                                    userDatabase = userDatabase,
+                                    useDark = mainState.value.user?.theme!!,
+                                    output = { output ->
+                                        when (output) {
+                                            is AppearanceViewModel.Output.ChangeTheme -> {
+                                                mainViewModel.onEvent(
+                                                    MainViewModel.Event.ChangeColorScheme(
+                                                        targetColorScheme = output.targetColorScheme,
+                                                        useDark = output.useDark
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                )
+                                Appearance(
+                                    appearanceViewModel = viewModel,
+                                    onEvent = viewModel::onEvent
+                                )
                             }
                         }
                     }

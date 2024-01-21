@@ -2,17 +2,16 @@ package ru.plumsoftware.coffeeapp.ui.screens.splash
 
 import androidx.lifecycle.ViewModel
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.User
 
 class SplashScreenViewModel(
-    private val output: (SplashScreenViewModel.Output) -> Unit
+    private val output: (Output) -> Unit,
+    private val userDatabase: UserDatabase?,
 ) : ViewModel(), KoinComponent {
-    private val userDatabase by inject<UserDatabase>()
 
     suspend fun getUser(): User? {
-        return userDatabase.dao.get()
+        return userDatabase!!.dao.get()
     }
 
     fun onOutput(output: Output) {

@@ -15,8 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,7 +34,16 @@ import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
 @Composable
-fun Appearance() {
+fun Appearance(
+    appearanceViewModel: AppearanceViewModel,
+    onEvent: (AppearanceViewModel.Event) -> Unit
+) {
+    val state = appearanceViewModel.state.collectAsState()
+
+    LaunchedEffect(key1 = Unit, block = {
+        appearanceViewModel.onLabel(AppearanceViewModel.Label.SetupTheme)
+    })
+
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +82,14 @@ fun Appearance() {
                     .padding(all = Padding.Items.smallScreenPadding)
             ) {
                 ThemePreview(colorScheme = LightColors)
-                RButton(selected = remember { mutableStateOf(true) })
+                RButton(selected = state.value.selected1, onClick = {
+                    onEvent(
+                        AppearanceViewModel.Event.ChangeRadioButton1(
+                            selected = true,
+                            useDark = false,
+                        )
+                    )
+                })
             }
 
             Column(
@@ -85,7 +101,14 @@ fun Appearance() {
                     .padding(all = Padding.Items.smallScreenPadding)
             ) {
                 ThemePreview(colorScheme = DarkColors)
-                RButton(selected = remember { mutableStateOf(false) })
+                RButton(selected = state.value.selected2, onClick = {
+                    onEvent(
+                        AppearanceViewModel.Event.ChangeRadioButton2(
+                            selected = true,
+                            useDark = true
+                        )
+                    )
+                })
             }
         }
 
@@ -113,7 +136,17 @@ private fun AppearancePreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Appearance()
+            Appearance(
+
+                appearanceViewModel = AppearanceViewModel(
+                    userDatabase = null,
+                    useDark = false,
+                    {}
+                ),
+                onEvent = {
+
+                }
+            )
         }
     }
 }

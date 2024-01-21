@@ -11,10 +11,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 
 @Composable
-fun RButton(selected: MutableState<Boolean>) {
+fun RButton(selected: Boolean, onClick: () -> Unit) {
     RadioButton(
-        selected = selected.value,
-        onClick = { selected.value = !selected.value },
+        selected = selected,
+        onClick = onClick,
         colors = RadioButtonDefaults.colors(
             selectedColor = MaterialTheme.colorScheme.primary,
         )
@@ -25,6 +25,8 @@ fun RButton(selected: MutableState<Boolean>) {
 @Preview(showBackground = true)
 private fun RButtonPreview() {
     CoffeeAppTheme() {
-        RButton(selected = remember { mutableStateOf(true) })
+        RButton(selected = true, onClick = {
+
+        })
     }
 }

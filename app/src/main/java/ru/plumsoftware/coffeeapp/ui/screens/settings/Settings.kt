@@ -134,7 +134,7 @@ fun Settings() {
                         .padding(all = Padding.Items.smallScreenPadding)
                 ) {
                     ThemePreview(colorScheme = LightColors)
-                    RButton(selected = remember { mutableStateOf(true) })
+                    RButton(selected = true, onClick = {})
                 }
 
                 Column(
@@ -146,7 +146,7 @@ fun Settings() {
                         .padding(all = Padding.Items.smallScreenPadding)
                 ) {
                     ThemePreview(colorScheme = DarkColors)
-                    RButton(selected = remember { mutableStateOf(false) })
+                    RButton(selected = false, onClick = {})
                 }
             }
         }
