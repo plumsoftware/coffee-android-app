@@ -11,7 +11,7 @@ class SplashScreenViewModel(
 ) : ViewModel(), KoinComponent {
 
     suspend fun getUser(): User? {
-        return userDatabase!!.dao.get()
+        return userDatabase!!.dao.getUser()
     }
 
     fun onOutput(output: Output) {

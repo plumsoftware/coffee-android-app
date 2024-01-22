@@ -14,16 +14,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import ru.plumsoftware.coffee.R
 import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.AppearanceViewModel
+import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredients
+import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredientsViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
 import ru.plumsoftware.coffeeapp.ui.screens.profile.ProfileViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
@@ -31,6 +38,7 @@ import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.data.database.UserDatabase
+import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.data.models.User
 
 class MainActivity : ComponentActivity(), KoinComponent {
@@ -47,7 +55,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
             val navController = rememberNavController()
 
             LaunchedEffect(key1 = Unit, block = {
-                Log.v("TAG", userDatabase.dao.get().toString())
+                Log.v("TAG", userDatabase.dao.getUser().toString())
             })
 
             Crossfade(
@@ -86,7 +94,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                                             user = output.user
                                                         )
                                                     )
-                                                    navController.navigate(route = if (mainState.value.user?.name?.isEmpty()!!) Screens.APPEARANCE else Screens.HOME)
+                                                    navController.navigate(route = if (output.user?.name?.isEmpty()!!) Screens.APPEARANCE else Screens.INGREDIENTS)
                                                     navController.clearBackStack(route = Screens.SPLASH)
                                                 }
                                             }
@@ -126,13 +134,42 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                     output = { output ->
                                         when (output) {
                                             ProfileViewModel.Output.Go -> {
-
+                                                navController.navigate(route = Screens.INGREDIENTS)
                                             }
                                         }
                                     }
                                 )
                                 Profile(
                                     profileViewModel = viewModel,
+                                    onEvent = viewModel::onEvent
+                                )
+                            }
+                            composable(route = Screens.INGREDIENTS) {
+
+                                val array: Array<String> = stringArrayResource(R.array.ingredients)
+                                val ingredients = mutableListOf<Ingredient>()
+                                var id = 0
+
+                                array.forEach { ingredient ->
+                                    ingredients.add(
+                                        Ingredient(id = id, name = ingredient),
+                                    )
+                                    id++
+                                }
+
+                                val viewModel = IntolerableIngredientsViewModel(
+                                    intolerableIngredients = ingredients,
+                                    userDatabase = userDatabase,
+                                    output = { output ->
+                                        when (output) {
+                                            is IntolerableIngredientsViewModel.Output.Go -> {
+                                            }
+                                        }
+                                    }
+                                )
+
+                                IntolerableIngredients(
+                                    intolerableIngredientsViewModel = viewModel,
                                     onEvent = viewModel::onEvent
                                 )
                             }

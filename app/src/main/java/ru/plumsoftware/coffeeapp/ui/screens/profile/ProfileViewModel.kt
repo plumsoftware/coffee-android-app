@@ -54,7 +54,7 @@ class ProfileViewModel(
                 viewModelScope.launch {
                     userDatabase!!.dao.upsert(
                         User(
-                            theme = userDatabase.dao.get()!!.theme,
+                            theme = userDatabase.dao.getUser()!!.theme,
                             name = event.name,
                             birthday = dateToLong(inputString = event.birthday)!!
                         )

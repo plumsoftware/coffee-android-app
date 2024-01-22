@@ -90,7 +90,7 @@ class AppearanceViewModel(
             is Label.SetupTheme -> {
                 viewModelScope.launch {
                     state.update {
-                        val useDark = userDatabase!!.dao.get()!!.theme
+                        val useDark = userDatabase!!.dao.getUser()!!.theme
                         it.copy(
                             useDark = useDark,
                             selected1 = !useDark,

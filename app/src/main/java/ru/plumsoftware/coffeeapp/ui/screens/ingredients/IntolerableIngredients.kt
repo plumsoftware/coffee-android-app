@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.ingredients
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
@@ -39,7 +42,13 @@ import ru.plumsoftware.data.models.Ingredient
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
+fun IntolerableIngredients(
+    intolerableIngredientsViewModel: IntolerableIngredientsViewModel,
+    onEvent: (IntolerableIngredientsViewModel.Event) -> Unit
+) {
+
+    val state = intolerableIngredientsViewModel.state.collectAsState().value
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
@@ -51,20 +60,29 @@ fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
                 )
         ) {
             item {
-                Spacer(modifier = Modifier.height(height = if (firstSetup) Padding.Items.extraLargeScreenTopPadding else Padding.Items.extraLargeScreenTopPadding_2))
+                Spacer(modifier = Modifier.height(height = if (state.firstSetup) Padding.Items.extraLargeScreenTopPadding else Padding.Items.extraLargeScreenTopPadding_2))
                 FlowRow(
                     modifier = Modifier
                         .wrapContentWidth()
                         .wrapContentHeight(),
                 ) {
-                    ingredients.forEach {
+                    for (i in 0..<state.list.size) {
                         val selected = remember {
                             mutableStateOf(false)
                         }
                         PrimaryChip(
                             selected = selected.value,
-                            text = it.name,
-                            onClick = { selected.value = !selected.value })
+                            text = state.list[i].name,
+                            onClick = {
+                                selected.value = !selected.value
+                                intolerableIngredientsViewModel.onEvent(
+                                    IntolerableIngredientsViewModel.Event.AddIntolerableIngredient(
+                                        selected = selected.value,
+                                        ingredient = state.list[i]
+                                    )
+                                )
+                            }
+                        )
                         Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
                     }
                 }
@@ -85,7 +103,7 @@ fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .background(
-                        if (firstSetup) Brush.verticalGradient(
+                        if (state.firstSetup) Brush.verticalGradient(
                             colors = listOf(
                                 MaterialTheme.colorScheme.background,
                                 MaterialTheme.colorScheme.background
@@ -100,7 +118,7 @@ fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
                     .padding(all = Padding.Items.largeScreenPadding)
             ) {
                 Text(
-                    text = if (firstSetup) stringResource(id = R.string.name_register) else stringResource(
+                    text = if (state.firstSetup) stringResource(id = R.string.name_register) else stringResource(
                         id = R.string.intolerable_ingredients
                     ),
                     style = MaterialTheme.typography.titleMedium,
@@ -112,7 +130,7 @@ fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
                 )
             }
 
-            if (firstSetup)
+            if (state.firstSetup)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -171,7 +189,15 @@ fun IntolerableIngredients(ingredients: List<Ingredient>, firstSetup: Boolean) {
                     .background(color = MaterialTheme.colorScheme.background)
                     .padding(all = Padding.Items.largeScreenPadding)
             ) {
-                PrimaryButton(onClick = {}, isActive = true)
+                PrimaryButton(
+                    onClick = {
+                        onEvent(IntolerableIngredientsViewModel.Event.SaveData)
+                        intolerableIngredientsViewModel.onOutput(
+                            IntolerableIngredientsViewModel.Output.Go
+                        )
+                    },
+                    isActive = true
+                )
             }
         }
     }
@@ -190,10 +216,18 @@ private fun IntolerableIngredientsPreview() {
         id++
     }
 
+    val l = IntolerableIngredientsViewModel(
+        userDatabase = null,
+        intolerableIngredients = ingredients.toList(),
+        output = {
+
+        }
+    )
+
     CoffeeAppTheme {
         IntolerableIngredients(
-            ingredients = ingredients.toList(),
-            firstSetup = true
+            intolerableIngredientsViewModel = l,
+            onEvent = l::onEvent
         )
     }
 }

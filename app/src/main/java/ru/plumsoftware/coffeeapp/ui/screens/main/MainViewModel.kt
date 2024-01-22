@@ -52,6 +52,7 @@ class MainViewModel(
                 viewModelScope.launch {
                     state.update {
                         it.copy(
+                            user = event.user,
                             useDark = event.user!!.theme,
                             targetColorScheme = if (event.user.theme) DarkColors else LightColors,
                             navColor = if (event.user.theme) DarkColors.background else LightColors.background,
