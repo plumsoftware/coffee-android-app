@@ -6,6 +6,8 @@ import ru.plumsoftware.domain.repositories.CoffeeRepository
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import ru.plumsoftware.domain.usecases.GetAllDrinksUseCase
 import ru.plumsoftware.domain.usecases.GetAllIngredientsUseCase
+import ru.plumsoftware.domain.usecases.GetTagsUseCase
+import ru.plumsoftware.domain.usecases.ToMatrixUseCase
 
 internal val domainModule = module {
     single<CoffeeRepository> { CoffeeRepositoryImpl(context = get()) }
@@ -13,7 +15,9 @@ internal val domainModule = module {
     single<CoffeeStorage> {
         CoffeeStorage(
             getAllIngredientsUseCase = GetAllIngredientsUseCase(coffeeRepository = get()),
-            getAllDrinksUseCase = GetAllDrinksUseCase(coffeeRepository = get())
+            getAllDrinksUseCase = GetAllDrinksUseCase(coffeeRepository = get()),
+            getTagsUseCase = GetTagsUseCase(coffeeRepository = get()),
+            toMatrixUseCase = ToMatrixUseCase(coffeeRepository = get())
         )
     }
 }

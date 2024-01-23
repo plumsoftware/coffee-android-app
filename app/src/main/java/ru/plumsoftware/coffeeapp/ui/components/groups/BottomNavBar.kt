@@ -28,11 +28,26 @@ import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
 @Composable
-fun BottomNavBar(list: List<BottomBarDto>) {
+fun BottomNavBar() {
 
     val selected = remember {
         mutableIntStateOf(0)
     }
+
+    val list = listOf<BottomBarDto>(
+        BottomBarDto(
+            name = stringResource(id = R.string.home),
+            painter = painterResource(id = R.drawable.coffee_cup_icon)
+        ),
+        BottomBarDto(
+            name = stringResource(id = R.string.liked),
+            painter = painterResource(id = R.drawable.liked)
+        ),
+        BottomBarDto(
+            name = stringResource(id = R.string.profile),
+            painter = painterResource(id = R.drawable.profile)
+        )
+    )
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -88,25 +103,7 @@ fun BottomNavBar(list: List<BottomBarDto>) {
 @Composable
 @Preview(showBackground = true)
 private fun BottomNavBarPreview() {
-
-    val list = listOf<BottomBarDto>(
-        BottomBarDto(
-            name = stringResource(id = R.string.home),
-            painter = painterResource(id = R.drawable.coffee_cup_icon)
-        ),
-        BottomBarDto(
-            name = stringResource(id = R.string.liked),
-            painter = painterResource(id = R.drawable.liked)
-        ),
-        BottomBarDto(
-            name = stringResource(id = R.string.profile),
-            painter = painterResource(id = R.drawable.profile)
-        )
-    )
-
     CoffeeAppTheme {
-        BottomNavBar(
-            list = list,
-        )
+        BottomNavBar()
     }
 }

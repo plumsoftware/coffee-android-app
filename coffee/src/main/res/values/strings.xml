@@ -3,6 +3,7 @@
     <!--    Coffee-->
     <array name="coffee_names">
         <item>Капучино</item>
+        <item>Латте</item>
     </array>
 
     <!--    Tag list-->

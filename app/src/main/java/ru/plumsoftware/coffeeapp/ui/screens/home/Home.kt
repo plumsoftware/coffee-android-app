@@ -3,7 +3,9 @@ package ru.plumsoftware.coffeeapp.ui.screens.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,11 +28,12 @@ import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
+import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.models.Coffee
 
 @Composable
-fun Home(coffee: Coffee, coffeeMatrix: List<List<Coffee>>, tagList: Array<String>) {
+fun Home(coffeeOfTheDay: Coffee, coffeeMatrix: List<List<Coffee>>) {
     LazyColumn(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,14 +73,18 @@ fun Home(coffee: Coffee, coffeeMatrix: List<List<Coffee>>, tagList: Array<String
                     .wrapContentHeight()
                     .padding(all = Padding.Screens.smallScreenPadding)
             ) {
-                CoffeeOfTheDayCard(coffee = coffee)
+                CoffeeOfTheDayCard(coffee = coffeeOfTheDay)
             }
         }
 
-        for (i in 1..7) {
+        for (i in coffeeMatrix.indices) {
             item {
-                HorizontalCoffeeList(type = tagList[i], coffeeList = coffeeMatrix[i - 1])
+                HorizontalCoffeeList(type = coffeeMatrix[i][i].type, coffeeList = coffeeMatrix[i])
             }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(height = Size.Divider.homeHeight))
         }
     }
 }
@@ -126,8 +133,6 @@ private fun HomePreview() {
         mockList,
     )
 
-    val tagList = stringArrayResource(id = C.array.tag_list)
-
     CoffeeAppTheme(useDarkTheme = false) {
         Surface(contentColor = MaterialTheme.colorScheme.background) {
 
@@ -145,9 +150,8 @@ private fun HomePreview() {
             }
 
             Home(
-                coffee = mockCoffeeModel,
-                coffeeMatrix = mockCoffeeMatrix,
-                tagList = tagList
+                coffeeOfTheDay = mockCoffeeModel,
+                coffeeMatrix = mockCoffeeMatrix
             )
         }
     }

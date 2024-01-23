@@ -54,6 +54,118 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
             )
         )
 
+//        region::Mock drinks
+        list.add(
+            Coffee(
+                id = 0,
+                name = coffeeNames[0],
+                ageRating = 14,
+                imageResId = C.drawable.cappuchino_classic,
+                type = context.getString(C.string.cappuccino),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[0],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[3],
+                    allIngredients[4],
+                )
+            )
+        )
+
+        list.add(
+            Coffee(
+                id = 0,
+                name = coffeeNames[0],
+                ageRating = 14,
+                imageResId = C.drawable.cappuchino_classic,
+                type = context.getString(C.string.cappuccino),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[0],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[3],
+                    allIngredients[4],
+                )
+            )
+        )
+
+        list.add(
+            Coffee(
+                id = 0,
+                name = coffeeNames[0],
+                ageRating = 14,
+                imageResId = C.drawable.cappuchino_classic,
+                type = context.getString(C.string.cappuccino),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[0],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[3],
+                    allIngredients[4],
+                )
+            )
+        )
+
+        list.add(
+            Coffee(
+                id = 0,
+                name = coffeeNames[0],
+                ageRating = 14,
+                imageResId = C.drawable.cappuchino_classic,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[0],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[3],
+                    allIngredients[4],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 0,
+                name = coffeeNames[0],
+                ageRating = 14,
+                imageResId = C.drawable.cappuchino_classic,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[0],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[3],
+                    allIngredients[4],
+                )
+            )
+        )
+
+//        endregion
+
         return list
+    }
+
+    override fun getTags(): List<String> {
+        return context.resources.getStringArray(C.array.tag_list).toList()
+    }
+
+    override fun toMatrix(): List<List<CoffeeModel>> {
+        val allDrinks = getAllDrinks()
+
+        return allDrinks.groupBy { it.type }.values.toList()
     }
 }

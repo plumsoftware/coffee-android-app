@@ -17,6 +17,8 @@ object Size {
 
     object Divider {
         val height = 4.dp
+
+        val homeHeight = 100.dp
     }
 
     object Coffee {
