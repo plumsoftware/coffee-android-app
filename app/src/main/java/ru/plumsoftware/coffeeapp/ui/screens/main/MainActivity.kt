@@ -40,23 +40,20 @@ import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.data.models.User
+import ru.plumsoftware.domain.storage.CoffeeStorage
 
 class MainActivity : ComponentActivity(), KoinComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val userDatabase by inject<UserDatabase>()
-
+        val coffeeStorage by inject<CoffeeStorage>()
         val mainViewModel = MainViewModel(userDatabase = userDatabase)
 
         setContent {
             val mainState = mainViewModel.state.collectAsState()
             val systemUiController = rememberSystemUiController()
             val navController = rememberNavController()
-
-            LaunchedEffect(key1 = Unit, block = {
-                Log.v("TAG", userDatabase.dao.getUser().toString())
-            })
 
             Crossfade(
                 targetState = mainState.value.targetColorScheme,
@@ -146,19 +143,14 @@ class MainActivity : ComponentActivity(), KoinComponent {
                             }
                             composable(route = Screens.INGREDIENTS) {
 
-                                val array: Array<String> = stringArrayResource(R.array.ingredients)
-                                val ingredients = mutableListOf<Ingredient>()
-                                var id = 0
-
-                                array.forEach { ingredient ->
-                                    ingredients.add(
-                                        Ingredient(id = id, name = ingredient),
-                                    )
-                                    id++
-                                }
-
                                 val viewModel = IntolerableIngredientsViewModel(
-                                    intolerableIngredients = ingredients,
+                                    intolerableIngredients = coffeeStorage.getI().map {
+                                        Ingredient(
+                                            id = it.id,
+                                            name = it.name,
+                                            iconId = it.iconId
+                                        )
+                                    },
                                     userDatabase = userDatabase,
                                     output = { output ->
                                         when (output) {

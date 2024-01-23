@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import ru.plumsoftware.coffeeapp.di.databaseModule
+import ru.plumsoftware.coffeeapp.di.domainModule
 
 class App : Application() {
 
@@ -20,7 +21,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             androidLogger(Level.DEBUG)
-            modules(listOf(databaseModule))
+            modules(listOf(databaseModule, domainModule))
         }
 
     }
