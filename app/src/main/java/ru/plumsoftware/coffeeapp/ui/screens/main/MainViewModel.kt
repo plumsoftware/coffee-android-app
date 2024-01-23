@@ -1,6 +1,7 @@
 package ru.plumsoftware.coffeeapp.ui.screens.main
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
+import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.User
 
@@ -61,6 +63,14 @@ class MainViewModel(
                     }
                 }
             }
+
+            is Event.ChangeStatusBarColor -> {
+                state.update {
+                    it.copy(
+                        statusBarColor = event.statusBarColor,
+                    )
+                }
+            }
         }
     }
 
@@ -70,5 +80,7 @@ class MainViewModel(
             Event()
 
         data class SetTheme(val user: User?) : Event()
+
+        data class ChangeStatusBarColor(val statusBarColor: Color) : Event()
     }
 }

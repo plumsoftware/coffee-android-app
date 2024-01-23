@@ -23,12 +23,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.dto.BottomBarDto
+import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(
+    onClick: (String) -> Unit
+) {
 
     val selected = remember {
         mutableIntStateOf(0)
@@ -37,14 +40,17 @@ fun BottomNavBar() {
     val list = listOf<BottomBarDto>(
         BottomBarDto(
             name = stringResource(id = R.string.home),
+            screens = Screens.HOME,
             painter = painterResource(id = R.drawable.coffee_cup_icon)
         ),
         BottomBarDto(
             name = stringResource(id = R.string.liked),
+            screens = Screens.LIKED,
             painter = painterResource(id = R.drawable.liked)
         ),
         BottomBarDto(
             name = stringResource(id = R.string.profile),
+            screens = Screens.SETTINGS,
             painter = painterResource(id = R.drawable.profile)
         )
     )
@@ -74,7 +80,7 @@ fun BottomNavBar() {
                 ),
                 onClick = {
                     selected.intValue = index
-                }
+                }.also { onClick(item.screens) }
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(
@@ -104,6 +110,10 @@ fun BottomNavBar() {
 @Preview(showBackground = true)
 private fun BottomNavBarPreview() {
     CoffeeAppTheme {
-        BottomNavBar()
+        BottomNavBar(
+            onClick = { it ->
+
+            }
+        )
     }
 }
