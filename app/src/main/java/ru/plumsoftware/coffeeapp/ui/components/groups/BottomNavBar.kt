@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.dto.BottomBarDto
@@ -80,7 +81,8 @@ fun BottomNavBar(
                 ),
                 onClick = {
                     selected.intValue = index
-                }.also { onClick(item.screens) }
+                    onClick(item.screens)
+                }
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(
@@ -98,7 +100,8 @@ fun BottomNavBar(
 
                     Text(
                         text = item.name,
-                        style = MaterialTheme.typography.labelSmall.copy(color = if (selected.intValue == index) MaterialTheme.colorScheme.primary else getExtendedColors().bottomIconColor)
+                        style = MaterialTheme.typography.labelSmall.copy(color = if (selected.intValue == index) MaterialTheme.colorScheme.primary else getExtendedColors().bottomIconColor),
+                        textAlign = TextAlign.Start
                     )
                 }
             }

@@ -29,4 +29,8 @@ object Size {
 
         val coffeeOfTheDayImageHeight = 180.dp
     }
+
+    object Elevation {
+        val coffeeOfTheDayCardElevation = 0.dp
+    }
 }

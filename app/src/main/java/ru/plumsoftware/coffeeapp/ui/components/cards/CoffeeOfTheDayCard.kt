@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -34,12 +35,11 @@ import ru.plumsoftware.data.models.Coffee
 @Composable
 fun CoffeeOfTheDayCard(coffee: Coffee) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(space = Padding.Items.smallScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(space = Padding.Items.mediumScreenPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(all = Padding.Screens.smallScreenPadding)
     ) {
         Text(
             text = stringResource(id = R.string.coffee_of_the_day),
@@ -56,6 +56,9 @@ fun CoffeeOfTheDayCard(coffee: Coffee) {
             shape = MaterialTheme.shapes.small,
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = Size.Elevation.coffeeOfTheDayCardElevation
             )
         ) {
             Box(
@@ -101,7 +104,7 @@ fun CoffeeOfTheDayCard(coffee: Coffee) {
                         modifier = Modifier
                             .fillMaxHeight()
                             .fillMaxWidth()
-                            .padding(all = Padding.Items.mediumScreenPadding)
+                            .padding(all = Padding.Items.largeScreenPadding)
                     ) {
                         Text(
                             text = coffee.name,

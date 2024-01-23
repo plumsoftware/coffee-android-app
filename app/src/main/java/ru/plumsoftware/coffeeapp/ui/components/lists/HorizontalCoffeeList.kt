@@ -29,7 +29,7 @@ import ru.plumsoftware.data.models.Coffee
 fun HorizontalCoffeeList(type: String, coffeeList: List<Coffee>) {
     Column(
         verticalArrangement = Arrangement.spacedBy(
-            space = Padding.Items.smallScreenPadding,
+            space = Padding.Items.mediumScreenPadding,
             alignment = Alignment.Top
         ),
         horizontalAlignment = Alignment.Start,
@@ -44,7 +44,7 @@ fun HorizontalCoffeeList(type: String, coffeeList: List<Coffee>) {
 
         Text(
             text = type,
-            style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onBackground)
+            style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground)
         )
 
         LazyRow {

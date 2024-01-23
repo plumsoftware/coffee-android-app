@@ -8,6 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,7 +99,7 @@ private fun Content(userDatabase: UserDatabase, coffeeStorage: CoffeeStorage) {
                 ) {
                 NavHost(
                     navController = navController,
-                    startDestination = Screens.HOME
+                    startDestination = Screens.SPLASH
                 ) {
                     composable(route = Screens.SPLASH) {
                         SplashScreen(
@@ -110,7 +113,7 @@ private fun Content(userDatabase: UserDatabase, coffeeStorage: CoffeeStorage) {
                                                     user = output.user
                                                 )
                                             )
-                                            navController.navigate(route = if (output.user?.name?.isEmpty()!!) Screens.APPEARANCE else Screens.HOME)
+                                            navController.navigate(route = if (output.user == null) Screens.APPEARANCE else Screens.HOME)
                                             navController.clearBackStack(route = Screens.SPLASH)
                                         }
                                     }
@@ -174,6 +177,7 @@ private fun Content(userDatabase: UserDatabase, coffeeStorage: CoffeeStorage) {
                             output = { output ->
                                 when (output) {
                                     is IntolerableIngredientsViewModel.Output.Go -> {
+                                        navController.navigate(route = Screens.HOME)
                                     }
                                 }
                             }
@@ -186,6 +190,7 @@ private fun Content(userDatabase: UserDatabase, coffeeStorage: CoffeeStorage) {
                     }
                     composable(route = Screens.HOME) {
                         Scaffold(
+                            modifier = Modifier.fillMaxSize(),
                             bottomBar = {
                                 BottomNavBar(
                                     onClick = {
