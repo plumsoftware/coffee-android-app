@@ -14,13 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
@@ -66,7 +66,8 @@ private fun Content(
     coffeeStorage: CoffeeStorage,
     sharedPreferencesStorage: SharedPreferencesStorage
 ) {
-    val mainViewModel = MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage)
+    val mainViewModel =
+        MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage, context = App.INSTANCE)
 
     val mainState = mainViewModel.state.collectAsState().value
     val systemUiController = rememberSystemUiController()
@@ -122,6 +123,7 @@ private fun Content(
                                                 useDark = output.useDark
                                             )
                                         )
+                                        mainViewModel.onEvent(MainViewModel.Event.Vibrate)
                                     }
 
                                     AppearanceViewModel.Output.Go -> {
@@ -192,7 +194,6 @@ private fun Content(
                                     statusBarColor = getExtendedColors().welcomeBackgroundColor
                                 )
                             )
-                            mainViewModel.onEvent(MainViewModel.Event.SetUser)
 
                             val matrix = coffeeStorage.toMatrix().map { list ->
                                 list.map { item ->
@@ -219,22 +220,5 @@ private fun Content(
                 }
             }
         }
-    }
-}
-
-private class Test : KoinComponent {
-
-    val userDatabase by inject<UserDatabase>()
-    val coffeeStorage by inject<CoffeeStorage>()
-    val sharedPreferencesStorage by inject<SharedPreferencesStorage>()
-
-    @Preview(showBackground = true, showSystemUi = true)
-    @Composable
-    fun TestContentPreview() {
-        Content(
-            userDatabase = userDatabase,
-            coffeeStorage = coffeeStorage,
-            sharedPreferencesStorage = sharedPreferencesStorage
-        )
     }
 }

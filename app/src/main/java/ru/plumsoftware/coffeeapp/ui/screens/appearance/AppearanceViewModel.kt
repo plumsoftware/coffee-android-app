@@ -2,14 +2,8 @@ package ru.plumsoftware.coffeeapp.ui.screens.appearance
 
 import androidx.compose.material3.ColorScheme
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
-import ru.plumsoftware.coffeeapp.ui.theme.LightColors
-import ru.plumsoftware.data.database.UserDatabase
-import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class AppearanceViewModel(

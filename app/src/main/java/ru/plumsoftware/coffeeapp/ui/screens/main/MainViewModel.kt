@@ -1,5 +1,9 @@
 package ru.plumsoftware.coffeeapp.ui.screens.main
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -10,18 +14,31 @@ import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
+
 class MainViewModel(
-    private val sharedPreferencesStorage: SharedPreferencesStorage
+    private val sharedPreferencesStorage: SharedPreferencesStorage,
+    @SuppressLint("StaticFieldLeak") val context: Context,
 ) : ViewModel() {
 
-    val state = MutableStateFlow(MainState(
-        user = User(
-            name = sharedPreferencesStorage.get().name,
-            birthday = sharedPreferencesStorage.get().birthday,
-            theme = sharedPreferencesStorage.get().theme,
-            isFirst = sharedPreferencesStorage.get().isFirst,
+    private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+    private fun vibrate() {
+        val vibrationEffect: VibrationEffect =
+            VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+        vibrator.cancel()
+        vibrator.vibrate(vibrationEffect)
+    }
+
+    val state = MutableStateFlow(
+        MainState(
+            user = User(
+                name = sharedPreferencesStorage.get().name,
+                birthday = sharedPreferencesStorage.get().birthday,
+                theme = sharedPreferencesStorage.get().theme,
+                isFirst = sharedPreferencesStorage.get().isFirst,
+            )
         )
-    ))
+    )
 
     fun onEvent(event: Event) {
         when (event) {
@@ -71,6 +88,10 @@ class MainViewModel(
                     }
                 }
             }
+
+            Event.Vibrate -> {
+                vibrate()
+            }
         }
     }
 
@@ -81,5 +102,6 @@ class MainViewModel(
         data class SetTheme(val user: User?) : Event()
         data class ChangeStatusBarColor(val statusBarColor: Color) : Event()
         data object SetUser : Event()
+        data object Vibrate : Event()
     }
 }

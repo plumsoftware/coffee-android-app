@@ -2,11 +2,9 @@ package ru.plumsoftware.coffeeapp.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
 
 class HomeViewModel(
-    private val userDatabase: UserDatabase,
     private val coffeeList: List<Coffee>,
     private val output: (Output) -> Unit
 ) :
