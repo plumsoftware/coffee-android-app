@@ -2,17 +2,14 @@ package ru.plumsoftware.coffeeapp.ui.screens.profile
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.coffeeapp.utilities.dateToLong
-import ru.plumsoftware.data.database.UserDatabase
-import ru.plumsoftware.data.models.User
+import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class ProfileViewModel(
-    private val userDatabase: UserDatabase?,
+    private val sharedPreferencesStorage: SharedPreferencesStorage?,
     private val output: (Output) -> Unit
 ) : ViewModel() {
 
@@ -46,20 +43,9 @@ class ProfileViewModel(
                 }
             }
 
-            is Event.ChangeAge -> {
-
-            }
-
             is Event.SaveData -> {
-                viewModelScope.launch {
-                    userDatabase!!.dao.upsert(
-                        User(
-                            theme = userDatabase.dao.getUser()!!.theme,
-                            name = event.name,
-                            birthday = dateToLong(inputString = event.birthday)!!
-                        )
-                    )
-                }
+                sharedPreferencesStorage!!.set(name = event.name)
+                sharedPreferencesStorage.set(birthday = dateToLong(inputString = event.birthday)!!)
             }
         }
     }
@@ -67,7 +53,6 @@ class ProfileViewModel(
     sealed class Event {
         data class ChangeName(val name: String) : Event()
         data class ChangeBirthday(val birthday: String) : Event()
-        data class ChangeAge(val birthday: String) : Event()
         data class SaveData(val birthday: String, val name: String) : Event()
     }
 

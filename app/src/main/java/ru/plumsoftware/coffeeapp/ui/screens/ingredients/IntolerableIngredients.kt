@@ -1,6 +1,5 @@
 package ru.plumsoftware.coffeeapp.ui.screens.ingredients
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
-import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
@@ -219,6 +217,7 @@ private fun IntolerableIngredientsPreview() {
     val l = IntolerableIngredientsViewModel(
         userDatabase = null,
         intolerableIngredients = ingredients.toList(),
+        sharedPreferencesStorage = null,
         output = {
 
         }

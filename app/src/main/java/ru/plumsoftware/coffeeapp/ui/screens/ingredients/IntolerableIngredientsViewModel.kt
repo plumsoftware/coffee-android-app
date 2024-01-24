@@ -7,10 +7,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Ingredient
+import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class IntolerableIngredientsViewModel(
     private val output: (Output) -> Unit,
     intolerableIngredients: List<Ingredient>,
+    private val sharedPreferencesStorage: SharedPreferencesStorage?,
     private val userDatabase: UserDatabase?
 ) : ViewModel() {
 
@@ -61,6 +63,7 @@ class IntolerableIngredientsViewModel(
                         )
                     }
                 }
+                sharedPreferencesStorage?.set(isFirst = 0)
             }
         }
     }

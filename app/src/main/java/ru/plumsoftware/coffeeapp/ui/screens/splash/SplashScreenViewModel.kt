@@ -2,23 +2,20 @@ package ru.plumsoftware.coffeeapp.ui.screens.splash
 
 import androidx.lifecycle.ViewModel
 import org.koin.core.component.KoinComponent
-import ru.plumsoftware.data.database.UserDatabase
-import ru.plumsoftware.data.models.User
+import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class SplashScreenViewModel(
     private val output: (Output) -> Unit,
-    private val userDatabase: UserDatabase?,
+    private val sharedPreferencesStorage: SharedPreferencesStorage?
 ) : ViewModel(), KoinComponent {
 
-    suspend fun getUser(): User? {
-        return userDatabase!!.dao.getUser()
-    }
+    fun getIsFirst(): Boolean = sharedPreferencesStorage!!.get().isFirst == 1
 
     fun onOutput(output: Output) {
         output(output)
     }
 
     sealed class Output {
-        data class GetUser(val user: User?) : Output()
+        data class GetUser(val isFirst: Boolean) : Output()
     }
 }

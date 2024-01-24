@@ -121,7 +121,7 @@ private fun ProfilePreview() {
         ) {
             Profile(
                 profileViewModel = ProfileViewModel(
-                    userDatabase = null,
+                    sharedPreferencesStorage = null,
                     {}
                 ),
                 onEvent = {}

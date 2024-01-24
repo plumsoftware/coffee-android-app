@@ -38,11 +38,7 @@ fun Appearance(
     appearanceViewModel: AppearanceViewModel,
     onEvent: (AppearanceViewModel.Event) -> Unit
 ) {
-    val state = appearanceViewModel.state.collectAsState()
-
-    LaunchedEffect(key1 = Unit, block = {
-        appearanceViewModel.onLabel(AppearanceViewModel.Label.SetupTheme)
-    })
+    val state = appearanceViewModel.state.collectAsState().value
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -82,11 +78,16 @@ fun Appearance(
                     .padding(all = Padding.Items.smallScreenPadding)
             ) {
                 ThemePreview(colorScheme = LightColors)
-                RButton(selected = state.value.selected1, onClick = {
+                RButton(selected = !state.useDark, onClick = {
                     onEvent(
-                        AppearanceViewModel.Event.ChangeRadioButton1(
-                            selected = true,
+                        AppearanceViewModel.Event.ChangeRadioButton(
                             useDark = false,
+                        )
+                    )
+                    appearanceViewModel.onOutput(
+                        AppearanceViewModel.Output.ChangeTheme(
+                            useDark = false,
+                            targetColorScheme = LightColors
                         )
                     )
                 })
@@ -101,11 +102,16 @@ fun Appearance(
                     .padding(all = Padding.Items.smallScreenPadding)
             ) {
                 ThemePreview(colorScheme = DarkColors)
-                RButton(selected = state.value.selected2, onClick = {
+                RButton(selected = state.useDark, onClick = {
                     onEvent(
-                        AppearanceViewModel.Event.ChangeRadioButton2(
-                            selected = true,
+                        AppearanceViewModel.Event.ChangeRadioButton(
                             useDark = true
+                        )
+                    )
+                    appearanceViewModel.onOutput(
+                        AppearanceViewModel.Output.ChangeTheme(
+                            useDark = true,
+                            targetColorScheme = DarkColors
                         )
                     )
                 })
@@ -141,8 +147,7 @@ private fun AppearancePreview() {
             Appearance(
 
                 appearanceViewModel = AppearanceViewModel(
-                    userDatabase = null,
-                    useDark = false,
+                    sharedPreferencesStorage = null,
                     {}
                 ),
                 onEvent = {

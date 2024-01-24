@@ -30,10 +30,11 @@ import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
+import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
 
 @Composable
-fun Home(coffeeOfTheDay: Coffee, coffeeMatrix: List<List<Coffee>>) {
+fun Home(coffeeOfTheDay: Coffee, coffeeMatrix: List<List<Coffee>>, name: String) {
     LazyColumn(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,7 +53,7 @@ fun Home(coffeeOfTheDay: Coffee, coffeeMatrix: List<List<Coffee>>) {
                     .padding(all = Padding.Screens.smallScreenPadding)
             ) {
                 Text(
-                    text = "${stringResource(id = R.string.welcome)} Слава",
+                    text = "${stringResource(id = R.string.welcome)} $name",
                     style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -151,7 +152,8 @@ private fun HomePreview() {
 
             Home(
                 coffeeOfTheDay = mockCoffeeModel,
-                coffeeMatrix = mockCoffeeMatrix
+                coffeeMatrix = mockCoffeeMatrix,
+                name = "null"
             )
         }
     }

@@ -3,42 +3,28 @@ package ru.plumsoftware.coffeeapp.ui.screens.main
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
-import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
-import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.User
+import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class MainViewModel(
-    private val userDatabase: UserDatabase
+    private val sharedPreferencesStorage: SharedPreferencesStorage
 ) : ViewModel() {
 
-    val state = MutableStateFlow(MainState())
+    val state = MutableStateFlow(MainState(
+        user = User(
+            name = sharedPreferencesStorage.get().name,
+            birthday = sharedPreferencesStorage.get().birthday,
+            theme = sharedPreferencesStorage.get().theme,
+            isFirst = sharedPreferencesStorage.get().isFirst,
+        )
+    ))
 
     fun onEvent(event: Event) {
         when (event) {
-            is Event.SetUser -> {
-                viewModelScope.launch {
-                    if (event.user == null) {
-                        userDatabase.dao.upsert(user = User())
-                    } else {
-                        state.update {
-                            it.copy(
-                                user = event.user,
-                                useDark = event.user.theme,
-                                targetColorScheme = if (event.user.theme) DarkColors else LightColors,
-                                navColor = if (event.user.theme) DarkColors.background else LightColors.background,
-                                statusBarColor = if (event.user.theme) DarkColors.background else LightColors.background
-                            )
-                        }
-                    }
-                }
-            }
-
             is Event.ChangeColorScheme -> {
                 state.update {
                     it.copy(
@@ -51,16 +37,14 @@ class MainViewModel(
             }
 
             is Event.SetTheme -> {
-                viewModelScope.launch {
-                    state.update {
-                        it.copy(
-                            user = event.user,
-                            useDark = event.user!!.theme,
-                            targetColorScheme = if (event.user.theme) DarkColors else LightColors,
-                            navColor = if (event.user.theme) DarkColors.background else LightColors.background,
-                            statusBarColor = if (event.user.theme) DarkColors.background else LightColors.background
-                        )
-                    }
+                state.update {
+                    it.copy(
+                        user = event.user!!,
+                        useDark = event.user.theme,
+                        targetColorScheme = if (event.user.theme) DarkColors else LightColors,
+                        navColor = if (event.user.theme) DarkColors.background else LightColors.background,
+                        statusBarColor = if (event.user.theme) DarkColors.background else LightColors.background
+                    )
                 }
             }
 
@@ -71,16 +55,31 @@ class MainViewModel(
                     )
                 }
             }
+
+            Event.SetUser -> {
+                val userModel = sharedPreferencesStorage.get()
+                with(userModel) {
+                    state.update {
+                        it.copy(
+                            user = User(
+                                name = name,
+                                birthday = birthday,
+                                theme = theme,
+                                isFirst = isFirst
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 
     sealed class Event {
-        data class SetUser(val user: User?) : Event()
         data class ChangeColorScheme(val targetColorScheme: ColorScheme, val useDark: Boolean) :
             Event()
 
         data class SetTheme(val user: User?) : Event()
-
         data class ChangeStatusBarColor(val statusBarColor: Color) : Event()
+        data object SetUser : Event()
     }
 }

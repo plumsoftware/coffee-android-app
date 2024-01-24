@@ -2,10 +2,10 @@ package ru.plumsoftware.domain.storage
 
 import ru.plumsoftware.domain.models.CoffeeModel
 import ru.plumsoftware.domain.models.IngredientModel
-import ru.plumsoftware.domain.usecases.GetAllDrinksUseCase
-import ru.plumsoftware.domain.usecases.GetAllIngredientsUseCase
-import ru.plumsoftware.domain.usecases.GetTagsUseCase
-import ru.plumsoftware.domain.usecases.ToMatrixUseCase
+import ru.plumsoftware.domain.usecases.drinks.GetAllDrinksUseCase
+import ru.plumsoftware.domain.usecases.drinks.GetAllIngredientsUseCase
+import ru.plumsoftware.domain.usecases.drinks.GetTagsUseCase
+import ru.plumsoftware.domain.usecases.drinks.ToMatrixUseCase
 
 class CoffeeStorage(
     private val getAllIngredientsUseCase: GetAllIngredientsUseCase,

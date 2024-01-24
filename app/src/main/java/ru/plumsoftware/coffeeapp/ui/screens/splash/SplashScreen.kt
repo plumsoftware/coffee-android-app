@@ -33,9 +33,8 @@ import ru.plumsoftware.coffeeapp.ui.theme.getSplashScreenTitleFont
 @Composable
 fun SplashScreen(splashScreenViewModel: SplashScreenViewModel) {
 
-    LaunchedEffect(key1 = Unit, block = {
-        splashScreenViewModel.onOutput(output = SplashScreenViewModel.Output.GetUser(user = splashScreenViewModel.getUser()))
-    })
+    splashScreenViewModel.onOutput(output = SplashScreenViewModel.Output.GetUser(isFirst = splashScreenViewModel.getIsFirst()))
+
 
     val annotatedText = buildAnnotatedString {
         withStyle(
@@ -90,7 +89,7 @@ fun SplashScreen(splashScreenViewModel: SplashScreenViewModel) {
 private fun SplashScreenPreview() {
     SplashScreen(
         splashScreenViewModel = SplashScreenViewModel(
-            userDatabase = null,
+            sharedPreferencesStorage = null,
             output = {})
     )
 }

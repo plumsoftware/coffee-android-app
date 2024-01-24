@@ -10,18 +10,16 @@ import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.User
+import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class AppearanceViewModel(
-    private val userDatabase: UserDatabase?,
-    useDark: Boolean,
+    private val sharedPreferencesStorage: SharedPreferencesStorage?,
     private val output: (Output) -> Unit
 ) : ViewModel() {
 
     val state = MutableStateFlow(
         AppearanceState(
-            useDark = useDark,
-            selected1 = !useDark,
-            selected2 = useDark
+            useDark = sharedPreferencesStorage!!.get().theme
         )
     )
 
@@ -31,81 +29,15 @@ class AppearanceViewModel(
 
     fun onEvent(event: Event) {
         when (event) {
-            is Event.ChangeRadioButton1 -> {
+            is Event.ChangeRadioButton -> {
                 state.update {
                     it.copy(
-                        selected1 = event.selected,
-                        selected2 = false,
+                        useDark = event.useDark
                     )
                 }
-                onLabel(Label.ChangeThemeToLight)
-            }
-
-            is Event.ChangeRadioButton2 -> {
-                state.update {
-                    it.copy(
-                        selected1 = false,
-                        selected2 = event.selected,
-                    )
-                }
-                onLabel(Label.ChangeThemeToDark)
+                sharedPreferencesStorage!!.set(theme = event.useDark)
             }
         }
-    }
-
-    fun onLabel(label: Label) {
-        when (label) {
-            Label.ChangeThemeToLight -> {
-                viewModelScope.launch {
-                    onOutput(
-                        Output.ChangeTheme(
-                            useDark = false,
-                            targetColorScheme = LightColors
-                        )
-                    )
-                    userDatabase!!.dao.upsert(
-                        user = User(
-                            theme = false
-                        )
-                    )
-                }
-            }
-
-            Label.ChangeThemeToDark -> {
-                viewModelScope.launch {
-                    onOutput(
-                        Output.ChangeTheme(
-                            useDark = true,
-                            targetColorScheme = DarkColors
-                        )
-                    )
-                    userDatabase!!.dao.upsert(
-                        user = User(
-                            theme = true
-                        )
-                    )
-                }
-            }
-
-            is Label.SetupTheme -> {
-                viewModelScope.launch {
-                    state.update {
-                        val useDark = userDatabase!!.dao.getUser()!!.theme
-                        it.copy(
-                            useDark = useDark,
-                            selected1 = !useDark,
-                            selected2 = useDark
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    sealed class Label {
-        data object ChangeThemeToLight : Label()
-        data object ChangeThemeToDark : Label()
-        data object SetupTheme : Label()
     }
 
     sealed class Output {
@@ -114,7 +46,6 @@ class AppearanceViewModel(
     }
 
     sealed class Event {
-        data class ChangeRadioButton1(val useDark: Boolean, val selected: Boolean) : Event()
-        data class ChangeRadioButton2(val useDark: Boolean, val selected: Boolean) : Event()
+        data class ChangeRadioButton(val useDark: Boolean) : Event()
     }
 }
