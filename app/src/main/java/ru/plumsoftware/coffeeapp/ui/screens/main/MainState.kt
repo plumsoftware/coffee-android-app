@@ -14,5 +14,5 @@ data class MainState(
     val name: String = "",
     val navColor: Color = targetColorScheme.background,
     val statusBarColor: Color = targetColorScheme.background,
-    val currentScreen: Screens.Screens = Screens.Screens.Home
+    val currentScreen: Screens.Screens = Screens.Screens.Home,
 )

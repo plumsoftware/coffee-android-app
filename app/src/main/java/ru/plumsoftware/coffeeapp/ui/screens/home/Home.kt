@@ -16,13 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.plumsoftware.coffeeapp.R
-import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeOfTheDayCard
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
@@ -30,7 +28,6 @@ import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
-import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
 
 @Composable
