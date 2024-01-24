@@ -45,6 +45,8 @@
     <string name="appearance">Оформление</string>
 
     <!--    Home-->
-    <string name="welcome">Доброе утро,</string>
+    <string name="welcome_morning">Доброе утро,</string>
+    <string name="welcome_day">Добрый день,</string>
+    <string name="welcome_evening">Добрый вечер,</string>
     <string name="coffee_of_the_day">Кофе дня</string>
 </resources>

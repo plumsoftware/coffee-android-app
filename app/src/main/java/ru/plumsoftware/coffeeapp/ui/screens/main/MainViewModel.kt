@@ -2,6 +2,7 @@ package ru.plumsoftware.coffeeapp.ui.screens.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.compose.material3.ColorScheme
@@ -23,14 +24,19 @@ class MainViewModel(
     private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     private fun vibrate() {
-        val vibrationEffect: VibrationEffect =
-            VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
-        vibrator.cancel()
-        vibrator.vibrate(vibrationEffect)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val vibrationEffect: VibrationEffect =
+                VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+            vibrator.cancel()
+            vibrator.vibrate(vibrationEffect)
+        } else {
+            return
+        }
     }
 
     val state = MutableStateFlow(
         MainState(
+            name = sharedPreferencesStorage.get().name,
             user = User(
                 name = sharedPreferencesStorage.get().name,
                 birthday = sharedPreferencesStorage.get().birthday,
@@ -78,6 +84,7 @@ class MainViewModel(
                 with(userModel) {
                     state.update {
                         it.copy(
+                            name = sharedPreferencesStorage.get().name,
                             user = User(
                                 name = name,
                                 birthday = birthday,

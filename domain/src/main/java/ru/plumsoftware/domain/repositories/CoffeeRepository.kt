@@ -7,6 +7,7 @@ interface CoffeeRepository {
     fun getAllIngredients(): List<IngredientModel>
     fun getAllDrinks(): List<CoffeeModel>
     fun getTags(): List<String>
+    fun getRandomDrink() : CoffeeModel
 
     fun toMatrix(): List<List<CoffeeModel>>
 }

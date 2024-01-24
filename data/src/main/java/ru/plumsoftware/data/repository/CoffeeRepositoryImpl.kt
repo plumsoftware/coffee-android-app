@@ -163,6 +163,8 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         return context.resources.getStringArray(C.array.tag_list).toList()
     }
 
+    override fun getRandomDrink(): CoffeeModel = getAllDrinks().random()
+
     override fun toMatrix(): List<List<CoffeeModel>> {
         val allDrinks = getAllDrinks()
 

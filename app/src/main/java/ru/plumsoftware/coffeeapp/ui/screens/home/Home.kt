@@ -1,19 +1,23 @@
 package ru.plumsoftware.coffeeapp.ui.screens.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,6 +27,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeOfTheDayCard
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
+import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
@@ -30,59 +35,76 @@ import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.models.Coffee
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Home(coffeeOfTheDay: Coffee, coffeeMatrix: List<List<Coffee>>, name: String) {
-    LazyColumn(
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
+
+    val state = homeViewModel.state.collectAsState().value
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            BottomNavBar(
+                onClick = {
+                    homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = it))
+                }
+            )
+        }
     ) {
-        item {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(space = Padding.Items.largeScreenPadding),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(color = getExtendedColors().welcomeBackgroundColor)
-                    .padding(all = Padding.Screens.smallScreenPadding)
-            ) {
-                Text(
-                    text = "${stringResource(id = R.string.welcome)} $name",
-                    style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
+        LazyColumn(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(space = Padding.Items.largeScreenPadding),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    textAlign = TextAlign.Start
-                )
+                        .wrapContentHeight()
+                        .background(color = getExtendedColors().welcomeBackgroundColor)
+                        .padding(all = Padding.Screens.smallScreenPadding)
+                ) {
+                    Text(
+                        text = "${stringResource(id = state.welcome)} ${state.name}",
+                        style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        textAlign = TextAlign.Start
+                    )
 
-                SearchField()
+                    SearchField()
+                }
             }
-        }
 
-        item {
-            Column(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(all = Padding.Screens.smallScreenPadding)
-            ) {
-                CoffeeOfTheDayCard(coffee = coffeeOfTheDay)
-            }
-        }
-
-        for (i in coffeeMatrix.indices) {
             item {
-                HorizontalCoffeeList(type = coffeeMatrix[i][i].type, coffeeList = coffeeMatrix[i])
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(all = Padding.Screens.smallScreenPadding)
+                ) {
+                    CoffeeOfTheDayCard(coffee = state.coffeeOfTheDay)
+                }
             }
-        }
 
-        item {
-            Spacer(modifier = Modifier.height(height = Size.Divider.homeHeight))
+            for (i in state.coffeeMatrix.indices) {
+                item {
+                    HorizontalCoffeeList(
+                        type = state.coffeeMatrix[i][i].type,
+                        coffeeList = state.coffeeMatrix[i]
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(height = Size.Divider.homeHeight))
+            }
         }
     }
 }
@@ -147,10 +169,15 @@ private fun HomePreview() {
                 )
             }
 
+            val homeViewModel = HomeViewModel(
+                coffeeStorage = null,
+                name = "Test",
+                {}
+            )
+
             Home(
-                coffeeOfTheDay = mockCoffeeModel,
-                coffeeMatrix = mockCoffeeMatrix,
-                name = "null"
+                onEvent = homeViewModel::onEvent,
+                homeViewModel = homeViewModel
             )
         }
     }
