@@ -58,7 +58,11 @@ fun TextField(
             ),
             trailingIcon = trailingIcon,
             onValueChange = {
-                if (it.length <= DATE_LENGTH) {
+                if (mask != VisualTransformation.None) {
+                    if (it.length <= DATE_LENGTH) {
+                        onValueChange(it)
+                    }
+                } else {
                     onValueChange(it)
                 }
             },

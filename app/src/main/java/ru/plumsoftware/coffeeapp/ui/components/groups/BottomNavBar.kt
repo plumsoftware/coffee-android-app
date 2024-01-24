@@ -31,11 +31,12 @@ import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
 @Composable
 fun BottomNavBar(
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    selected: Int = 0
 ) {
 
     val selected = remember {
-        mutableIntStateOf(0)
+        mutableIntStateOf(selected)
     }
 
     val list = listOf<BottomBarDto>(

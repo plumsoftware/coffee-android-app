@@ -29,6 +29,8 @@ import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredients
 import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredientsViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
 import ru.plumsoftware.coffeeapp.ui.screens.profile.ProfileViewModel
+import ru.plumsoftware.coffeeapp.ui.screens.settings.Settings
+import ru.plumsoftware.coffeeapp.ui.screens.settings.SettingsViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
@@ -206,6 +208,35 @@ private fun Content(
                     }
                     composable(route = Screens.SETTINGS) {
 
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeStatusBarColor(
+                                statusBarColor = MaterialTheme.colorScheme.background
+                            )
+                        )
+
+                        val viewModel = SettingsViewModel(
+                            sharedPreferencesStorage = sharedPreferencesStorage,
+                            user = mainState.user,
+                            output = { output ->
+                                when (output) {
+                                    is SettingsViewModel.Output.ChangeTheme -> {
+                                        mainViewModel.onEvent(
+                                            MainViewModel.Event.ChangeColorScheme(
+                                                targetColorScheme = output.targetColorScheme,
+                                                useDark = output.useDark
+                                            )
+                                        )
+                                        mainViewModel.onEvent(MainViewModel.Event.Vibrate)
+                                    }
+
+                                    is SettingsViewModel.Output.NavigateTo -> {
+                                        navController.navigate(route = output.route)
+                                    }
+                                }
+                            }
+                        )
+
+                        Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                     }
                 }
             }
