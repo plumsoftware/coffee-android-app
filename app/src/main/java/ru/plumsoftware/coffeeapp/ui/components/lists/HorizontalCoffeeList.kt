@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -36,10 +35,6 @@ fun HorizontalCoffeeList(type: String, coffeeList: List<Coffee>) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(
-                horizontal = Padding.Items.largeScreenPadding,
-                vertical = Padding.Items.mediumScreenPadding
-            )
     ) {
 
         Text(

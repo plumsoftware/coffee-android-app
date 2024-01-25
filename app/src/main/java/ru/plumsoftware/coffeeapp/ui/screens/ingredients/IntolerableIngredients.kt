@@ -216,7 +216,7 @@ private fun IntolerableIngredientsPreview() {
 
     val l = IntolerableIngredientsViewModel(
         userDatabase = null,
-        intolerableIngredients = ingredients.toList(),
+        ingredients = ingredients.toList(),
         sharedPreferencesStorage = null,
         output = {
 

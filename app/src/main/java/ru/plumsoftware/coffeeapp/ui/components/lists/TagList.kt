@@ -23,8 +23,7 @@ import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
 @Composable
-fun TagList() {
-    val tagArray = stringArrayResource(id = C.array.tag_list)
+fun TagList(onClick: (Int, String) -> Unit, tagArray: Array<String>) {
     var selectedTagIndex by remember {
         mutableIntStateOf(0)
     }
@@ -40,6 +39,7 @@ fun TagList() {
                     text = item,
                     onClick = {
                         selectedTagIndex = index
+                        onClick(index, item)
                     }
                 )
                 Spacer(modifier = Modifier.width(width = Padding.Items.mediumScreenPadding))
@@ -53,7 +53,13 @@ fun TagList() {
 private fun TagListPreview() {
     CoffeeAppTheme(useDarkTheme = true) {
         Surface(contentColor = MaterialTheme.colorScheme.background) {
-            TagList()
+            val tagArray = stringArrayResource(id = C.array.tag_list)
+            TagList(
+                tagArray = tagArray,
+                onClick = { _, _ ->
+
+                }
+            )
         }
     }
 }

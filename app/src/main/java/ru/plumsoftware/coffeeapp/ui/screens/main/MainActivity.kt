@@ -29,6 +29,8 @@ import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredients
 import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredientsViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.profile.Profile
 import ru.plumsoftware.coffeeapp.ui.screens.profile.ProfileViewModel
+import ru.plumsoftware.coffeeapp.ui.screens.search.Search
+import ru.plumsoftware.coffeeapp.ui.screens.search.SearchViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.settings.Settings
 import ru.plumsoftware.coffeeapp.ui.screens.settings.SettingsViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
@@ -36,6 +38,7 @@ import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.database.UserDatabase
+import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
@@ -155,7 +158,7 @@ private fun Content(
                     }
                     composable(route = Screens.INGREDIENTS) {
                         val viewModel = IntolerableIngredientsViewModel(
-                            intolerableIngredients = coffeeStorage.getI().map {
+                            ingredients = coffeeStorage.getI().map {
                                 Ingredient(
                                     id = it.id,
                                     name = it.name,
@@ -237,6 +240,18 @@ private fun Content(
                         )
 
                         Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
+                    }
+                    composable(route = Screens.SEARCH) {
+                        val viewModel = SearchViewModel(
+                            coffeeList = coffeeStorage.getD().map { it as Coffee },
+                            tag = "",
+                            output = { output ->
+                                when (output) {
+                                    else -> {}
+                                }
+                            }
+                        )
+                        Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                     }
                 }
             }

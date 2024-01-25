@@ -11,7 +11,7 @@ import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class IntolerableIngredientsViewModel(
     private val output: (Output) -> Unit,
-    intolerableIngredients: List<Ingredient>,
+    ingredients: List<Ingredient>,
     private val sharedPreferencesStorage: SharedPreferencesStorage?,
     private val userDatabase: UserDatabase?
 ) : ViewModel() {
@@ -20,15 +20,12 @@ class IntolerableIngredientsViewModel(
     private val list: MutableList<Ingredient> = mutableListOf()
 
     init {
-        viewModelScope.launch {
-            isFirst = userDatabase?.dao?.getUser()?.isFirst == 1
-        }
-
+        isFirst = sharedPreferencesStorage!!.get().isFirst == 1
     }
 
     val state = MutableStateFlow(
         IntolerableIngredientsState(
-            list = intolerableIngredients.toMutableList(),
+            list = ingredients.toMutableList(),
             firstSetup = isFirst,
             intolerableIngredients = list
         )

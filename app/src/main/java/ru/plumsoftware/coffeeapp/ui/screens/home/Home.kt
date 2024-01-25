@@ -29,6 +29,7 @@ import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeOfTheDayCard
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
+import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
@@ -76,7 +77,11 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                         textAlign = TextAlign.Start
                     )
 
-                    SearchField()
+                    SearchField(
+                        onClick = {
+                            homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.SEARCH))
+                        }
+                    )
                 }
             }
 
@@ -95,10 +100,22 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
 
             for (i in state.coffeeMatrix.indices) {
                 item {
-                    HorizontalCoffeeList(
-                        type = state.coffeeMatrix[i][i].type,
-                        coffeeList = state.coffeeMatrix[i]
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(
+                                horizontal = Padding.Screens.smallScreenPadding,
+                                vertical = Padding.Screens.extraSmallScreenPadding
+                            )
+                    ) {
+                        HorizontalCoffeeList(
+                            type = state.coffeeMatrix[i][i].type,
+                            coffeeList = state.coffeeMatrix[i]
+                        )
+                    }
                 }
             }
 
