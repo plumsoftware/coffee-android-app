@@ -1,15 +1,20 @@
 package ru.plumsoftware.coffeeapp.ui.screens.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
+import ru.plumsoftware.data.models.LikedDrink
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Calendar
 
 class HomeViewModel(
     coffeeStorage: CoffeeStorage?,
     name: String,
+    private val userDatabase: UserDatabase?,
     private val output: (Output) -> Unit
 ) :
     ViewModel() {
@@ -55,15 +60,28 @@ class HomeViewModel(
 
     fun onEvent(event: Event) {
         when (event) {
-            else -> {}
+            is Event.Like -> {
+                viewModelScope.launch {
+                    with(event.coffee) {
+                        if (isLiked == 1)
+                            userDatabase!!.dao.deleteById(drinkId = id)
+                        else
+                            userDatabase!!.dao.upsert(
+                                LikedDrink(
+                                    drinkId = event.coffee.id
+                                )
+                            )
+                    }
+                }
+            }
         }
     }
 
     sealed class Output {
-        data class NavigateTo (val route: String) : Output()
+        data class NavigateTo(val route: String) : Output()
     }
 
     sealed class Event {
-
+        data class Like(val coffee: Coffee) : Event()
     }
 }

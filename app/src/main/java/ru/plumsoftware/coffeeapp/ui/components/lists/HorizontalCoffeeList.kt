@@ -25,7 +25,12 @@ import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.data.models.Coffee
 
 @Composable
-fun HorizontalCoffeeList(type: String, coffeeList: List<Coffee>) {
+fun HorizontalCoffeeList(
+    type: String,
+    coffeeList: List<Coffee>,
+    onLikeClick: (Coffee) -> Unit = {}
+) {
+
     Column(
         verticalArrangement = Arrangement.spacedBy(
             space = Padding.Items.mediumScreenPadding,
@@ -48,7 +53,8 @@ fun HorizontalCoffeeList(type: String, coffeeList: List<Coffee>) {
                     CoffeeCard(
                         coffee = item,
                         modifier = Modifier
-                            .width(width = Size.Coffee.coffeeCardWidth)
+                            .width(width = Size.Coffee.coffeeCardWidth),
+                        onLikeClick = onLikeClick
                     )
                 }
                 Spacer(modifier = Modifier.width(width = Padding.Items.mediumScreenPadding))

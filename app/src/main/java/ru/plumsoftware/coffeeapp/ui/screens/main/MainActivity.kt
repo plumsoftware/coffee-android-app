@@ -191,6 +191,7 @@ private fun Content(
 
                         val viewModel = HomeViewModel(
                             coffeeStorage = coffeeStorage,
+                            userDatabase = userDatabase,
                             name = mainState.name,
                             output = { output ->
                                 when (output) {

@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,13 +47,20 @@ import ru.plumsoftware.data.models.Coffee
 @Composable
 fun CoffeeCard(
     coffee: Coffee,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onLikeClick: (Coffee) -> Unit = {}
 ) {
 
-    Card(
+    val isLiked = remember {
+        mutableIntStateOf(coffee.isLiked)
+    }
+
+    Button(
+        onClick = {},
         modifier = modifier,
+        contentPadding = PaddingValues(all = 0.dp),
         shape = MaterialTheme.shapes.small,
-        colors = CardDefaults.cardColors(
+        colors = ButtonDefaults.buttonColors(
             containerColor = getExtendedColors().cardBackground,
         ),
     ) {
@@ -62,7 +73,6 @@ fun CoffeeCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(all = Padding.Items.mediumScreenPadding)
         ) {
             Card(
                 modifier = Modifier.wrapContentSize(),
@@ -93,6 +103,7 @@ fun CoffeeCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .padding(horizontal = Padding.Items.mediumScreenPadding)
             ) {
                 Text(
                     text = coffee.name, style = MaterialTheme.typography.labelMedium.copy(
@@ -126,9 +137,14 @@ fun CoffeeCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
+                    .padding(
+                        start = Padding.Items.mediumScreenPadding,
+                        end = Padding.Items.mediumScreenPadding,
+                        bottom = Padding.Items.mediumScreenPadding
+                    )
             ) {
                 Icon(
-                    painter = if (coffee.isLiked == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
+                    painter = if (isLiked.intValue == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
                         id = R.drawable.liked
                     ),
                     contentDescription = stringResource(
@@ -140,7 +156,12 @@ fun CoffeeCard(
                         .clip(MaterialTheme.shapes.medium)
                         .background(color = Color.Transparent)
                         .clickable(
-                            onClick = { TODO() },
+                            onClick = {
+                                onLikeClick(coffee)
+
+                                if (isLiked.intValue == 1) isLiked.intValue =
+                                    0 else isLiked.intValue = 1
+                            },
                             enabled = true,
                             interactionSource = remember { MutableInteractionSource() },
                             indication = rememberRipple(

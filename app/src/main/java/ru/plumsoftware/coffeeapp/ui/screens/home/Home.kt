@@ -113,7 +113,10 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                     ) {
                         HorizontalCoffeeList(
                             type = state.coffeeMatrix[i][i].type,
-                            coffeeList = state.coffeeMatrix[i]
+                            coffeeList = state.coffeeMatrix[i],
+                            onLikeClick = {
+                                onEvent(HomeViewModel.Event.Like(coffee = it))
+                            }
                         )
                     }
                 }
@@ -189,7 +192,8 @@ private fun HomePreview() {
             val homeViewModel = HomeViewModel(
                 coffeeStorage = null,
                 name = "Test",
-                {}
+                output = {},
+                userDatabase = null
             )
 
             Home(
