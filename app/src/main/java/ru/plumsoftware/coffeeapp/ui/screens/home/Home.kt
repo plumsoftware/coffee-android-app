@@ -78,7 +78,7 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                     )
 
                     SearchField(
-                        onClick = {
+                        onFocusChange = {
                             homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.SEARCH))
                         }
                     )

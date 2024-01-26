@@ -20,6 +20,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,15 +31,29 @@ import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
 @Composable
-fun SearchField(onClick: () -> Unit = {}) {
-    var text by remember { mutableStateOf("") }
+fun SearchField(
+    query: String = "",
+    onClick: (String) -> Unit = {},
+    onValueChange: (String) -> Unit = {},
+    onFocusChange: () -> Unit = {},
+    clearQuery: () -> Unit = {},
+    focusRequester: FocusRequester = FocusRequester()
+) {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .onFocusChanged {
+                if (it.isFocused) {
+                    onFocusChange()
+                } else {
+                    // not focused
+                }
+            }
+            .focusRequester(focusRequester),
         textStyle = MaterialTheme.typography.labelMedium,
         shape = MaterialTheme.shapes.medium,
-        value = text,
+        value = query,
         placeholder = {
             Text(
                 text = stringResource(id = R.string.search),
@@ -61,9 +78,11 @@ fun SearchField(onClick: () -> Unit = {}) {
             )
         },
         trailingIcon = {
-            if (text.isNotEmpty())
+            if (query.isNotEmpty())
                 IconButton(
-                    onClick = { text = "" }
+                    onClick = {
+                        clearQuery()
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Close,
@@ -72,12 +91,12 @@ fun SearchField(onClick: () -> Unit = {}) {
                 }
         },
         onValueChange = {
-            text = it
+            onValueChange(it)
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
             onSearch = {
-                onClick()
+                onClick(query)
             }
         )
     )
