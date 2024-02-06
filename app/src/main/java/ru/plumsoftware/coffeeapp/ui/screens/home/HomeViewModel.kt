@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
@@ -16,14 +17,24 @@ class HomeViewModel(
     name: String,
     private val userDatabase: UserDatabase?,
     private val output: (Output) -> Unit
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    private val coffeeMatrix = coffeeStorage!!.toMatrix().map { list ->
-        list.map { item ->
-            item as Coffee
+    private val list: MutableList<Coffee> = coffeeStorage!!.getD().map { it as Coffee }.toMutableList()
+
+    init {
+        runBlocking {
+            val likedDrinks = userDatabase!!.dao.get()
+            likedDrinks.forEachIndexed { _, likedDrink ->
+                list.forEachIndexed { index, coffee ->
+                    if (likedDrink.drinkId == coffee.id)
+                        list[index] = coffee.copy(isLiked = 1)
+                }
+            }
         }
     }
+
+    private val coffeeMatrix = list.groupBy { it.type }.values.toList()
+
     private val coffeeOfTheDay = coffeeStorage!!.getR() as Coffee
 
     private fun welcome(): Int {
@@ -65,12 +76,13 @@ class HomeViewModel(
                     with(event.coffee) {
                         if (isLiked == 1)
                             userDatabase!!.dao.deleteById(drinkId = id)
-                        else
+                        else {
                             userDatabase!!.dao.upsert(
                                 LikedDrink(
                                     drinkId = event.coffee.id
                                 )
                             )
+                        }
                     }
                 }
             }

@@ -101,8 +101,8 @@ private fun Content(
                     startDestination = Screens.SPLASH
                 ) {
                     composable(route = Screens.SPLASH) {
-                        SplashScreen(
-                            splashScreenViewModel = SplashScreenViewModel(
+                        val viewModel =
+                            SplashScreenViewModel(
                                 sharedPreferencesStorage = sharedPreferencesStorage,
                                 output = { output ->
                                     when (output) {
@@ -112,69 +112,78 @@ private fun Content(
                                     }
                                 }
                             )
+
+                        SplashScreen(
+                            splashScreenViewModel = viewModel
                         )
                     }
                     composable(route = Screens.APPEARANCE) {
-                        val viewModel = AppearanceViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    is AppearanceViewModel.Output.ChangeTheme -> {
-                                        mainViewModel.onEvent(
-                                            MainViewModel.Event.ChangeColorScheme(
-                                                targetColorScheme = output.targetColorScheme,
-                                                useDark = output.useDark
+                        val viewModel =
+                            AppearanceViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        is AppearanceViewModel.Output.ChangeTheme -> {
+                                            mainViewModel.onEvent(
+                                                MainViewModel.Event.ChangeColorScheme(
+                                                    targetColorScheme = output.targetColorScheme,
+                                                    useDark = output.useDark
+                                                )
                                             )
-                                        )
-                                        mainViewModel.onEvent(MainViewModel.Event.Vibrate)
-                                    }
+                                            mainViewModel.onEvent(MainViewModel.Event.Vibrate)
+                                        }
 
-                                    AppearanceViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.NAME)
+                                        AppearanceViewModel.Output.Go -> {
+                                            navController.navigate(route = Screens.NAME)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+
                         Appearance(
                             appearanceViewModel = viewModel,
                             onEvent = viewModel::onEvent
                         )
                     }
                     composable(route = Screens.NAME) {
-                        val viewModel = ProfileViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    ProfileViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.INGREDIENTS)
+                        val viewModel =
+                            ProfileViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        ProfileViewModel.Output.Go -> {
+                                            navController.navigate(route = Screens.INGREDIENTS)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+
                         Profile(
                             profileViewModel = viewModel,
                             onEvent = viewModel::onEvent
                         )
                     }
                     composable(route = Screens.INGREDIENTS) {
-                        val viewModel = IntolerableIngredientsViewModel(
-                            ingredients = coffeeStorage.getI().map {
-                                Ingredient(
-                                    id = it.id,
-                                    name = it.name,
-                                    iconId = it.iconId
-                                )
-                            },
-                            userDatabase = userDatabase,
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    is IntolerableIngredientsViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.HOME)
+                        val viewModel =
+                            IntolerableIngredientsViewModel(
+                                ingredients = coffeeStorage.getI().map {
+                                    Ingredient(
+                                        id = it.id,
+                                        name = it.name,
+                                        iconId = it.iconId
+                                    )
+                                },
+                                userDatabase = userDatabase,
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        is IntolerableIngredientsViewModel.Output.Go -> {
+                                            navController.navigate(route = Screens.HOME)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+
 
                         IntolerableIngredients(
                             intolerableIngredientsViewModel = viewModel,
@@ -189,18 +198,20 @@ private fun Content(
                             )
                         )
 
-                        val viewModel = HomeViewModel(
-                            coffeeStorage = coffeeStorage,
-                            userDatabase = userDatabase,
-                            name = mainState.name,
-                            output = { output ->
-                                when (output) {
-                                    is HomeViewModel.Output.NavigateTo -> {
-                                        navController.navigate(route = output.route)
+                        val viewModel =
+                            HomeViewModel(
+                                coffeeStorage = coffeeStorage,
+                                userDatabase = userDatabase,
+                                name = mainState.name,
+                                output = { output ->
+                                    when (output) {
+                                        is HomeViewModel.Output.NavigateTo -> {
+                                            navController.navigate(route = output.route)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+
 
                         Home(
                             homeViewModel = viewModel,
@@ -218,40 +229,44 @@ private fun Content(
                             )
                         )
 
-                        val viewModel = SettingsViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            user = mainState.user,
-                            output = { output ->
-                                when (output) {
-                                    is SettingsViewModel.Output.ChangeTheme -> {
-                                        mainViewModel.onEvent(
-                                            MainViewModel.Event.ChangeColorScheme(
-                                                targetColorScheme = output.targetColorScheme,
-                                                useDark = output.useDark
+                        val viewModel =
+                            SettingsViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                user = mainState.user,
+                                output = { output ->
+                                    when (output) {
+                                        is SettingsViewModel.Output.ChangeTheme -> {
+                                            mainViewModel.onEvent(
+                                                MainViewModel.Event.ChangeColorScheme(
+                                                    targetColorScheme = output.targetColorScheme,
+                                                    useDark = output.useDark
+                                                )
                                             )
-                                        )
-                                        mainViewModel.onEvent(MainViewModel.Event.Vibrate)
-                                    }
+                                            mainViewModel.onEvent(MainViewModel.Event.Vibrate)
+                                        }
 
-                                    is SettingsViewModel.Output.NavigateTo -> {
-                                        navController.navigate(route = output.route)
+                                        is SettingsViewModel.Output.NavigateTo -> {
+                                            navController.navigate(route = output.route)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+
 
                         Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                     }
                     composable(route = Screens.SEARCH) {
-                        val viewModel = SearchViewModel(
-                            coffeeList = coffeeStorage.getD().map { it as Coffee },
-                            tag = "",
-                            output = { output ->
-                                when (output) {
-                                    else -> {}
+                        val viewModel =
+                            SearchViewModel(
+                                coffeeList = coffeeStorage.getD().map { it as Coffee },
+                                tag = "",
+                                output = { output ->
+                                    when (output) {
+                                        else -> {}
+                                    }
                                 }
-                            }
-                        )
+                            )
+
                         Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                     }
                 }

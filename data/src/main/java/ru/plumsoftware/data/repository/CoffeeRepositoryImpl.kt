@@ -57,7 +57,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 //        region::Mock drinks
         list.add(
             Coffee(
-                id = 0,
+                id = 1,
                 name = coffeeNames[0],
                 ageRating = 14,
                 imageResId = C.drawable.cappuchino_classic,
@@ -77,7 +77,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 
         list.add(
             Coffee(
-                id = 0,
+                id = 2,
                 name = coffeeNames[0],
                 ageRating = 14,
                 imageResId = C.drawable.cappuchino_classic,
@@ -97,7 +97,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 
         list.add(
             Coffee(
-                id = 0,
+                id = 3,
                 name = coffeeNames[0],
                 ageRating = 14,
                 imageResId = C.drawable.cappuchino_classic,
@@ -117,7 +117,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 
         list.add(
             Coffee(
-                id = 0,
+                id = 4,
                 name = coffeeNames[0],
                 ageRating = 14,
                 imageResId = C.drawable.cappuchino_classic,
@@ -136,7 +136,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         )
         list.add(
             Coffee(
-                id = 0,
+                id = 5,
                 name = coffeeNames[0],
                 ageRating = 14,
                 imageResId = C.drawable.cappuchino_classic,
@@ -165,9 +165,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 
     override fun getRandomDrink(): CoffeeModel = getAllDrinks().random()
 
-    override fun toMatrix(): List<List<CoffeeModel>> {
-        val allDrinks = getAllDrinks()
-
-        return allDrinks.groupBy { it.type }.values.toList()
+    override fun toMatrix(list: List<CoffeeModel>): List<List<CoffeeModel>> {
+        return list.groupBy { it.type }.values.toList()
     }
 }

@@ -150,7 +150,7 @@ fun CoffeeCard(
                     contentDescription = stringResource(
                         id = R.string.coffee_like_content_description
                     ),
-                    tint = if (coffee.isLiked == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
+                    tint = if (isLiked.intValue == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .size(size = Size.Coffee.likeSize)
                         .clip(MaterialTheme.shapes.medium)

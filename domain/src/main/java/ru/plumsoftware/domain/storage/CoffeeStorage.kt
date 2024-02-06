@@ -27,5 +27,5 @@ class CoffeeStorage(
 
     fun getT(): List<String> = getTagsUseCase.execute()
 
-    fun toMatrix() = toMatrixUseCase.execute()
+    fun toMatrix(list: List<CoffeeModel>) = toMatrixUseCase.execute(list = list)
 }

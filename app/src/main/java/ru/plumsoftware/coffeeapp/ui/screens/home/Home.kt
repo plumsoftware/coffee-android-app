@@ -43,6 +43,32 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
     val state = homeViewModel.state.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = Padding.Items.largeScreenPadding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(color = getExtendedColors().welcomeBackgroundColor)
+                    .padding(all = Padding.Screens.smallScreenPadding)
+            ) {
+                Text(
+                    text = "${stringResource(id = state.welcome)} ${state.name}",
+                    style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    textAlign = TextAlign.Start
+                )
+
+                SearchField(
+                    onFocusChange = {
+                        homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.SEARCH))
+                    }
+                )
+            }
+        },
         bottomBar = {
             BottomNavBar(
                 onClick = {
@@ -58,32 +84,6 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(space = Padding.Items.largeScreenPadding),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .background(color = getExtendedColors().welcomeBackgroundColor)
-                        .padding(all = Padding.Screens.smallScreenPadding)
-                ) {
-                    Text(
-                        text = "${stringResource(id = state.welcome)} ${state.name}",
-                        style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        textAlign = TextAlign.Start
-                    )
-
-                    SearchField(
-                        onFocusChange = {
-                            homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.SEARCH))
-                        }
-                    )
-                }
-            }
 
             item {
                 Column(

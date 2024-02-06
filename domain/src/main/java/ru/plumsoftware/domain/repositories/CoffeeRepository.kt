@@ -9,5 +9,5 @@ interface CoffeeRepository {
     fun getTags(): List<String>
     fun getRandomDrink() : CoffeeModel
 
-    fun toMatrix(): List<List<CoffeeModel>>
+    fun toMatrix(list: List<CoffeeModel>): List<List<CoffeeModel>>
 }
