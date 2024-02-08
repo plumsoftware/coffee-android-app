@@ -51,7 +51,7 @@ fun BottomNavBar(
             painter = painterResource(id = R.drawable.liked)
         ),
         BottomBarDto(
-            name = stringResource(id = R.string.profile),
+            name = stringResource(id = R.string.settings),
             screens = Screens.SETTINGS,
             painter = painterResource(id = R.drawable.profile)
         )

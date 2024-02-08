@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp.ui.screens.profile
+package ru.plumsoftware.coffeeapp.ui.screens.name
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
@@ -8,12 +8,12 @@ import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.coffeeapp.utilities.dateToLong
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
-class ProfileViewModel(
+class NameViewModel(
     private val sharedPreferencesStorage: SharedPreferencesStorage?,
     private val output: (Output) -> Unit
 ) : ViewModel() {
 
-    val state = MutableStateFlow(ProfileState())
+    val state = MutableStateFlow(NameState())
 
     fun onOutput(o: Output) {
         output(o)

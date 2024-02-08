@@ -1,43 +1,49 @@
-package ru.plumsoftware.coffeeapp.ui.screens.search
+package ru.plumsoftware.coffeeapp.ui.screens.liked
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringArrayResource
-import kotlinx.coroutines.delay
+import androidx.compose.ui.tooling.preview.Preview
+import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
+import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.components.lists.TagList
+import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 
-@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) -> Unit) {
+fun Liked(
+    likedViewModel: LikedViewModel,
+    onEvent: (LikedViewModel.Event) -> Unit,
+    onOutput: (LikedViewModel.Output) -> Unit
+) {
 
-    val state = searchViewModel.state.collectAsState().value
-    val keyboard = LocalSoftwareKeyboardController.current
+    val state = likedViewModel.state.collectAsState().value
 
-    LaunchedEffect(key1 = Unit, block = {
-        onEvent(SearchViewModel.Event.ChangeFocus)
-        delay(100)
-        keyboard?.show()
-    })
-
-    Surface(color = MaterialTheme.colorScheme.background) {
+    Scaffold(
+        bottomBar = {
+            BottomNavBar(
+                selected = 1,
+                onClick = {
+                    onOutput(LikedViewModel.Output.NavigateTo(route = it))
+                }
+            )
+        }
+    ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(
                 space = Padding.Items.mediumScreenPadding,
@@ -52,23 +58,22 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
                 SearchField(
                     query = state.query,
                     onValueChange = {
-                        onEvent(SearchViewModel.Event.ChangeQuery(value = it))
+                        onEvent(LikedViewModel.Event.ChangeQuery(value = it))
                     },
                     onClick = {
-                        onEvent(SearchViewModel.Event.Search)
+                        onEvent(LikedViewModel.Event.Search)
                     },
                     clearQuery = {
-                        onEvent(SearchViewModel.Event.ClearQuery)
-                    },
-                    focusRequester = state.focusRequester
+                        onEvent(LikedViewModel.Event.ClearQuery)
+                    }
                 )
             }
 
             item {
                 TagList(
-                    tagArray = stringArrayResource(id = state.tagArray),
+                    tagArray = stringArrayResource(id = C.array.tag_list),
                     onClick = { index, item ->
-                        onEvent(SearchViewModel.Event.ChangeTag(index = index, item = item))
+                        onEvent(LikedViewModel.Event.ChangeTag(index = index, item = item))
                     }
                 )
             }
@@ -76,7 +81,7 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
             for (i in state.coffeeMatrix.indices) {
                 item {
                     HorizontalCoffeeList(
-                        type = state.coffeeMatrix[i][i].type,
+                        type = state.coffeeMatrix[i][0].type,
                         coffeeList = state.coffeeMatrix[i]
                     )
                 }
@@ -85,6 +90,22 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
             item {
                 Spacer(modifier = Modifier.height(height = Size.Divider.homeHeight))
             }
+        }
+    }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+private fun LikedPreview() {
+    CoffeeAppTheme {
+        Surface {
+
+            val viewModel = LikedViewModel(
+                coffeeStorage = null,
+                userDatabase = null,
+                output = {}
+            )
+            Liked(likedViewModel = viewModel, viewModel::onEvent, viewModel::onOutput)
         }
     }
 }

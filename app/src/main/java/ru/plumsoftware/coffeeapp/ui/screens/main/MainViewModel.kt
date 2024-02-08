@@ -1,7 +1,5 @@
 package ru.plumsoftware.coffeeapp.ui.screens.main
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -15,13 +13,11 @@ import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
-
 class MainViewModel(
     private val sharedPreferencesStorage: SharedPreferencesStorage,
-    @SuppressLint("StaticFieldLeak") val context: Context,
+    private val vibrator: Vibrator,
+    private val output: (MainViewModel.Output) -> Unit,
 ) : ViewModel() {
-
-    private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     private fun vibrate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -100,6 +96,14 @@ class MainViewModel(
                 vibrate()
             }
         }
+    }
+
+    fun onOutput(o: Output) {
+        output(o)
+    }
+
+    sealed class Output {
+        data class NavigateTo(val route: String) : Output()
     }
 
     sealed class Event {

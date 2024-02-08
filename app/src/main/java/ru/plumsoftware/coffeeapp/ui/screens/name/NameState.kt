@@ -1,6 +1,6 @@
-package ru.plumsoftware.coffeeapp.ui.screens.profile
+package ru.plumsoftware.coffeeapp.ui.screens.name
 
-data class ProfileState(
+data class NameState(
     val name: String = "",
     val birthday: String = "",
     val age: String = "",

@@ -1,4 +1,4 @@
-package ru.plumsoftware.coffeeapp.ui.screens.profile
+package ru.plumsoftware.coffeeapp.ui.screens.name
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -33,11 +33,11 @@ import ru.plumsoftware.coffeeapp.ui.theme.Padding
 @SuppressLint("SimpleDateFormat")
 @Composable
 fun Profile(
-    profileViewModel: ProfileViewModel,
-    onEvent: (ProfileViewModel.Event) -> Unit
+    nameViewModel: NameViewModel,
+    onEvent: (NameViewModel.Event) -> Unit
 ) {
 
-    val state = profileViewModel.state.collectAsState().value
+    val state = nameViewModel.state.collectAsState().value
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -67,7 +67,7 @@ fun Profile(
                 text = state.name,
                 label = stringResource(id = R.string.name_placeholder),
                 onValueChange = {
-                    onEvent(ProfileViewModel.Event.ChangeName(name = it))
+                    onEvent(NameViewModel.Event.ChangeName(name = it))
                 }
             )
             TextField(
@@ -75,7 +75,7 @@ fun Profile(
                 label = stringResource(id = R.string.age_placeholder),
                 mask = MaskVisualTransformation(DateDefaults.DATE_MASK),
                 onValueChange = {
-                    onEvent(ProfileViewModel.Event.ChangeBirthday(birthday = it))
+                    onEvent(NameViewModel.Event.ChangeBirthday(birthday = it))
                 },
                 leadingIcon = {
                     Icon(
@@ -100,12 +100,12 @@ fun Profile(
             Dividers(selected = 1)
             PrimaryButton(onClick = {
                 onEvent(
-                    ProfileViewModel.Event.SaveData(
+                    NameViewModel.Event.SaveData(
                         birthday = state.birthday,
                         name = state.name
                     )
                 )
-                profileViewModel.onOutput(ProfileViewModel.Output.Go)
+                nameViewModel.onOutput(NameViewModel.Output.Go)
             }, isActive = state.isActive)
         }
     }
@@ -120,7 +120,7 @@ private fun ProfilePreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             Profile(
-                profileViewModel = ProfileViewModel(
+                nameViewModel = NameViewModel(
                     sharedPreferencesStorage = null,
                     {}
                 ),

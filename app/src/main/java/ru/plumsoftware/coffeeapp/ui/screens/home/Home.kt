@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -20,6 +26,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,14 +60,22 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                     .background(color = getExtendedColors().welcomeBackgroundColor)
                     .padding(all = Padding.Screens.smallScreenPadding)
             ) {
-                Text(
-                    text = "${stringResource(id = state.welcome)} ${state.name}",
-                    style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    textAlign = TextAlign.Start
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = Padding.Items.mediumScreenPadding,
+                        alignment = Alignment.End
+                    )
+                ) {
+                    Text(
+                        text = "${stringResource(id = state.welcome)} ${state.name}",
+                        style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        textAlign = TextAlign.Start
+                    )
+                }
 
                 SearchField(
                     onFocusChange = {

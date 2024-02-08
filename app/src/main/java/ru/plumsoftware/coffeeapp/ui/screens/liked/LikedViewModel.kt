@@ -1,18 +1,22 @@
-package ru.plumsoftware.coffeeapp.ui.screens.search
+package ru.plumsoftware.coffeeapp.ui.screens.liked
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
+import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
+import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Locale
-import ru.plumsoftware.coffee.R as C
 
-class SearchViewModel(
-    private val coffeeList: List<Coffee>,
-    tag: String,
+class LikedViewModel(
+    coffeeStorage: CoffeeStorage?,
+    private val userDatabase: UserDatabase?,
     private val output: (Output) -> Unit
 ) : ViewModel() {
 
+    private val coffeeList: MutableList<Coffee> =
+        coffeeStorage!!.getD().map { it as Coffee }.toMutableList()
     private var coffeeMatrix: List<List<Coffee>>
 
     private fun filterCoffeeList(tag: String): List<Coffee> {
@@ -28,24 +32,26 @@ class SearchViewModel(
     }
 
     init {
-        coffeeMatrix = filterCoffeeList(tag = tag).groupBy { it.type }.values.toList()
+
+        runBlocking {
+            val likedDrinks = userDatabase!!.dao.get()
+            likedDrinks.forEachIndexed { _, likedDrink ->
+                coffeeList.forEachIndexed { index, coffee ->
+                    if (likedDrink.drinkId == coffee.id)
+                        coffeeList[index] = coffee.copy(isLiked = 1)
+                }
+            }
+
+            coffeeList.removeIf { it.isLiked == 0 }
+            coffeeMatrix = filterCoffeeList(tag = "").groupBy { it.type }.values.toList()
+        }
     }
 
-    val state = MutableStateFlow(
-        SearchState(
-            coffeeMatrix = coffeeMatrix,
-            tagArray = C.array.tag_list,
-            tag = tag
-        )
-    )
-
-    fun onOutput(o: Output) {
-        output(o)
-    }
+    val state = MutableStateFlow(LikedState(coffeeMatrix = coffeeMatrix, tag = ""))
 
     fun onEvent(event: Event) {
         when (event) {
-            is Event.ChangeQuery -> {
+            is LikedViewModel.Event.ChangeQuery -> {
                 state.update {
                     it.copy(
                         query = event.value
@@ -53,7 +59,7 @@ class SearchViewModel(
                 }
             }
 
-            is Event.ChangeTag -> {
+            is LikedViewModel.Event.ChangeTag -> {
                 val tag = if (event.index != 0) {
                     event.item
                 } else {
@@ -68,7 +74,7 @@ class SearchViewModel(
                 }
             }
 
-            Event.Search -> {
+            LikedViewModel.Event.Search -> {
                 state.update {
                     it.copy(
                         coffeeMatrix = combineFilterList(
@@ -79,11 +85,7 @@ class SearchViewModel(
                 }
             }
 
-            Event.ChangeFocus -> {
-                state.value.focusRequester.requestFocus()
-            }
-
-            Event.ClearQuery -> {
+            LikedViewModel.Event.ClearQuery -> {
                 state.update {
                     it.copy(
                         query = ""
@@ -93,15 +95,18 @@ class SearchViewModel(
         }
     }
 
-    sealed class Output {
+    fun onOutput(o: Output) {
+        output(o)
+    }
 
+    sealed class Output {
+        data class NavigateTo(val route: String) : Output()
     }
 
     sealed class Event {
         data class ChangeQuery(val value: String) : Event()
         data class ChangeTag(val index: Int, val item: String) : Event()
         data object Search : Event()
-        data object ChangeFocus : Event()
         data object ClearQuery : Event()
     }
 }

@@ -31,17 +31,17 @@
     <string name="coffee_image__content_description">Изображение кофейного напитка</string>
     <string name="coffee_like_content_description">Кнопка для добавления напитка в избранное</string>
     <string name="coffee_of_the_day_content_description">изображение кофе дня</string>
+    <string name="profile_icon_content_description">Иконка профиля</string>
 
     <!--    Bottom nav bar-->
     <string name="home">Главная</string>
     <string name="liked">Избранное</string>
-    <string name="profile">Профиль</string>
+    <string name="settings">Настройки</string>
 
     <!--    Search-->
     <string name="search">Поиск</string>
 
     <!--    Settings-->
-    <string name="settings">Профиль</string>
     <string name="appearance">Оформление</string>
 
     <!--    Home-->
