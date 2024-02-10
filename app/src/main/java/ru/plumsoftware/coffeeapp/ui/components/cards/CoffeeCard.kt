@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.plumsoftware.coffeeapp.R
@@ -116,8 +117,16 @@ fun CoffeeCard(
                     textAlign = TextAlign.Start
                 )
 
+                val stringBuilder: StringBuilder = java.lang.StringBuilder("")
+                coffee.ingredients.reversed().forEachIndexed() { index, ingredient ->
+                    stringBuilder
+                        .append(ingredient.name)
+                        .append(" • ")
+                }
+
                 Text(
-                    text = coffee.name, style = MaterialTheme.typography.labelSmall.copy(
+                    text = stringBuilder.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(
                         color = MaterialTheme.colorScheme.onBackground.copy(
                             alpha = 0.3f
                         )
@@ -125,7 +134,9 @@ fun CoffeeCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    textAlign = TextAlign.Start
+                    textAlign = TextAlign.Start,
+                    softWrap = false,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
