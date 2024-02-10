@@ -34,6 +34,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 
         val list = mutableListOf<CoffeeModel>()
 
+//        region::Cappuchino
         list.add(
             Coffee(
                 id = 0,
@@ -48,113 +49,108 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[3],
                     allIngredients[4],
                 )
             )
         )
-
-//        region::Mock drinks
         list.add(
             Coffee(
                 id = 1,
-                name = coffeeNames[0],
+                name = coffeeNames[1],
                 ageRating = 14,
-                imageResId = C.drawable.cappuchino_classic,
+                imageResId = C.drawable.cappuchino_chocolate,
                 type = context.getString(C.string.cappuccino),
                 isLiked = 0,
                 roastingLevel = roastingLevels[1],
-                description = descriptions[0],
+                description = descriptions[1],
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[3],
                     allIngredients[4],
+                    allIngredients[9],
                 )
             )
         )
-
         list.add(
             Coffee(
                 id = 2,
-                name = coffeeNames[0],
+                name = coffeeNames[2],
                 ageRating = 14,
-                imageResId = C.drawable.cappuchino_classic,
+                imageResId = C.drawable.cappuchino_caramel,
                 type = context.getString(C.string.cappuccino),
                 isLiked = 0,
                 roastingLevel = roastingLevels[1],
-                description = descriptions[0],
+                description = descriptions[2],
                 ingredients = listOf(
                     allIngredients[0],
-                    allIngredients[1],
                     allIngredients[2],
-                    allIngredients[3],
                     allIngredients[4],
+                    allIngredients[15],
                 )
             )
         )
-
         list.add(
             Coffee(
                 id = 3,
-                name = coffeeNames[0],
+                name = coffeeNames[3],
                 ageRating = 14,
-                imageResId = C.drawable.cappuchino_classic,
+                imageResId = C.drawable.cappuchino_forest_nut,
                 type = context.getString(C.string.cappuccino),
                 isLiked = 0,
                 roastingLevel = roastingLevels[1],
-                description = descriptions[0],
+                description = descriptions[3],
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[3],
-                    allIngredients[4],
+                    allIngredients[6],
+                    allIngredients[61],
                 )
             )
         )
-
         list.add(
             Coffee(
                 id = 4,
-                name = coffeeNames[0],
+                name = coffeeNames[4],
                 ageRating = 14,
-                imageResId = C.drawable.cappuchino_classic,
-                type = context.getString(C.string.latte),
+                imageResId = C.drawable.cappuchino_vanila,
+                type = context.getString(C.string.cappuccino),
                 isLiked = 0,
                 roastingLevel = roastingLevels[1],
-                description = descriptions[0],
+                description = descriptions[4],
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[3],
-                    allIngredients[4],
+                    allIngredients[6],
+                    allIngredients[61],
                 )
             )
         )
         list.add(
             Coffee(
                 id = 5,
-                name = coffeeNames[0],
+                name = coffeeNames[5],
                 ageRating = 14,
-                imageResId = C.drawable.cappuchino_classic,
-                type = context.getString(C.string.latte),
+                imageResId = C.drawable.cappuchino_french,
+                type = context.getString(C.string.cappuccino),
                 isLiked = 0,
                 roastingLevel = roastingLevels[1],
-                description = descriptions[0],
+                description = descriptions[5],
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
-                    allIngredients[2],
-                    allIngredients[3],
-                    allIngredients[4],
+                    allIngredients[6],
+                    allIngredients[21],
+                    allIngredients[9]
                 )
             )
         )
-
 //        endregion
+
+
+
 
         return list
     }

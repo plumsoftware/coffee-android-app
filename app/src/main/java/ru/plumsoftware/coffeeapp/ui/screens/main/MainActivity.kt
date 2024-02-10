@@ -166,7 +166,7 @@ private fun Content(
                             output = { output ->
                                 when (output) {
                                     NameViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.INGREDIENTS)
+                                        navController.navigate(route = Screens.HOME)
                                     }
                                 }
                             }
