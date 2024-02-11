@@ -27,6 +27,8 @@ object Size {
 
         val likeSize = DpSize(width = 13.dp, height = 15.dp)
 
+        val tagSize = DpSize(width = 20.dp, height = 20.dp)
+
         val coffeeOfTheDayImageHeight = 180.dp
 
         val fullCoffeeImageHeight = 300.dp

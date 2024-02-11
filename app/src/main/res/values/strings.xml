@@ -33,6 +33,7 @@
     <string name="coffee_of_the_day_content_description">изображение кофе дня</string>
     <string name="profile_icon_content_description">Иконка профиля</string>
     <string name="back_icon_content_description">Кнопка назад</string>
+    <string name="tag_content_description">Тэг</string>
 
     <!--    Bottom nav bar-->
     <string name="home">Главная</string>
@@ -47,6 +48,8 @@
 
     <!--    Coffee-->
     <string name="drink">Напиток</string>
+    <string name="with_milk">С молоком</string>
+    <string name="without_milk">Без молока</string>
 
     <!--    Home-->
     <string name="welcome_morning">Доброе утро,</string>
