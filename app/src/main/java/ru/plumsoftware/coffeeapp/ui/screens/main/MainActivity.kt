@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -233,6 +234,13 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.LIKED) {
+
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = MaterialTheme.colorScheme.background
+                        )
+                    )
+
                     val viewModel = LikedViewModel(
                         coffeeStorage = coffeeStorage,
                         userDatabase = userDatabase,
@@ -287,6 +295,13 @@ private fun Content(
                     Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.SEARCH) {
+
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = MaterialTheme.colorScheme.background
+                        )
+                    )
+
                     val viewModel =
                         SearchViewModel(
                             coffeeList = coffeeStorage.getD().map { it as Coffee },
@@ -299,6 +314,13 @@ private fun Content(
                         )
 
                     Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
+                }
+                composable(route = Screens.COFFEE_DRINK) {
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = Color.Transparent
+                        )
+                    )
                 }
             }
         }

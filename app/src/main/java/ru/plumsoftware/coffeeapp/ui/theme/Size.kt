@@ -28,6 +28,8 @@ object Size {
         val likeSize = DpSize(width = 13.dp, height = 15.dp)
 
         val coffeeOfTheDayImageHeight = 180.dp
+
+        val fullCoffeeImageHeight = 300.dp
     }
 
     object Elevation {

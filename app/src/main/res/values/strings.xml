@@ -32,6 +32,7 @@
     <string name="coffee_like_content_description">Кнопка для добавления напитка в избранное</string>
     <string name="coffee_of_the_day_content_description">изображение кофе дня</string>
     <string name="profile_icon_content_description">Иконка профиля</string>
+    <string name="back_icon_content_description">Кнопка назад</string>
 
     <!--    Bottom nav bar-->
     <string name="home">Главная</string>
@@ -43,6 +44,9 @@
 
     <!--    Settings-->
     <string name="appearance">Оформление</string>
+
+    <!--    Coffee-->
+    <string name="drink">Напиток</string>
 
     <!--    Home-->
     <string name="welcome_morning">Доброе утро,</string>
