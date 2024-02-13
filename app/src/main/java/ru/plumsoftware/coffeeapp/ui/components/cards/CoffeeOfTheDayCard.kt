@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +31,7 @@ import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
+import ru.plumsoftware.coffeeapp.utilities.AllergyIngredient
 import ru.plumsoftware.data.models.Coffee
 
 @Composable
@@ -110,12 +112,26 @@ fun CoffeeOfTheDayCard(coffee: Coffee, onCoffeeClick: (Coffee) -> Unit) {
                             .fillMaxWidth()
                             .padding(all = Padding.Items.largeScreenPadding)
                     ) {
+
+                        val listOfAllergy: MutableList<String> = mutableListOf()
+
+                        AllergyIngredient.getAllergyIngredients(LocalContext.current)
+                            .forEachIndexed { _, allergyIngredient ->
+                                listOfAllergy.add(
+                                    if (coffee.ingredients.contains(allergyIngredient.ingredient)) {
+                                        stringResource(id = allergyIngredient.with)
+                                    } else {
+                                        stringResource(id = allergyIngredient.without)
+                                    }
+                                )
+                            }
+
                         Text(
                             text = coffee.name,
                             style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.onBackground)
                         )
                         Text(
-                            text = stringResource(id = R.string.taste),
+                            text = listOfAllergy.random(),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                             )

@@ -64,12 +64,6 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
         mutableIntStateOf(state.selectedCoffee.isLiked)
     }
 
-    val milk = Ingredient(
-        id = 1,
-        name = LocalContext.current.resources.getStringArray(ru.plumsoftware.coffee.R.array.ingredients)[1],
-        iconId = 0
-    )
-
     Scaffold(modifier = Modifier.fillMaxSize()) {
 
         Box {
@@ -125,10 +119,11 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                                     style = MaterialTheme.typography.titleMedium
                                 )
                                 Text(
-                                    text = if (state.selectedCoffee.ingredients.contains(milk)) stringResource(
-                                        id = R.string.with_milk
+                                    text =
+                                    state.selectedCoffee.ingredients.size.toString() + " " + if (state.selectedCoffee.ingredients.size < 5) stringResource(
+                                        id = R.string.ingredients_2
                                     ) else stringResource(
-                                        id = R.string.without_milk
+                                        id = R.string.ingredients_1
                                     ),
                                     style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
                                 )
@@ -186,7 +181,11 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = Padding.Screens.smallScreenPadding, end = Padding.Screens.smallScreenPadding, top = Padding.Screens.smallScreenPadding),
+                            .padding(
+                                start = Padding.Screens.smallScreenPadding,
+                                end = Padding.Screens.smallScreenPadding,
+                                top = Padding.Screens.smallScreenPadding
+                            ),
                         verticalArrangement = Arrangement.spacedBy(
                             space = Padding.Items.smallScreenPadding,
                             alignment = Alignment.Top
