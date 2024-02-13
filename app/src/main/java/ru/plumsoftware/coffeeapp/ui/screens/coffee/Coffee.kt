@@ -76,7 +76,7 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(
-                    space = Padding.Items.mediumScreenPadding,
+                    space = Padding.Items.smallScreenPadding,
                     alignment = Alignment.Top
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -95,33 +95,49 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                 }
 
                 item {
-                    Row(
-                        verticalAlignment = Alignment.Top,
-                        horizontalArrangement = Arrangement.Center,
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = Padding.Screens.smallScreenPadding)
+                            .padding(horizontal = Padding.Screens.smallScreenPadding),
+                        verticalArrangement = Arrangement.spacedBy(
+                            space = Padding.Items.smallScreenPadding,
+                            alignment = Alignment.Top
+                        ),
+                        horizontalAlignment = Alignment.Start
                     ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(
-                                space = Padding.Items.smallScreenPadding,
-                                alignment = Alignment.Top
-                            ), horizontalAlignment = Alignment.Start,
+                        Row(
+                            verticalAlignment = Alignment.Top,
+                            horizontalArrangement = Arrangement.Center,
                             modifier = Modifier
-                                .weight(.5f)
-                                .wrapContentHeight()
+                                .fillMaxWidth()
                         ) {
-                            Text(
-                                text = state.selectedCoffee.name,
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                text = if (state.selectedCoffee.ingredients.contains(milk)) stringResource(
-                                    id = R.string.with_milk
-                                ) else stringResource(
-                                    id = R.string.without_milk
-                                ),
-                                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(
+                                    space = Padding.Items.smallScreenPadding,
+                                    alignment = Alignment.Top
+                                ), horizontalAlignment = Alignment.Start,
+                                modifier = Modifier
+                                    .weight(.5f)
+                                    .wrapContentHeight()
+                            ) {
+                                Text(
+                                    text = state.selectedCoffee.name,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = if (state.selectedCoffee.ingredients.contains(milk)) stringResource(
+                                        id = R.string.with_milk
+                                    ) else stringResource(
+                                        id = R.string.without_milk
+                                    ),
+                                    style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
+                                )
+                            }
+
+                            Tag(
+                                imageResId = C.drawable.coffee_beans,
+                                title = state.selectedCoffee.roastingLevel,
+                                isIntolerable = false
                             )
                         }
 
@@ -132,15 +148,9 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                             ),
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier
-                                .weight(.5f)
+                                .fillMaxWidth()
                                 .wrapContentHeight()
                         ) {
-                            Tag(
-                                imageResId = C.drawable.coffee_beans,
-                                title = state.selectedCoffee.roastingLevel,
-                                isIntolerable = false
-                            )
-
                             state.selectedCoffee.ingredients.forEach { ingrediient ->
 //                        if (
 //                            ingrediient.id == 1 ||
@@ -176,9 +186,9 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = Padding.Screens.smallScreenPadding),
+                            .padding(start = Padding.Screens.smallScreenPadding, end = Padding.Screens.smallScreenPadding, top = Padding.Screens.smallScreenPadding),
                         verticalArrangement = Arrangement.spacedBy(
-                            space = Padding.Items.mediumScreenPadding,
+                            space = Padding.Items.smallScreenPadding,
                             alignment = Alignment.Top
                         ),
                         horizontalAlignment = Alignment.Start
