@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -72,7 +73,7 @@ fun CoffeeOfTheDayCard(coffee: Coffee, onCoffeeClick: (Coffee) -> Unit) {
                     )
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.mock_coffee_drink),
+                    painter = painterResource(id = coffee.imageResId),
                     contentDescription = stringResource(
                         id = R.string.coffee_of_the_day_content_description
                     ),
@@ -81,6 +82,7 @@ fun CoffeeOfTheDayCard(coffee: Coffee, onCoffeeClick: (Coffee) -> Unit) {
                         .fillMaxWidth()
                         .fillMaxHeight()
                         .align(alignment = Alignment.Center)
+                        .clip(shape = MaterialTheme.shapes.small)
                 )
 
                 Box(
