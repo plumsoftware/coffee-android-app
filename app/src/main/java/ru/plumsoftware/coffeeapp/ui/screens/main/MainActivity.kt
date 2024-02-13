@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 package ru.plumsoftware.coffeeapp.ui.screens.main
 
 import android.annotation.SuppressLint
@@ -10,13 +8,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,10 +23,11 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.plumsoftware.coffeeapp.application.App
-import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.Appearance
 import ru.plumsoftware.coffeeapp.ui.screens.appearance.AppearanceViewModel
+import ru.plumsoftware.coffeeapp.ui.screens.coffee.CoffeeScreen
+import ru.plumsoftware.coffeeapp.ui.screens.coffee.CoffeeViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.home.Home
 import ru.plumsoftware.coffeeapp.ui.screens.home.HomeViewModel
 import ru.plumsoftware.coffeeapp.ui.screens.ingredients.IntolerableIngredients
@@ -46,7 +45,6 @@ import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.database.UserDatabase
-import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
@@ -81,18 +79,20 @@ private fun Content(
     val systemUiController = rememberSystemUiController()
     val navController = rememberNavController()
 
-    val mainViewModel =
-        MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage,
-            App.INSTANCE.getSystemService(
-                Context.VIBRATOR_SERVICE
-            ) as Vibrator,
-            output = { output ->
-                when (output) {
-                    is MainViewModel.Output.NavigateTo -> {
-                        navController.navigate(route = output.route)
+    val mainViewModel
+        by remember {
+            mutableStateOf(MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage,
+                App.INSTANCE.getSystemService(
+                    Context.VIBRATOR_SERVICE
+                ) as Vibrator,
+                output = { output ->
+                    when (output) {
+                        is MainViewModel.Output.NavigateTo -> {
+                            navController.navigate(route = output.route)
+                        }
                     }
-                }
-            })
+                }))
+        }
 
     val mainState = mainViewModel.state.collectAsState().value
     Crossfade(
@@ -223,6 +223,14 @@ private fun Content(
                                     is HomeViewModel.Output.NavigateTo -> {
                                         navController.navigate(route = output.route)
                                     }
+
+                                    is HomeViewModel.Output.SelectCoffee -> {
+                                        mainViewModel.onEvent(
+                                            MainViewModel.Event.SelectCoffeeDrink(
+                                                value = output.value
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         )
@@ -249,6 +257,14 @@ private fun Content(
                                 is LikedViewModel.Output.NavigateTo -> {
                                     navController.navigate(
                                         route = output.route
+                                    )
+                                }
+
+                                is LikedViewModel.Output.SelectCoffee -> {
+                                    mainViewModel.onEvent(
+                                        MainViewModel.Event.SelectCoffeeDrink(
+                                            value = output.value
+                                        )
                                     )
                                 }
                             }
@@ -304,11 +320,22 @@ private fun Content(
 
                     val viewModel =
                         SearchViewModel(
-                            coffeeList = coffeeStorage.getD().map { it as Coffee },
+                            userDatabase = userDatabase,
+                            coffeeStorage = coffeeStorage,
                             tag = "",
                             output = { output ->
                                 when (output) {
-                                    else -> {}
+                                    is SearchViewModel.Output.NavigateTo -> {
+                                        navController.navigate(route = output.route)
+                                    }
+
+                                    is SearchViewModel.Output.SelectCoffee -> {
+                                        mainViewModel.onEvent(
+                                            MainViewModel.Event.SelectCoffeeDrink(
+                                                value = output.value
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         )
@@ -321,6 +348,12 @@ private fun Content(
                             statusBarColor = Color.Transparent
                         )
                     )
+                    val viewModel = CoffeeViewModel(
+                        userDatabase = userDatabase,
+                        selectedCoffee = mainState.selectedCoffee
+                    )
+
+                    CoffeeScreen(coffeeViewModel = viewModel)
                 }
             }
         }

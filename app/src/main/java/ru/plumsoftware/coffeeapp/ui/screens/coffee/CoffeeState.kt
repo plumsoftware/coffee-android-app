@@ -1,5 +1,9 @@
 package ru.plumsoftware.coffeeapp.ui.screens.coffee
 
+import ru.plumsoftware.data.models.Coffee
+import ru.plumsoftware.data.models.IntolerableIngredients
+
 data class CoffeeState(
-    val todo: String = ""
+    val selectedCoffee: Coffee,
+    val intolerableIngredients: MutableList<IntolerableIngredients>,
 )

@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
+import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.User
 
 data class MainState(
@@ -15,4 +16,15 @@ data class MainState(
     val navColor: Color = targetColorScheme.background,
     val statusBarColor: Color = targetColorScheme.background,
     val currentScreen: Screens.Screens = Screens.Screens.Home,
+    val selectedCoffee: Coffee = Coffee(
+        id = 0,
+        name = "",
+        imageResId = 0,
+        type = "",
+        isLiked = 0,
+        roastingLevel = "",
+        description = "",
+        ageRating = 0,
+        ingredients = emptyList()
+    )
 )

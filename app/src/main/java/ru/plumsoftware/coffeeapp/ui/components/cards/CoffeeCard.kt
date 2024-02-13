@@ -49,7 +49,8 @@ import ru.plumsoftware.data.models.Coffee
 fun CoffeeCard(
     coffee: Coffee,
     modifier: Modifier = Modifier,
-    onLikeClick: (Coffee) -> Unit = {}
+    onLikeClick: (Coffee) -> Unit = {},
+    onCoffeeClick: (Coffee) -> Unit
 ) {
 
     val isLiked = remember {
@@ -57,7 +58,9 @@ fun CoffeeCard(
     }
 
     Button(
-        onClick = {},
+        onClick = {
+            onCoffeeClick(coffee)
+        },
         modifier = modifier,
         contentPadding = PaddingValues(all = 0.dp),
         shape = MaterialTheme.shapes.small,
@@ -211,6 +214,7 @@ private fun CoffeeCardPreview() {
                 )
             ) {
                 CoffeeCard(
+                    onCoffeeClick = {},
                     coffee = mockCoffeeModel,
                     modifier = Modifier
                         .weight(1.0f)
@@ -218,6 +222,7 @@ private fun CoffeeCardPreview() {
                         .wrapContentHeight()
                 )
                 CoffeeCard(
+                    onCoffeeClick = {},
                     coffee = mockCoffeeModel,
                     modifier = Modifier
                         .weight(1.0f)

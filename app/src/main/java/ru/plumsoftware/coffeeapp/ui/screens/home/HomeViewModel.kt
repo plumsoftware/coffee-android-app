@@ -91,6 +91,7 @@ class HomeViewModel(
 
     sealed class Output {
         data class NavigateTo(val route: String) : Output()
+        data class SelectCoffee(val value: Coffee) : Output()
     }
 
     sealed class Event {

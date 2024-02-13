@@ -10,13 +10,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
+import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class MainViewModel(
     private val sharedPreferencesStorage: SharedPreferencesStorage,
     private val vibrator: Vibrator,
-    private val output: (MainViewModel.Output) -> Unit,
+    private val output: (Output) -> Unit,
 ) : ViewModel() {
 
     private fun vibrate() {
@@ -95,6 +96,14 @@ class MainViewModel(
             Event.Vibrate -> {
                 vibrate()
             }
+
+            is Event.SelectCoffeeDrink -> {
+                state.update {
+                    it.copy(
+                        selectedCoffee = event.value
+                    )
+                }
+            }
         }
     }
 
@@ -112,6 +121,7 @@ class MainViewModel(
 
         data class SetTheme(val user: User?) : Event()
         data class ChangeStatusBarColor(val statusBarColor: Color) : Event()
+        data class SelectCoffeeDrink(val value: Coffee) : Event()
         data object SetUser : Event()
         data object Vibrate : Event()
     }

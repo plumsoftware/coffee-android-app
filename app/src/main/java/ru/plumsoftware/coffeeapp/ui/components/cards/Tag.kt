@@ -2,7 +2,6 @@ package ru.plumsoftware.coffeeapp.ui.components.cards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -21,10 +20,10 @@ import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 
 @Composable
-fun Tag(imageResId: Int, title: String) {
+fun Tag(imageResId: Int, isIntolerable: Boolean, title: String) {
     Card(
         shape = MaterialTheme.shapes.medium, colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = if (isIntolerable) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer
         ),
         modifier = Modifier.wrapContentSize()
     ) {
@@ -44,11 +43,11 @@ fun Tag(imageResId: Int, title: String) {
                     contentDescription = stringResource(id = R.string.tag_content_description),
                     modifier = Modifier
                         .size(size = Size.Coffee.tagSize),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = if (isIntolerable) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
                 )
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                style = MaterialTheme.typography.labelSmall.copy(color = if (isIntolerable) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer)
             )
         }
     }

@@ -28,7 +28,8 @@ import ru.plumsoftware.data.models.Coffee
 fun HorizontalCoffeeList(
     type: String,
     coffeeList: List<Coffee>,
-    onLikeClick: (Coffee) -> Unit = {}
+    onLikeClick: (Coffee) -> Unit = {},
+    onCoffeeClick: (Coffee) -> Unit
 ) {
 
     Column(
@@ -54,7 +55,8 @@ fun HorizontalCoffeeList(
                         coffee = item,
                         modifier = Modifier
                             .width(width = Size.Coffee.coffeeCardWidth),
-                        onLikeClick = onLikeClick
+                        onLikeClick = onLikeClick,
+                        onCoffeeClick = onCoffeeClick
                     )
                 }
                 Spacer(modifier = Modifier.width(width = Padding.Items.mediumScreenPadding))
@@ -82,6 +84,7 @@ private fun HorizontalCoffeeListPreview() {
     CoffeeAppTheme(useDarkTheme = false) {
         Surface(contentColor = MaterialTheme.colorScheme.background) {
             HorizontalCoffeeList(
+                onCoffeeClick = {},
                 type = "Капучино", coffeeList = listOf(
                     mockCoffeeModel,
                     mockCoffeeModel,

@@ -1,7 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.search
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -21,6 +20,7 @@ import kotlinx.coroutines.delay
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.components.lists.TagList
+import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 
@@ -77,7 +77,11 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
                 item {
                     HorizontalCoffeeList(
                         type = state.coffeeMatrix[i][i].type,
-                        coffeeList = state.coffeeMatrix[i]
+                        coffeeList = state.coffeeMatrix[i],
+                        onCoffeeClick = {
+                            searchViewModel.onOutput(SearchViewModel.Output.SelectCoffee(value = it))
+                            searchViewModel.onOutput(SearchViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                        }
                     )
                 }
             }

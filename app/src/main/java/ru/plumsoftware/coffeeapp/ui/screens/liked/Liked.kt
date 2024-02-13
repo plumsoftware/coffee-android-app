@@ -20,6 +20,7 @@ import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.components.lists.TagList
+import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
@@ -82,7 +83,11 @@ fun Liked(
                 item {
                     HorizontalCoffeeList(
                         type = state.coffeeMatrix[i][0].type,
-                        coffeeList = state.coffeeMatrix[i]
+                        coffeeList = state.coffeeMatrix[i],
+                        onCoffeeClick = {
+                            onOutput(LikedViewModel.Output.SelectCoffee(value = it))
+                            onOutput(LikedViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                        }
                     )
                 }
             }

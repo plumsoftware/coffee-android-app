@@ -12,11 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -26,12 +21,10 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeOfTheDayCard
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
@@ -41,7 +34,6 @@ import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
-import ru.plumsoftware.data.models.Coffee
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -110,7 +102,13 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                         .wrapContentHeight()
                         .padding(all = Padding.Screens.smallScreenPadding)
                 ) {
-                    CoffeeOfTheDayCard(coffee = state.coffeeOfTheDay)
+                    CoffeeOfTheDayCard(
+                        coffee = state.coffeeOfTheDay,
+                        onCoffeeClick = {
+                            homeViewModel.onOutput(HomeViewModel.Output.SelectCoffee(value = it))
+                            homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                        }
+                    )
                 }
             }
 
@@ -128,10 +126,14 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                             )
                     ) {
                         HorizontalCoffeeList(
-                            type = state.coffeeMatrix[i][i].type,
+                            type = state.coffeeMatrix[i][0].type,
                             coffeeList = state.coffeeMatrix[i],
                             onLikeClick = {
                                 onEvent(HomeViewModel.Event.Like(coffee = it))
+                            },
+                            onCoffeeClick = {
+                                homeViewModel.onOutput(HomeViewModel.Output.SelectCoffee(value = it))
+                                homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
                             }
                         )
                     }
@@ -148,46 +150,6 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
 @Composable
 @Preview(showBackground = true)
 private fun HomePreview() {
-
-    val mockCoffeeModel = Coffee(
-        id = -1,
-        name = "Капучино",
-        imageResId = R.drawable.mock_coffee_drink,
-        isLiked = 1,
-        type = "Капучино",
-        roastingLevel = "Средняя прожарка",
-        description = "adsafdgehrtyjukil",
-        ageRating = 14,
-        ingredients = emptyList()
-    )
-
-    val mockList = listOf<Coffee>(
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-        mockCoffeeModel,
-    )
-
-    val mockCoffeeMatrix = listOf<List<Coffee>>(
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-        mockList,
-    )
 
     CoffeeAppTheme(useDarkTheme = false) {
         Surface(contentColor = MaterialTheme.colorScheme.background) {

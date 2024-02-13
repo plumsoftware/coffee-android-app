@@ -51,7 +51,7 @@ class LikedViewModel(
 
     fun onEvent(event: Event) {
         when (event) {
-            is LikedViewModel.Event.ChangeQuery -> {
+            is Event.ChangeQuery -> {
                 state.update {
                     it.copy(
                         query = event.value
@@ -59,7 +59,7 @@ class LikedViewModel(
                 }
             }
 
-            is LikedViewModel.Event.ChangeTag -> {
+            is Event.ChangeTag -> {
                 val tag = if (event.index != 0) {
                     event.item
                 } else {
@@ -74,7 +74,7 @@ class LikedViewModel(
                 }
             }
 
-            LikedViewModel.Event.Search -> {
+            Event.Search -> {
                 state.update {
                     it.copy(
                         coffeeMatrix = combineFilterList(
@@ -85,7 +85,7 @@ class LikedViewModel(
                 }
             }
 
-            LikedViewModel.Event.ClearQuery -> {
+            Event.ClearQuery -> {
                 state.update {
                     it.copy(
                         query = ""
@@ -101,6 +101,7 @@ class LikedViewModel(
 
     sealed class Output {
         data class NavigateTo(val route: String) : Output()
+        data class SelectCoffee(val value: Coffee) : Output()
     }
 
     sealed class Event {

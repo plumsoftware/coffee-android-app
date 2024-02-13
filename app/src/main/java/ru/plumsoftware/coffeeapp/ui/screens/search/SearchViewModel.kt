@@ -3,17 +3,22 @@ package ru.plumsoftware.coffeeapp.ui.screens.search
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
+import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
+import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Locale
 import ru.plumsoftware.coffee.R as C
 
 class SearchViewModel(
-    private val coffeeList: List<Coffee>,
+    userDatabase: UserDatabase?,
+    coffeeStorage: CoffeeStorage?,
     tag: String,
     private val output: (Output) -> Unit
 ) : ViewModel() {
 
     private var coffeeMatrix: List<List<Coffee>>
+    private val coffeeList: MutableList<Coffee> = coffeeStorage!!.getD().map { it as Coffee }.toMutableList()
 
     private fun filterCoffeeList(tag: String): List<Coffee> {
         return if (tag.isNotEmpty()) coffeeList.filter { it.type == tag } else coffeeList
@@ -28,7 +33,16 @@ class SearchViewModel(
     }
 
     init {
-        coffeeMatrix = filterCoffeeList(tag = tag).groupBy { it.type }.values.toList()
+        runBlocking {
+            val likedDrinks = userDatabase!!.dao.get()
+            likedDrinks.forEachIndexed { _, likedDrink ->
+                coffeeList.forEachIndexed { index, coffee ->
+                    if (likedDrink.drinkId == coffee.id)
+                        coffeeList[index] = coffee.copy(isLiked = 1)
+                }
+            }
+            coffeeMatrix = filterCoffeeList(tag = tag).groupBy { it.type }.values.toList()
+        }
     }
 
     val state = MutableStateFlow(
@@ -94,7 +108,8 @@ class SearchViewModel(
     }
 
     sealed class Output {
-
+        data class SelectCoffee(val value: Coffee) : Output()
+        data class NavigateTo(val route: String) : Output()
     }
 
     sealed class Event {
