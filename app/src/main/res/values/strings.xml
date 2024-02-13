@@ -50,6 +50,7 @@
     <string name="drink">Напиток</string>
     <string name="with_milk">С молоком</string>
     <string name="without_milk">Без молока</string>
+    <string name="how_to_cook">Как готовить</string>
 
     <!--    Home-->
     <string name="welcome_morning">Доброе утро,</string>

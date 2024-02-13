@@ -71,16 +71,17 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
     )
 
     Scaffold(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(
-                space = Padding.Items.mediumScreenPadding,
-                alignment = Alignment.Top
-            ),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Box {
+
+        Box {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(
+                    space = Padding.Items.mediumScreenPadding,
+                    alignment = Alignment.Top
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
                     Image(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -91,113 +92,56 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                             id = R.string.coffee_image__content_description
                         )
                     )
-
-                    TopAppBar(
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.background.copy(alpha = .5f)
-                        ),
-                        title = {
-                            Text(
-                                text = stringResource(id = R.string.drink),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                style = MaterialTheme.typography.titleLarge,
-                                textAlign = TextAlign.Center
-                            )
-                        },
-                        navigationIcon = {
-                            IconButton(
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    containerColor = Color.Transparent
-                                ),
-                                onClick = { /*TODO*/ }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.ArrowBack,
-                                    contentDescription = stringResource(
-                                        id = R.string.back_icon_content_description
-                                    )
-                                )
-                            }
-                        },
-                        actions = {
-                            IconButton(
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    containerColor = Color.Transparent
-                                ),
-                                onClick =
-                                {
-                                    if (isLiked.intValue == 1) isLiked.intValue =
-                                        0 else isLiked.intValue = 1
-                                }
-                            ) {
-                                Icon(
-                                    painter = if (isLiked.intValue == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
-                                        id = R.drawable.liked
-                                    ),
-                                    contentDescription = stringResource(
-                                        id = R.string.coffee_like_content_description
-                                    ),
-                                    tint = if (isLiked.intValue == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier
-                                        .size(size = Size.Coffee.likeSize)
-                                        .clip(MaterialTheme.shapes.medium),
-                                )
-                            }
-                        }
-                    )
                 }
-            }
 
-            item {
-                Row(
-                    verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Padding.Screens.smallScreenPadding)
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(
-                            space = Padding.Items.smallScreenPadding,
-                            alignment = Alignment.Top
-                        ), horizontalAlignment = Alignment.Start,
+                item {
+                    Row(
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.Center,
                         modifier = Modifier
-                            .weight(.5f)
-                            .wrapContentHeight()
+                            .fillMaxWidth()
+                            .padding(horizontal = Padding.Screens.smallScreenPadding)
                     ) {
-                        Text(
-                            text = state.selectedCoffee.name,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = if (state.selectedCoffee.ingredients.contains(milk)) stringResource(
-                                id = R.string.without_milk
-                            ) else stringResource(
-                                id = R.string.with_milk
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(
+                                space = Padding.Items.smallScreenPadding,
+                                alignment = Alignment.Top
+                            ), horizontalAlignment = Alignment.Start,
+                            modifier = Modifier
+                                .weight(.5f)
+                                .wrapContentHeight()
+                        ) {
+                            Text(
+                                text = state.selectedCoffee.name,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = if (state.selectedCoffee.ingredients.contains(milk)) stringResource(
+                                    id = R.string.with_milk
+                                ) else stringResource(
+                                    id = R.string.without_milk
+                                ),
+                                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
+                            )
+                        }
+
+                        FlowRow(
+                            verticalArrangement = Arrangement.spacedBy(
+                                space = Padding.Items.smallScreenPadding,
+                                alignment = Alignment.Top
                             ),
-                            style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
-                        )
-                    }
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier
+                                .weight(.5f)
+                                .wrapContentHeight()
+                        ) {
+                            Tag(
+                                imageResId = C.drawable.coffee_beans,
+                                title = state.selectedCoffee.roastingLevel,
+                                isIntolerable = false
+                            )
 
-                    FlowRow(
-                        verticalArrangement = Arrangement.spacedBy(
-                            space = Padding.Items.smallScreenPadding,
-                            alignment = Alignment.Top
-                        ),
-                        horizontalArrangement = Arrangement.Start,
-                        modifier = Modifier
-                            .weight(.5f)
-                            .wrapContentHeight()
-                    ) {
-                        Tag(
-                            imageResId = C.drawable.coffee_beans,
-                            title = state.selectedCoffee.roastingLevel,
-                            isIntolerable = false
-                        )
-
-                        state.selectedCoffee.ingredients.forEach { ingrediient ->
+                            state.selectedCoffee.ingredients.forEach { ingrediient ->
 //                        if (
 //                            ingrediient.id == 1 ||
 //                            ingrediient.id == 11 ||
@@ -217,16 +161,95 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
 //                            ingrediient.id == 48 ||
 //                            ingrediient.id == 51
 //                            )
-                            Tag(
-                                imageResId = ingrediient.iconId,
-                                title = ingrediient.name,
-                                isIntolerable = ingrediient.id == 1
-                            )
-                            Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
+                                Tag(
+                                    imageResId = ingrediient.iconId,
+                                    title = ingrediient.name,
+                                    isIntolerable = ingrediient.id == 1
+                                )
+                                Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
+                            }
                         }
                     }
                 }
+
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = Padding.Screens.smallScreenPadding),
+                        verticalArrangement = Arrangement.spacedBy(
+                            space = Padding.Items.mediumScreenPadding,
+                            alignment = Alignment.Top
+                        ),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.how_to_cook),
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                        Text(
+                            text = state.selectedCoffee.description,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
+                }
             }
+
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background.copy(alpha = .5f)
+                ),
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.drink),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center
+                    )
+                },
+                navigationIcon = {
+                    IconButton(
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.Transparent
+                        ),
+                        onClick = { /*TODO*/ }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = stringResource(
+                                id = R.string.back_icon_content_description
+                            )
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.Transparent
+                        ),
+                        onClick =
+                        {
+                            if (isLiked.intValue == 1) isLiked.intValue =
+                                0 else isLiked.intValue = 1
+                        }
+                    ) {
+                        Icon(
+                            painter = if (isLiked.intValue == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
+                                id = R.drawable.liked
+                            ),
+                            contentDescription = stringResource(
+                                id = R.string.coffee_like_content_description
+                            ),
+                            tint = if (isLiked.intValue == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier
+                                .size(size = Size.Coffee.likeSize)
+                                .clip(MaterialTheme.shapes.medium),
+                        )
+                    }
+                }
+            )
         }
     }
 }

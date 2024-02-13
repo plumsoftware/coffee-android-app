@@ -104,6 +104,14 @@ class MainViewModel(
                     )
                 }
             }
+
+            is Event.ChangeNavBarColor -> {
+                state.update {
+                    it.copy(
+                        navColor = event.navBarColor
+                    )
+                }
+            }
         }
     }
 
@@ -121,6 +129,7 @@ class MainViewModel(
 
         data class SetTheme(val user: User?) : Event()
         data class ChangeStatusBarColor(val statusBarColor: Color) : Event()
+        data class ChangeNavBarColor(val navBarColor: Color) : Event()
         data class SelectCoffeeDrink(val value: Coffee) : Event()
         data object SetUser : Event()
         data object Vibrate : Event()
