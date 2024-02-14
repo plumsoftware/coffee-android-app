@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,8 +47,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeCard
 import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.cards.Tag
+import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
@@ -56,7 +61,11 @@ import ru.plumsoftware.data.models.Ingredient
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
+fun CoffeeScreen(
+    coffeeViewModel: CoffeeViewModel,
+    output: (CoffeeViewModel.Output) -> Unit,
+    event: (CoffeeViewModel.Event) -> Unit
+) {
 
     val state = coffeeViewModel.state.collectAsState().value
 
@@ -202,6 +211,56 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                         )
                     }
                 }
+
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = Padding.Screens.smallScreenPadding,
+                                end = Padding.Screens.smallScreenPadding,
+                                top = Padding.Screens.smallScreenPadding
+                            ),
+                        verticalArrangement = Arrangement.spacedBy(
+                            space = Padding.Items.smallScreenPadding,
+                            alignment = Alignment.Top
+                        ),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.also_you_would_like_drinks),
+                            style = MaterialTheme.typography.titleSmall
+                        )
+
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            itemsIndexed(state.randomCoffeeDrinks) { _, item ->
+                                Box(modifier = Modifier.wrapContentSize()) {
+                                    CoffeeCard(
+                                        coffee = item,
+                                        modifier = Modifier
+                                            .width(width = Size.Coffee.coffeeCardWidth),
+                                        onLikeClick = {
+                                            event(CoffeeViewModel.Event.AddToLiked(coffee = it))
+                                        },
+                                        onCoffeeClick = {
+                                            output(CoffeeViewModel.Output.SelectCoffee(value = it))
+                                            output(CoffeeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                        }
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(width = Padding.Items.mediumScreenPadding))
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(height = Padding.Screens.smallScreenPadding))
+                    }
+                }
             }
 
             TopAppBar(
@@ -223,7 +282,9 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                         colors = IconButtonDefaults.iconButtonColors(
                             containerColor = Color.Transparent
                         ),
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            output(CoffeeViewModel.Output.PopBackStack)
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.ArrowBack,
@@ -242,6 +303,8 @@ fun CoffeeScreen(coffeeViewModel: CoffeeViewModel) {
                         {
                             if (isLiked.intValue == 1) isLiked.intValue =
                                 0 else isLiked.intValue = 1
+
+                            event(CoffeeViewModel.Event.AddToLiked(coffee = state.selectedCoffee))
                         }
                     ) {
                         Icon(
@@ -299,12 +362,14 @@ private fun CoffeeScreenPreview() {
 
     val viewModel = CoffeeViewModel(
         userDatabase = null,
-        selectedCoffee = mockCoffeeModel
+        selectedCoffee = mockCoffeeModel,
+        coffeeStorage = null,
+        output = {}
     )
 
     CoffeeAppTheme {
         Surface {
-            CoffeeScreen(viewModel)
+            CoffeeScreen(viewModel, viewModel::onOutput, event = viewModel::onEvent)
         }
     }
 }

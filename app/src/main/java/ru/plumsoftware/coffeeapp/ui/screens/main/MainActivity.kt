@@ -80,19 +80,21 @@ private fun Content(
     val navController = rememberNavController()
 
     val mainViewModel
-        by remember {
-            mutableStateOf(MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage,
-                App.INSTANCE.getSystemService(
-                    Context.VIBRATOR_SERVICE
-                ) as Vibrator,
-                output = { output ->
-                    when (output) {
-                        is MainViewModel.Output.NavigateTo -> {
-                            navController.navigate(route = output.route)
-                        }
-                    }
-                }))
-        }
+            by remember {
+                mutableStateOf(
+                    MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage,
+                        App.INSTANCE.getSystemService(
+                            Context.VIBRATOR_SERVICE
+                        ) as Vibrator,
+                        output = { output ->
+                            when (output) {
+                                is MainViewModel.Output.NavigateTo -> {
+                                    navController.navigate(route = output.route)
+                                }
+                            }
+                        })
+                )
+            }
 
     val mainState = mainViewModel.state.collectAsState().value
     Crossfade(
@@ -212,6 +214,7 @@ private fun Content(
                             statusBarColor = getExtendedColors().welcomeBackgroundColor
                         )
                     )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
                         HomeViewModel(
@@ -242,12 +245,12 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.LIKED) {
-
                     mainViewModel.onEvent(
                         MainViewModel.Event.ChangeStatusBarColor(
                             statusBarColor = MaterialTheme.colorScheme.background
                         )
                     )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel = LikedViewModel(
                         coffeeStorage = coffeeStorage,
@@ -277,12 +280,12 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.SETTINGS) {
-
                     mainViewModel.onEvent(
                         MainViewModel.Event.ChangeStatusBarColor(
                             statusBarColor = MaterialTheme.colorScheme.background
                         )
                     )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
                         SettingsViewModel(
@@ -311,12 +314,12 @@ private fun Content(
                     Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.SEARCH) {
-
                     mainViewModel.onEvent(
                         MainViewModel.Event.ChangeStatusBarColor(
                             statusBarColor = MaterialTheme.colorScheme.background
                         )
                     )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
                         SearchViewModel(
@@ -348,12 +351,34 @@ private fun Content(
                             statusBarColor = Color.Transparent
                         )
                     )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = Color.Transparent))
+
                     val viewModel = CoffeeViewModel(
                         userDatabase = userDatabase,
-                        selectedCoffee = mainState.selectedCoffee
+                        coffeeStorage = coffeeStorage,
+                        selectedCoffee = mainState.selectedCoffee,
+                        output = { output ->
+                            when (output) {
+                                is CoffeeViewModel.Output.NavigateTo -> {
+                                    navController.navigate(route = output.route)
+                                }
+
+                                is CoffeeViewModel.Output.SelectCoffee -> {
+                                    mainViewModel.onEvent(
+                                        MainViewModel.Event.SelectCoffeeDrink(
+                                            value = output.value
+                                        )
+                                    )
+                                }
+
+                                CoffeeViewModel.Output.PopBackStack -> {
+                                    navController.popBackStack()
+                                }
+                            }
+                        }
                     )
 
-                    CoffeeScreen(coffeeViewModel = viewModel)
+                    CoffeeScreen(coffeeViewModel = viewModel, output = viewModel::onOutput, event = viewModel::onEvent)
                 }
             }
         }
