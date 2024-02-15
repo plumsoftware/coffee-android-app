@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -34,11 +33,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -47,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.ui.components.buttons.LikeButton
 import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeCard
 import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.cards.Tag
@@ -54,7 +51,6 @@ import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
-import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.Ingredient
 
@@ -69,12 +65,7 @@ fun CoffeeScreen(
 
     val state = coffeeViewModel.state.collectAsState().value
 
-    val isLiked = remember {
-        mutableIntStateOf(state.selectedCoffee.isLiked)
-    }
-
     Scaffold(modifier = Modifier.fillMaxSize()) {
-
         Box {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -295,30 +286,8 @@ fun CoffeeScreen(
                     }
                 },
                 actions = {
-                    IconButton(
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = Color.Transparent
-                        ),
-                        onClick =
-                        {
-                            if (isLiked.intValue == 1) isLiked.intValue =
-                                0 else isLiked.intValue = 1
-
-                            event(CoffeeViewModel.Event.AddToLiked(coffee = state.selectedCoffee))
-                        }
-                    ) {
-                        Icon(
-                            painter = if (isLiked.intValue == 1) painterResource(id = R.drawable.liked_drink) else painterResource(
-                                id = R.drawable.liked
-                            ),
-                            contentDescription = stringResource(
-                                id = R.string.coffee_like_content_description
-                            ),
-                            tint = if (isLiked.intValue == 1) getExtendedColors().likeColor else MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier
-                                .size(size = Size.Coffee.likeSize)
-                                .clip(MaterialTheme.shapes.medium),
-                        )
+                    LikeButton(isCoffeeLiked = state.selectedCoffee.isLiked) {
+                        event(CoffeeViewModel.Event.AddToLiked(coffee = state.selectedCoffee))
                     }
                 }
             )

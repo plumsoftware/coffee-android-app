@@ -9,6 +9,7 @@ object Padding {
     }
 
     object Items {
+        val zero = 0.dp
         val extraSmallScreenPadding = 4.dp
         val smallScreenPadding = 8.dp
         val mediumScreenPadding = 10.dp
