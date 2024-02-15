@@ -32,18 +32,13 @@ class CoffeeViewModel(
         }
 
         runBlocking {
-            for (i in 0..20) {
-                generateRandom()
+            for (i in coffeeStorage?.getD()!!.indices) {
+                val randomDrink = coffeeStorage.getR() as Coffee
+                if (!randomList.contains(randomDrink)) {
+                    randomList.add(randomDrink)
+                }
             }
         }
-    }
-
-    private fun generateRandom() {
-        val randomDrink = coffeeStorage?.getR() as Coffee
-        if (randomList.contains(randomDrink))
-            generateRandom()
-        else
-            randomList.add(randomDrink)
     }
 
     val state = MutableStateFlow(
