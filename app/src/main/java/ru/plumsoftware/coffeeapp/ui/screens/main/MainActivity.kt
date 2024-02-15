@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Vibrator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
@@ -115,7 +116,65 @@ private fun Content(
         CoffeeAppTheme(useDarkTheme = mainState.useDark) {
             NavHost(
                 navController = navController,
-                startDestination = Screens.SPLASH
+                startDestination = Screens.SPLASH,
+                enterTransition = {
+                    when (initialState.destination.route) {
+                        Screens.COFFEE_DRINK ->
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(800)
+                            )
+
+                        else ->
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(0)
+                            )
+                    }
+                },
+                exitTransition = {
+                    when (targetState.destination.route) {
+                        Screens.COFFEE_DRINK ->
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(800)
+                            )
+
+                        else ->
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(0)
+                            )
+                    }
+                },
+                popEnterTransition = {
+                    when (initialState.destination.route) {
+                        Screens.COFFEE_DRINK ->
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(800)
+                            )
+
+                        else -> slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(0)
+                        )
+                    }
+                },
+                popExitTransition = {
+                    when (targetState.destination.route) {
+                        Screens.COFFEE_DRINK ->
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(800)
+                            )
+
+                        else -> slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(0)
+                        )
+                    }
+                }
             ) {
                 composable(route = Screens.SPLASH) {
                     val viewModel =
@@ -209,7 +268,11 @@ private fun Content(
                 }
                 composable(route = Screens.HOME) {
                     mainViewModel.onEvent(MainViewModel.Event.SetUser)
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = getExtendedColors().welcomeBackgroundColor))
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = getExtendedColors().welcomeBackgroundColor
+                        )
+                    )
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
@@ -241,7 +304,11 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.LIKED) {
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = MaterialTheme.colorScheme.background))
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = MaterialTheme.colorScheme.background
+                        )
+                    )
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel = LikedViewModel(
@@ -272,7 +339,11 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.SETTINGS) {
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = MaterialTheme.colorScheme.background))
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = MaterialTheme.colorScheme.background
+                        )
+                    )
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
@@ -301,7 +372,11 @@ private fun Content(
                     Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.SEARCH) {
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = MaterialTheme.colorScheme.background))
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = MaterialTheme.colorScheme.background
+                        )
+                    )
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
@@ -329,7 +404,11 @@ private fun Content(
                     Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.COFFEE_DRINK) {
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = Color.Transparent))
+                    mainViewModel.onEvent(
+                        MainViewModel.Event.ChangeStatusBarColor(
+                            statusBarColor = Color.Transparent
+                        )
+                    )
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = Color.Transparent))
 
                     val viewModel = CoffeeViewModel(
