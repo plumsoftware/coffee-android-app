@@ -209,11 +209,7 @@ private fun Content(
                 }
                 composable(route = Screens.HOME) {
                     mainViewModel.onEvent(MainViewModel.Event.SetUser)
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = getExtendedColors().welcomeBackgroundColor
-                        )
-                    )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = getExtendedColors().welcomeBackgroundColor))
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
@@ -245,11 +241,7 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.LIKED) {
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = MaterialTheme.colorScheme.background
-                        )
-                    )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = MaterialTheme.colorScheme.background))
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel = LikedViewModel(
@@ -280,11 +272,7 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.SETTINGS) {
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = MaterialTheme.colorScheme.background
-                        )
-                    )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = MaterialTheme.colorScheme.background))
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
@@ -310,15 +298,10 @@ private fun Content(
                             }
                         )
 
-
                     Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.SEARCH) {
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = MaterialTheme.colorScheme.background
-                        )
-                    )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = MaterialTheme.colorScheme.background))
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel =
@@ -346,11 +329,7 @@ private fun Content(
                     Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.COFFEE_DRINK) {
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = Color.Transparent
-                        )
-                    )
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeStatusBarColor(statusBarColor = Color.Transparent))
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = Color.Transparent))
 
                     val viewModel = CoffeeViewModel(
@@ -378,7 +357,11 @@ private fun Content(
                         }
                     )
 
-                    CoffeeScreen(coffeeViewModel = viewModel, output = viewModel::onOutput, event = viewModel::onEvent)
+                    CoffeeScreen(
+                        coffeeViewModel = viewModel,
+                        output = viewModel::onOutput,
+                        event = viewModel::onEvent
+                    )
                 }
             }
         }
