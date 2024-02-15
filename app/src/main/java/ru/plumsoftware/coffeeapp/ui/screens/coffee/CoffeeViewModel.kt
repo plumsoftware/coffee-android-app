@@ -25,7 +25,7 @@ class CoffeeViewModel(
         runBlocking {
             val intolerableIngredients = userDatabase!!.dao.getIntolerableIngredients()
             intolerableIngredients?.forEachIndexed { _, intolerableIngredient ->
-                list.forEachIndexed { index, coffee ->
+                list.forEachIndexed { index, _ ->
                     list[index] = intolerableIngredient
                 }
             }
@@ -36,6 +36,16 @@ class CoffeeViewModel(
                 val randomDrink = coffeeStorage.getR() as Coffee
                 if (!randomList.contains(randomDrink)) {
                     randomList.add(randomDrink)
+                }
+            }
+        }
+
+        runBlocking {
+            val likedDrinks: List<LikedDrink>? = userDatabase?.dao?.get()
+            likedDrinks!!.forEachIndexed { _, likedDrink ->
+                randomList.forEachIndexed { index, coffee ->
+                    if (likedDrink.drinkId == coffee.id)
+                        randomList[index] = coffee.copy(isLiked = 1)
                 }
             }
         }
