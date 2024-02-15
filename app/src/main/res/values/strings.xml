@@ -45,6 +45,7 @@
 
     <!--    Settings-->
     <string name="appearance">Оформление</string>
+    <string name="select_ii">Выбрать</string>
 
     <!--    Coffee-->
     <string name="drink">Напиток</string>

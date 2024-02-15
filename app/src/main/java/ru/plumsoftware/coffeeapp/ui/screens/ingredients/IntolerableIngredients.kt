@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.ingredients
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,8 +38,10 @@ import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryChip
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
+import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.data.models.Ingredient
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun IntolerableIngredients(
@@ -47,88 +51,123 @@ fun IntolerableIngredients(
 
     val state = intolerableIngredientsViewModel.state.collectAsState().value
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(alignment = Alignment.TopCenter)
-                .padding(
-                    start = Padding.Screens.smallScreenPadding,
-                    end = Padding.Screens.smallScreenPadding,
-                )
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(height = if (state.firstSetup) Padding.Items.extraLargeScreenTopPadding else Padding.Items.extraLargeScreenTopPadding_2))
-                FlowRow(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .wrapContentHeight(),
-                ) {
-                    for (i in 0..<state.list.size) {
-                        val selected = remember {
-                            mutableStateOf(false)
-                        }
-                        PrimaryChip(
-                            selected = selected.value,
-                            text = state.list[i].name,
-                            onClick = {
-                                selected.value = !selected.value
-                                intolerableIngredientsViewModel.onEvent(
-                                    IntolerableIngredientsViewModel.Event.AddIntolerableIngredient(
-                                        selected = selected.value,
-                                        ingredient = state.list[i]
-                                    )
-                                )
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
-                    }
-                }
-                Spacer(modifier = Modifier.height(height = Padding.Items.extraLargeScreenBottomPadding))
-            }
-        }
-
-        Column(
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .align(alignment = Alignment.TopCenter)
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ) {
-            Box(
+    Scaffold {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
                 modifier = Modifier
+                    .fillMaxSize()
+                    .align(alignment = Alignment.TopCenter)
+                    .padding(
+                        start = Padding.Screens.smallScreenPadding,
+                        end = Padding.Screens.smallScreenPadding,
+                    )
+            ) {
+                item {
+                    Spacer(modifier = Modifier.height(height = if (state.firstSetup) Padding.Items.extraLargeScreenTopPadding else Padding.Items.extraLargeScreenTopPadding_2))
+                    FlowRow(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .wrapContentHeight(),
+                    ) {
+                        for (i in 0..<state.list.size) {
+                            val selected = remember {
+                                mutableStateOf(false)
+                            }
+                            PrimaryChip(
+                                selected = selected.value,
+                                text = state.list[i].name,
+                                onClick = {
+                                    selected.value = !selected.value
+                                    intolerableIngredientsViewModel.onEvent(
+                                        IntolerableIngredientsViewModel.Event.AddIntolerableIngredient(
+                                            selected = selected.value,
+                                            ingredient = state.list[i]
+                                        )
+                                    )
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(height = Padding.Items.extraLargeScreenBottomPadding))
+                }
+            }
+
+            Column(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .align(alignment = Alignment.TopCenter)
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .background(
-                        if (state.firstSetup) Brush.verticalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.background,
-                                MaterialTheme.colorScheme.background
-                            )
-                        ) else Brush.verticalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.background,
-                                Color.Transparent
-                            )
-                        )
-                    )
-                    .padding(all = Padding.Items.largeScreenPadding)
             ) {
-                Text(
-                    text = if (state.firstSetup) stringResource(id = R.string.name_register) else stringResource(
-                        id = R.string.intolerable_ingredients
-                    ),
-                    style = MaterialTheme.typography.titleMedium,
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(vertical = Padding.Items.largeScreenPadding),
-                    textAlign = TextAlign.Center
-                )
+                        .background(
+                            if (state.firstSetup) Brush.verticalGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.background,
+                                    MaterialTheme.colorScheme.background
+                                )
+                            ) else Brush.verticalGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.background,
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                        .padding(all = Padding.Items.largeScreenPadding)
+                ) {
+                    Text(
+                        text = if (state.firstSetup) stringResource(id = R.string.name_register) else stringResource(
+                            id = R.string.intolerable_ingredients
+                        ),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(vertical = Padding.Items.largeScreenPadding),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                if (state.firstSetup)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        MaterialTheme.colorScheme.background,
+                                        Color.Transparent
+                                    )
+                                )
+                            )
+                            .padding(horizontal = Padding.Items.largeScreenPadding)
+                    )
+                    {
+                        Text(
+                            text = stringResource(id = R.string.intolerable_ingredients),
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            textAlign = TextAlign.Start
+                        )
+                    }
             }
 
-            if (state.firstSetup)
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -136,66 +175,39 @@ fun IntolerableIngredients(
                         .background(
                             brush = Brush.verticalGradient(
                                 colors = listOf(
-                                    MaterialTheme.colorScheme.background,
-                                    Color.Transparent
+                                    Color.Transparent,
+                                    MaterialTheme.colorScheme.background
                                 )
                             )
                         )
                         .padding(horizontal = Padding.Items.largeScreenPadding)
-                )
-                {
-                    Text(
-                        text = stringResource(id = R.string.intolerable_ingredients),
-                        style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        textAlign = TextAlign.Start
+                ) {
+                    if (state.firstSetup)
+                        Dividers(selected = 2)
+                    else
+                        Spacer(modifier = Modifier.height(height = Size.Divider.invisibleHeight))
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(color = MaterialTheme.colorScheme.background)
+                        .padding(all = Padding.Items.largeScreenPadding)
+                ) {
+                    PrimaryButton(
+                        title = if (state.firstSetup) stringResource(id = R.string.select_ii) else stringResource(
+                            id = R.string.primary_button_text
+                        ),
+                        onClick = {
+                            onEvent(IntolerableIngredientsViewModel.Event.SaveData)
+                            intolerableIngredientsViewModel.onOutput(
+                                IntolerableIngredientsViewModel.Output.Go
+                            )
+                        },
+                        isActive = true
                     )
                 }
-        }
-
-        Column(
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .align(alignment = Alignment.BottomCenter)
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                MaterialTheme.colorScheme.background
-                            )
-                        )
-                    )
-                    .padding(horizontal = Padding.Items.largeScreenPadding)
-            ) {
-                Dividers(selected = 2)
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(color = MaterialTheme.colorScheme.background)
-                    .padding(all = Padding.Items.largeScreenPadding)
-            ) {
-                PrimaryButton(
-                    onClick = {
-                        onEvent(IntolerableIngredientsViewModel.Event.SaveData)
-                        intolerableIngredientsViewModel.onOutput(
-                            IntolerableIngredientsViewModel.Output.Go
-                        )
-                    },
-                    isActive = true
-                )
             }
         }
     }

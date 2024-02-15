@@ -17,7 +17,7 @@ object Size {
 
     object Divider {
         val height = 4.dp
-
+        val invisibleHeight = 18.dp
         val homeHeight = 100.dp
     }
 

@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -33,6 +35,7 @@ import ru.plumsoftware.coffeeapp.ui.components.fill_in.MaskVisualTransformation
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.TextField
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.groups.ThemePreview
+import ru.plumsoftware.coffeeapp.ui.screens.Screens
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
@@ -183,6 +186,23 @@ fun Settings(settingsViewModel: SettingsViewModel, onEvent: (SettingsViewModel.E
                             )
                         })
                     }
+                }
+
+                Spacer(modifier = Modifier.height(height = Padding.Items.smallScreenPadding))
+
+                TextButton(
+                    onClick = {
+                        settingsViewModel.onOutput(SettingsViewModel.Output.NavigateTo(route = Screens.INGREDIENTS))
+                    },
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.intolerable_ingredients),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        textAlign = TextAlign.Start
+                    )
                 }
             }
         }

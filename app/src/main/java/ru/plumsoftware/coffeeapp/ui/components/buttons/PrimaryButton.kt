@@ -15,7 +15,7 @@ import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
 @Composable
-fun PrimaryButton(isActive: Boolean = true, onClick: () -> Unit) {
+fun PrimaryButton(isActive: Boolean = true, title: String = stringResource(id = R.string.primary_button_text), onClick: () -> Unit) {
     Button(
         onClick = onClick,
         enabled = isActive,
@@ -29,7 +29,7 @@ fun PrimaryButton(isActive: Boolean = true, onClick: () -> Unit) {
             .wrapContentHeight()
     ) {
         Text(
-            text = stringResource(id = R.string.primary_button_text),
+            text = title,
             style = MaterialTheme.typography.labelSmall
         )
     }
