@@ -12,6 +12,8 @@
         <item>Ванильный латте</item>
         <item>Карамельный латте</item>
         <item>Шоколадный латте</item>
+        <item>Миндальный латте</item>
+        <item>Латте с халвой</item>
     </array>
 
     <!--    Tag list-->
@@ -73,7 +75,6 @@
 
             5. Подавайте карамельный капучино сразу после приготовления, пока молоко и кофе не остыли.\n\n
         </item>
-
         <item>
             1. Налейте молоко в маленький кастрюльку и разогрейте его на среднем огне до состояния горячего, но не кипящего.\n\n
 
@@ -151,6 +152,24 @@
             5. Добавьте в чашку подогретое молоко, начиная с центра и медленно двигая на поверхность, чтобы сформировалась пена.\n\n
             6. По желанию, посыпьте шоколадный латте какао-порошком или шоколадными стружками для украшения.\n\n
         </item>
+        <item>
+            1. Приготовьте один эспрессо или сварите кофе молотый по вашему вкусу.\n\n
+            2. Разогрейте миндальное молоко на плите или в микроволновой печи до желаемой температуры (обычно около 65 градусов Цельсия).\n\n
+            3. При желании, добавьте миндальный сироп в ваш эспрессо для дополнительного миндального вкуса. Обычно используют примерно 1-2 столовые ложки сиропа на порцию.\n\n
+            4. В большой чашке или стакане сделайте кофе.\n\n
+            5. Добавьте подогретое миндальное молоко в чашку с кофе, начиная с центра и медленно двигая на поверхность, чтобы сформировалась пена.\n\n
+            6. По желанию, можно украсить миндальный латте миндальной стружкой или добавить порезанные миндальные ломтики.\n\n
+        </item>
+        <item>
+            1. Приготовьте один эспрессо или сварите кофе молотый по вашему вкусу.\n\n
+            2. Разомните халву в ступке или положите в миксер для измельчения.\n\n
+            3. Загрейте молоко в паровой форели машины до температуры около 65 градусов Цельсия.\n\n
+            4. В кофе добавьте размолотую халву, перемешайте, пока халва не растворится.\n\n
+            5. Залейте кофейную смесь в чашку или стакан.\n\n
+            6. Добавьте подогретое молоко с пеной в чашку, начиная с центра и медленно двигая на поверхность.\n\n
+            7. По желанию, добавьте сахар или другой подсластитель по вкусу.\n\n
+            8. Перемешайте напиток до получения однородного сочетания всех ингредиентов и подача.\n\n
+        </item>
     </array>
 
     <!--    Ingredients-->
@@ -207,7 +226,7 @@
     <string name="pistachios">Фисташки</string>
     <string name="shortbread_cookies">Песочное печенье</string>
     <string name="rose_water">Розовая вода</string>
-    <string name="red_halva">Красный халва</string>
+    <string name="halva">халва</string>
     <string name="poppy_seed">Макка</string>
     <string name="breadcrumb">Панировочные сухари</string>
     <string name="grated_nutmeg">Тертый мускатный орех</string>
@@ -303,11 +322,11 @@
         <item quantity="pistachios">Фисташки</item>
         <item quantity="shortbread_cookies">Песочное печенье</item>
         <item quantity="rose_water">Розовая вода</item>
-        <item quantity="red_halva">Красный халва</item>
+        <item quantity="halva">Халва</item><!--56-->
         <item quantity="poppy_seeds">Макка</item>
         <item quantity="breadcrumbs">Панировочные сухари</item>
         <item quantity="grated_nutmeg">Тертый мускатный орех</item>
-        <item quantity="aloe">Алоэ</item>
+        <item quantity="aloe">Алоэ</item><!--60-->
         <item quantity="milk_glaze">Молочная глазурь</item>
         <item quantity="organic_chocolate">Органический шоколад</item>
         <item quantity="vanillin">Ванилин</item>
@@ -317,7 +336,7 @@
         <item quantity="green_tea_leaves">Листья зеленого чая</item>
         <item quantity="raspberry_leaves">Листья малины</item>
         <item quantity="tonic">Тоник</item>
-        <item quantity="grenadine">Гренадин</item>
+        <item quantity="grenadine">Гренадин</item><!--70-->
         <item quantity="fruit_juice">Фруктовый сок</item>
         <item quantity="pineapple_juice">Сок ананаса</item>
         <item quantity="blackcurrant_syrup">Сироп черной смородины</item>
@@ -327,13 +346,15 @@
         <item quantity="alternative_milk">Дифферентное молоко</item>
         <item quantity="milk_chocolate">Молочный шоколад</item>
         <item quantity="menthol_gum">Ментоловые резинки</item>
-        <item quantity="drunken_cherry">Пьяная вишня</item>
+        <item quantity="drunken_cherry">Пьяная вишня</item><!--80-->
         <item quantity="mint">Мята</item>
         <item quantity="walnuts">Грецкие орехи</item>
         <item quantity="brandy">Коньяк</item>
         <item quantity="spices">Специи</item>
         <item quantity="cherries">Черинда</item>
-        <item quantity="almonds">Миндаль</item>
+        <item quantity="almonds">Миндаль (миндальный сироп)</item><!--86-->
+        <item quantity="almonds_milk">Миндальое молоко</item>
+        <item quantity="almonds_тге">Миндальный орех</item>
         <item quantity="pastry_baskets">Корзиночки из теста</item>
         <item quantity="pecans">Пекан</item>
         <item quantity="nutmeg">Мускатный орех</item>

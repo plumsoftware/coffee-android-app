@@ -229,6 +229,44 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                 )
             )
         )
+        list.add(
+            Coffee(
+                id = 10,
+                name = coffeeNames[10],
+                ageRating = 14,
+                imageResId = C.drawable.latte_almond,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[9],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[86],
+                    allIngredients[87],
+                    allIngredients[21],
+                    allIngredients[88],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 11,
+                name = coffeeNames[11],
+                ageRating = 14,
+                imageResId = C.drawable.latte_halvah,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[11],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[46]
+                )
+            )
+        )
 
 //        endregion
 
