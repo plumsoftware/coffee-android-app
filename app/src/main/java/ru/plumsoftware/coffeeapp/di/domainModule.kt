@@ -8,6 +8,7 @@ import ru.plumsoftware.domain.repositories.SharedPreferencesRepository
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 import ru.plumsoftware.domain.usecases.drinks.GetAllDrinksUseCase
+import ru.plumsoftware.domain.usecases.drinks.GetAllIngredientsUIUseCase
 import ru.plumsoftware.domain.usecases.drinks.GetAllIngredientsUseCase
 import ru.plumsoftware.domain.usecases.drinks.GetRandomDrinkUseCase
 import ru.plumsoftware.domain.usecases.drinks.GetTagsUseCase
@@ -26,7 +27,8 @@ internal val domainModule = module {
             getAllDrinksUseCase = GetAllDrinksUseCase(coffeeRepository = get()),
             getTagsUseCase = GetTagsUseCase(coffeeRepository = get()),
             toMatrixUseCase = ToMatrixUseCase(coffeeRepository = get()),
-            getRandomDrinkUseCase = GetRandomDrinkUseCase(coffeeRepository = get())
+            getRandomDrinkUseCase = GetRandomDrinkUseCase(coffeeRepository = get()),
+            getAllIngredientsUIUseCase = GetAllIngredientsUIUseCase(coffeeRepository = get())
         )
     }
 

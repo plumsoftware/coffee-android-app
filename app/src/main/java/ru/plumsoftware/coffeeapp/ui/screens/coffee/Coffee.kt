@@ -146,7 +146,23 @@ fun CoffeeScreen(
                                 .fillMaxWidth()
                                 .wrapContentHeight()
                         ) {
-                            state.selectedCoffee.ingredients.forEach { ingrediient ->
+                            state.selectedCoffee.ingredients.forEachIndexed { index1, ingredient ->
+
+                                var isIntolerable = false
+
+                                for (i in state.intolerableIngredients) {
+                                    if (i.ingredientId == ingredient.id) {
+                                        isIntolerable = true
+                                        break
+                                    }
+                                }
+
+                                Tag(
+                                    imageResId = ingredient.iconId,
+                                    title = ingredient.name,
+                                    isIntolerable = isIntolerable
+                                )
+                                Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
 //                        if (
 //                            ingrediient.id == 1 ||
 //                            ingrediient.id == 11 ||
@@ -166,12 +182,6 @@ fun CoffeeScreen(
 //                            ingrediient.id == 48 ||
 //                            ingrediient.id == 51
 //                            )
-                                Tag(
-                                    imageResId = ingrediient.iconId,
-                                    title = ingrediient.name,
-                                    isIntolerable = ingrediient.id == 1
-                                )
-                                Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
                             }
                         }
                     }

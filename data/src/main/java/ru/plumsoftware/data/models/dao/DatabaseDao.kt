@@ -1,7 +1,6 @@
 package ru.plumsoftware.data.models.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
 import ru.plumsoftware.data.models.IntolerableIngredients
@@ -9,14 +8,17 @@ import ru.plumsoftware.data.models.LikedDrink
 
 @Dao
 interface DatabaseDao {
-    @Insert(entity = IntolerableIngredients::class)
-    suspend fun insert(intolerableIngredients: IntolerableIngredients)
+    @Upsert
+    suspend fun upsert(intolerableIngredients: IntolerableIngredients)
 
     @Query("DELETE FROM IntolerableIngredients WHERE ingredientId=:ingredientId")
     suspend fun delete(ingredientId: Int)
 
     @Query("SELECT * FROM IntolerableIngredients")
     suspend fun getIntolerableIngredients(): List<IntolerableIngredients>?
+
+    @Query("DELETE FROM IntolerableIngredients")
+    suspend fun deleteAllIntolerableIngredients()
 
 
     @Upsert(entity = LikedDrink::class)

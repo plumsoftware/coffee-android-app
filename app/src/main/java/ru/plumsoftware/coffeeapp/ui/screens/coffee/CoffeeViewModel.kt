@@ -25,9 +25,7 @@ class CoffeeViewModel(
         runBlocking {
             val intolerableIngredients = userDatabase!!.dao.getIntolerableIngredients()
             intolerableIngredients?.forEachIndexed { _, intolerableIngredient ->
-                list.forEachIndexed { index, _ ->
-                    list[index] = intolerableIngredient
-                }
+                list.add(intolerableIngredient)
             }
         }
 

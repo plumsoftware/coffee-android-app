@@ -52,9 +52,10 @@ class IntolerableIngredientsViewModel(
 
             Event.SaveData -> {
                 viewModelScope.launch {
-                    state.value.intolerableIngredients.forEach {
-                        userDatabase?.dao?.insert(
-                            intolerableIngredients = ru.plumsoftware.data.models.IntolerableIngredients(
+                    userDatabase?.dao?.deleteAllIntolerableIngredients()
+                    state.value.intolerableIngredients.forEachIndexed { _, it ->
+                        userDatabase?.dao?.upsert(
+                            ru.plumsoftware.data.models.IntolerableIngredients(
                                 ingredientId = it.id
                             )
                         )

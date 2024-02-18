@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.appearance
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Appearance(
     appearanceViewModel: AppearanceViewModel,
@@ -39,98 +42,100 @@ fun Appearance(
 ) {
     val state = appearanceViewModel.state.collectAsState().value
 
-    Column(
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(all = Padding.Screens.smallScreenPadding)
-    ) {
-        Text(
-            text = stringResource(id = R.string.appearance_title),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(vertical = Padding.Items.largeScreenPadding),
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(80.dp))
-
-        Row(
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(
-                space = Padding.Items.smallScreenPadding,
-                alignment = Alignment.CenterHorizontally
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight()
-                    .padding(all = Padding.Items.smallScreenPadding)
-            ) {
-                ThemePreview(colorScheme = LightColors)
-                RButton(selected = !state.useDark, onClick = {
-                    onEvent(
-                        AppearanceViewModel.Event.ChangeRadioButton(
-                            useDark = false,
-                        )
-                    )
-                    appearanceViewModel.onOutput(
-                        AppearanceViewModel.Output.ChangeTheme(
-                            useDark = false,
-                            targetColorScheme = LightColors
-                        )
-                    )
-                })
-            }
-
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight()
-                    .padding(all = Padding.Items.smallScreenPadding)
-            ) {
-                ThemePreview(colorScheme = DarkColors)
-                RButton(selected = state.useDark, onClick = {
-                    onEvent(
-                        AppearanceViewModel.Event.ChangeRadioButton(
-                            useDark = true
-                        )
-                    )
-                    appearanceViewModel.onOutput(
-                        AppearanceViewModel.Output.ChangeTheme(
-                            useDark = true,
-                            targetColorScheme = DarkColors
-                        )
-                    )
-                })
-            }
-        }
-
-
+    Scaffold {
         Column(
-            verticalArrangement = Arrangement.spacedBy(
-                space = Padding.Items.largeScreenPadding,
-                alignment = Alignment.Bottom
-            ), horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
+                .padding(all = Padding.Screens.smallScreenPadding)
         ) {
-            Dividers(selected = 0)
-            PrimaryButton(onClick = {
-                appearanceViewModel.onOutput(AppearanceViewModel.Output.Go)
-            })
+            Text(
+                text = stringResource(id = R.string.appearance_title),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(vertical = Padding.Items.largeScreenPadding),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(80.dp))
+
+            Row(
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = Padding.Items.smallScreenPadding,
+                    alignment = Alignment.CenterHorizontally
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .wrapContentHeight()
+                        .padding(all = Padding.Items.smallScreenPadding)
+                ) {
+                    ThemePreview(colorScheme = LightColors)
+                    RButton(selected = !state.useDark, onClick = {
+                        onEvent(
+                            AppearanceViewModel.Event.ChangeRadioButton(
+                                useDark = false,
+                            )
+                        )
+                        appearanceViewModel.onOutput(
+                            AppearanceViewModel.Output.ChangeTheme(
+                                useDark = false,
+                                targetColorScheme = LightColors
+                            )
+                        )
+                    })
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .wrapContentHeight()
+                        .padding(all = Padding.Items.smallScreenPadding)
+                ) {
+                    ThemePreview(colorScheme = DarkColors)
+                    RButton(selected = state.useDark, onClick = {
+                        onEvent(
+                            AppearanceViewModel.Event.ChangeRadioButton(
+                                useDark = true
+                            )
+                        )
+                        appearanceViewModel.onOutput(
+                            AppearanceViewModel.Output.ChangeTheme(
+                                useDark = true,
+                                targetColorScheme = DarkColors
+                            )
+                        )
+                    })
+                }
+            }
+
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(
+                    space = Padding.Items.largeScreenPadding,
+                    alignment = Alignment.Bottom
+                ), horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ) {
+                Dividers(selected = 0)
+                PrimaryButton(onClick = {
+                    appearanceViewModel.onOutput(AppearanceViewModel.Output.Go)
+                })
+            }
         }
     }
 }

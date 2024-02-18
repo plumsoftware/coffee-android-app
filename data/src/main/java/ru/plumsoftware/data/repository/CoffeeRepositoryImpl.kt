@@ -5,6 +5,7 @@ import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.models.CoffeeModel
+import ru.plumsoftware.domain.models.IngredientModel
 import ru.plumsoftware.domain.repositories.CoffeeRepository
 
 class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
@@ -21,6 +22,23 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     iconId = 0
                 )
             )
+        }
+
+        return list.toList()
+    }
+
+    override fun getAllIngredientsUI(): List<IngredientModel> {
+        val allDrinks = getAllDrinks()
+        val list = mutableListOf<Ingredient>()
+
+        for (drink in allDrinks) {
+            for (ingredient in drink.ingredients) {
+                if (!list.contains(ingredient)) {
+                    list.add(
+                        ingredient as Ingredient
+                    )
+                }
+            }
         }
 
         return list.toList()
