@@ -150,7 +150,6 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         )
 //        endregion
 
-
 //        region::Latte
         list.add(
             Coffee(
@@ -242,10 +241,10 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
-                    allIngredients[86],
                     allIngredients[87],
-                    allIngredients[21],
                     allIngredients[88],
+                    allIngredients[21],
+                    allIngredients[89],
                 )
             )
         )
@@ -263,7 +262,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[56]
+                    allIngredients[57]
                 )
             )
         )
@@ -285,6 +284,50 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[21]
+                )
+            )
+        )
+//        endregion
+
+//        region::Flat_white
+        list.add(
+            Coffee(
+                id = 14,
+                name = coffeeNames[14],
+                ageRating = 14,
+                imageResId = C.drawable.flat_white_classic,
+                type = context.getString(C.string.flat_white),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[14],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[9],
+                    allIngredients[7],
+                )
+            )
+        )
+//        endregion
+
+//        region::Cold
+        list.add(
+            Coffee(
+                id = 13,
+                name = coffeeNames[13],
+                ageRating = 14,
+                imageResId = C.drawable.ice_mochacchino,
+                type = context.getString(C.string.cold),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[13],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[6],
+                    allIngredients[21],
+                    allIngredients[90],
+                    allIngredients[91],
                 )
             )
         )

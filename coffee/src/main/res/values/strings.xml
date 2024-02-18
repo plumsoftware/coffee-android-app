@@ -15,6 +15,8 @@
         <item>Миндальный латте</item>
         <item>Латте с халвой</item>
         <item>Классический мокачино</item>
+        <item>Охлаждающий мокачино</item>
+        <item>Классический флэт уайт</item>
     </array>
 
     <!--    Tag list-->
@@ -181,6 +183,26 @@
             4. Налейте подогретое молоко в чашку с кофе, оставив немного места для взбитых сливок.\n\n
             5. Наверху мокачино добавьте взбитые сливки и посыпьте шоколадной стружкой или какао.\n\n
         </item>
+
+
+
+        <item>
+            1. Свежесваренный кофе эспрессо смешивается с горячим шоколадом или шоколадный сиропом.\n\n
+            2. Молоко взбивается до состояния легкой пены.\n\n
+            3. На дно стакана насыпают кубики льда и наливают молоко.\n\n
+            4. Верхним слоем становится шоколадно-кофейная смесь.\n\n
+            Некоторые рецепты предлагают вместо льда использовать шарик ванильного мороженного, который охладит кофе и добавит ему сливочно-ванильных ноток.\n\n
+        </item>
+
+
+        <item>
+            1. Приготовьте две порции свежемолотого кофе в кофейной машине.\n\n
+            2. Взбейте молоко в паровой форсунке кофейной машины до того момента, пока оно не станет густым и кремовым.\n\n
+            3. Налейте небольшое количество взбитого молока в каждую чашку с кофе.\n\n
+            4. Накройте верх кофе тонким слоем взбитого молока, создавая характерный "плоский" слой молочной пенки.\n\n
+            5. При желании, посыпьте немного корицы или какао сверху для украшения.\n\n
+            Готово! Теперь у вас есть классический кофе флэт уайт, который вы можете насладиться в уютной обстановке. Приятного аппетита!\n\n
+        </item>
     </array>
 
     <!--    Ingredients-->
@@ -333,11 +355,11 @@
         <item quantity="pistachios">Фисташки</item>
         <item quantity="shortbread_cookies">Песочное печенье</item>
         <item quantity="rose_water">Розовая вода</item>
-        <item quantity="halva">Халва</item><!--56-->
+        <item quantity="halva">Халва</item><!--57-->
         <item quantity="poppy_seeds">Макка</item>
         <item quantity="breadcrumbs">Панировочные сухари</item>
         <item quantity="grated_nutmeg">Тертый мускатный орех</item>
-        <item quantity="aloe">Алоэ</item><!--60-->
+        <item quantity="aloe">Алоэ</item><!--61-->
         <item quantity="milk_glaze">Молочная глазурь</item>
         <item quantity="organic_chocolate">Органический шоколад</item>
         <item quantity="vanillin">Ванилин</item>
@@ -347,7 +369,7 @@
         <item quantity="green_tea_leaves">Листья зеленого чая</item>
         <item quantity="raspberry_leaves">Листья малины</item>
         <item quantity="tonic">Тоник</item>
-        <item quantity="grenadine">Гренадин</item><!--70-->
+        <item quantity="grenadine">Гренадин</item><!--71-->
         <item quantity="fruit_juice">Фруктовый сок</item>
         <item quantity="pineapple_juice">Сок ананаса</item>
         <item quantity="blackcurrant_syrup">Сироп черной смородины</item>
@@ -357,15 +379,17 @@
         <item quantity="alternative_milk">Дифферентное молоко</item>
         <item quantity="milk_chocolate">Молочный шоколад</item>
         <item quantity="menthol_gum">Ментоловые резинки</item>
-        <item quantity="drunken_cherry">Пьяная вишня</item><!--80-->
+        <item quantity="drunken_cherry">Пьяная вишня</item><!--81-->
         <item quantity="mint">Мята</item>
         <item quantity="walnuts">Грецкие орехи</item>
         <item quantity="brandy">Коньяк</item>
         <item quantity="spices">Специи</item>
         <item quantity="cherries">Черинда</item>
-        <item quantity="almonds">Миндаль (миндальный сироп)</item><!--86-->
+        <item quantity="almonds">Миндаль (миндальный сироп)</item><!--87-->
         <item quantity="almonds_milk">Миндальое молоко</item>
-        <item quantity="almonds_тге">Миндальный орех</item>
+        <item quantity="almonds_nut">Миндальный орех</item>
+        <item quantity="ice">Лёд</item><!--90-->
+        <item quantity="ice-cream">Мороженое</item><!--91-->
         <item quantity="pastry_baskets">Корзиночки из теста</item>
         <item quantity="pecans">Пекан</item>
         <item quantity="nutmeg">Мускатный орех</item>
