@@ -76,7 +76,7 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
             for (i in state.coffeeMatrix.indices) {
                 item {
                     HorizontalCoffeeList(
-                        type = state.coffeeMatrix[i][i].type,
+                        type = state.coffeeMatrix[i][0].type,
                         coffeeList = state.coffeeMatrix[i],
                         onCoffeeClick = {
                             searchViewModel.onOutput(SearchViewModel.Output.SelectCoffee(value = it))

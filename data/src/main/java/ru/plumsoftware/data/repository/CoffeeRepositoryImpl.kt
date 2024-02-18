@@ -270,6 +270,26 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 
 //        endregion
 
+//        region::Moccachino
+        list.add(
+            Coffee(
+                id = 12,
+                name = coffeeNames[12],
+                ageRating = 14,
+                imageResId = C.drawable.mochacchino_classic,
+                type = context.getString(C.string.mochacchino),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[12],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[21]
+                )
+            )
+        )
+//        endregion
+
         return list
     }
 
