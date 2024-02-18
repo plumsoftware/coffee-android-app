@@ -238,7 +238,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                 type = context.getString(C.string.latte),
                 isLiked = 0,
                 roastingLevel = roastingLevels[1],
-                description = descriptions[9],
+                description = descriptions[10],
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
@@ -263,7 +263,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[46]
+                    allIngredients[56]
                 )
             )
         )
