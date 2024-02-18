@@ -124,7 +124,8 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[1],
                     allIngredients[2],
                     allIngredients[6],
-                    allIngredients[61],
+                    allIngredients[9],
+                    allIngredients[8]
                 )
             )
         )
@@ -150,7 +151,86 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
 //        endregion
 
 
+//        region::Latte
+        list.add(
+            Coffee(
+                id = 6,
+                name = coffeeNames[6],
+                ageRating = 14,
+                imageResId = C.drawable.latte_classic,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[6],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[7],
+                    allIngredients[9],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 7,
+                name = coffeeNames[7],
+                ageRating = 14,
+                imageResId = C.drawable.vanilla_latte,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[7],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[7],
+                    allIngredients[9],
+                    allIngredients[8],
+                    allIngredients[21],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 8,
+                name = coffeeNames[8],
+                ageRating = 14,
+                imageResId = C.drawable.latte_caramel,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[8],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[7],
+                    allIngredients[9],
+                    allIngredients[16],
+                    allIngredients[21],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 9,
+                name = coffeeNames[9],
+                ageRating = 14,
+                imageResId = C.drawable.chocolate_latte,
+                type = context.getString(C.string.latte),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[9],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[7],
+                    allIngredients[6],
+                    allIngredients[21],
+                )
+            )
+        )
 
+//        endregion
 
         return list
     }
