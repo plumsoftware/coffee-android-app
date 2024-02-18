@@ -17,6 +17,9 @@
         <item>Классический мокачино</item>
         <item>Охлаждающий мокачино</item>
         <item>Классический флэт уайт</item>
+        <item>Классический Раф</item>
+        <item>Медовый Раф</item>
+        <item>Арахисовый Раф</item>
     </array>
 
     <!--    Tag list-->
@@ -203,6 +206,27 @@
             5. При желании, посыпьте немного корицы или какао сверху для украшения.\n\n
             Готово! Теперь у вас есть классический кофе флэт уайт, который вы можете насладиться в уютной обстановке. Приятного аппетита!\n\n
         </item>
+
+        <item>
+            Для приготовления рекомендуется использовать сладкие сорта кофейных зерен средней обжарки, 1 чайная ложка обычного и столько же ванильного сахара.\n\n
+            1. Готовим порцию эспрессо.\n\n
+            2. В холодные сливки, добавляем к ним весь сахар (ванильный сахар можно заменить щепоткой ванили).\n\n
+            3. Эспрессо добавляем к сладким сливкам и с помощью пароотвода тщательно взбиваем.\n\n
+            Готово! Перед подачей посуду для кофе лучше прогреть.\n\n
+        </item>
+        <item>
+            1. Готовим порцию эспрессо.\n\n
+            2. Добавляем в него чайную ложку нагретого меда. Хорошо перемешать, чтобы мед полностью растворился.\n\n
+            3. Добавить половину стакана молока или сливок и снова хорошо перемешать.\n\n
+            4. Для украшения можно положить на поверхность напитка взбитые сливки и посыпать корицей.\n\n
+        </item>
+        <item>
+            1. Готовим порцию эспрессо.\n\n
+            2. Добавляем в него 1 столовую ложку арахисовой пасты. \n\n
+            3. Добавляем 1-2 чайных ложек карамельный сироп. Хорошо перемешать, чтобы всё полностью растворилось.\n\n
+            2. Добавить половину стакана молока или сливок и снова хорошо перемешать.\n\n
+            3. Для украшения можно положить на поверхность напитка взбитые сливки и посыпать корицей.\n\n
+        </item>
     </array>
 
     <!--    Ingredients-->
@@ -313,53 +337,54 @@
         <item quantity="coconut_oil">Кокосовое масло</item>
         <item quantity="cardamom">Кардамон</item>
         <item quantity="cream">Сливки</item>
-        <item quantity="pastry_cream">Кондитерский крем</item>
-        <item quantity="caramel">Карамель (карамельный сироп)</item><!--16-->
+        <item quantity="cream">Сливки</item>
+        <item quantity="pastry_cream">Кондитерский крем</item><!--16-->
+        <item quantity="caramel">Карамель (карамельный сироп)</item><!--17-->
         <item quantity="chocolate_syrup">Шоколадный сироп</item>
         <item quantity="Irish_cream">Ирландский крем</item>
-        <item quantity="coffee_liqueur">Кофейный ликер</item><!--19-->
+        <item quantity="coffee_liqueur">Кофейный ликер</item><!--20-->
         <item quantity="coffee_extract">Кофейный экстракт</item>
-        <item quantity="whipped_cream">Взбитые сливки</item>
-        <item quantity="soy_milk">Соевое молоко</item><!--22-->
-        <item quantity="honey">Мед</item><!--23-->
+        <item quantity="whipped_cream">Взбитые сливки</item><!--22-->
+        <item quantity="soy_milk">Соевое молоко</item><!--23-->
+        <item quantity="honey">Мед</item><!--24-->
         <item quantity="coriander">Кориандр</item>
-        <item quantity="lemon_zest">Лимонная цедра</item><!--25-->
-        <item quantity="mint">Мята</item><!--26-->
-        <item quantity="lemon_juice">Лимонный сок</item> <!--27-->
-        <item quantity="grapefruit_juice">Грейпфрутовый сок</item> <!--28-->
-        <item quantity="orange_juice">Апельсиновый сок</item> <!--29-->
-        <item quantity="citrus_zest">Цитрусовая цедра</item> <!--30-->
+        <item quantity="lemon_zest">Лимонная цедра</item><!--26-->
+        <item quantity="mint">Мята</item><!--27-->
+        <item quantity="lemon_juice">Лимонный сок</item> <!--28-->
+        <item quantity="grapefruit_juice">Грейпфрутовый сок</item> <!--29-->
+        <item quantity="orange_juice">Апельсиновый сок</item> <!--30-->
+        <item quantity="citrus_zest">Цитрусовая цедра</item> <!--31-->
         <item quantity="banana">Банан</item>
-        <item quantity="coconut">Кокос</item><!--32-->
+        <item quantity="coconut">Кокос</item><!--33-->
         <item quantity="buttermilk">Пахта</item>
         <item quantity="ginger">Имбирь</item>
         <item quantity="cocoa_beans">Какао-бобы</item>
         <item quantity="honey_glaze">Медовая глазурь</item>
         <item quantity="coconut_sugar">Кокосовый сахар</item>
-        <item quantity="black_pepper">Черный перец</item><!--38-->
+        <item quantity="black_pepper">Черный перец</item><!--39-->
         <item quantity="coffee_powder">Кофейный порошок</item>
         <item quantity="fresh_berries">Свежие ягоды</item>
-        <item quantity="coconut_milk">Кокосовое молоко</item><!--41-->
-        <item quantity="nutmeg">Мускатный орех</item> <!--42-->
+        <item quantity="coconut_milk">Кокосовое молоко</item><!--42-->
+        <item quantity="nutmeg">Мускатный орех</item> <!--43-->
         <item quantity="cardamom">Кардамон</item>
-        <item quantity="nut_syrup">Ореховый сироп</item><!--43-->
+        <item quantity="nut_syrup">Ореховый сироп</item><!--45-->
         <item quantity="maple_syrup">Кленовый сироп</item>
         <item quantity="icing_sugar">Айсинг сахар</item>
         <item quantity="marshmallow">Маршмеллоу</item>
         <item quantity="maple_syrup">Кленовый сироп</item>
-        <item quantity="pomegranate_juice">Гранатовый сок</item><!--48-->
+        <item quantity="pomegranate_juice">Гранатовый сок</item><!--50-->
         <item quantity="whipped_cream_with_chocolate">Взбитые сливки с шоколадом</item>
         <item quantity="brown_sugar">Коричневый сахар</item>
-        <item quantity="soft_cream_cheese">Мягкий творожный сыр</item><!--51-->
+        <item quantity="soft_cream_cheese">Мягкий творожный сыр</item><!--53-->
         <item quantity="sesame_oil">Кунжутное масло</item>
         <item quantity="pistachios">Фисташки</item>
         <item quantity="shortbread_cookies">Песочное печенье</item>
         <item quantity="rose_water">Розовая вода</item>
-        <item quantity="halva">Халва</item><!--57-->
+        <item quantity="halva">Халва</item><!--58-->
         <item quantity="poppy_seeds">Макка</item>
         <item quantity="breadcrumbs">Панировочные сухари</item>
         <item quantity="grated_nutmeg">Тертый мускатный орех</item>
-        <item quantity="aloe">Алоэ</item><!--61-->
+        <item quantity="aloe">Алоэ</item><!--62-->
         <item quantity="milk_glaze">Молочная глазурь</item>
         <item quantity="organic_chocolate">Органический шоколад</item>
         <item quantity="vanillin">Ванилин</item>
@@ -369,7 +394,7 @@
         <item quantity="green_tea_leaves">Листья зеленого чая</item>
         <item quantity="raspberry_leaves">Листья малины</item>
         <item quantity="tonic">Тоник</item>
-        <item quantity="grenadine">Гренадин</item><!--71-->
+        <item quantity="grenadine">Гренадин</item><!--72-->
         <item quantity="fruit_juice">Фруктовый сок</item>
         <item quantity="pineapple_juice">Сок ананаса</item>
         <item quantity="blackcurrant_syrup">Сироп черной смородины</item>
@@ -379,17 +404,17 @@
         <item quantity="alternative_milk">Дифферентное молоко</item>
         <item quantity="milk_chocolate">Молочный шоколад</item>
         <item quantity="menthol_gum">Ментоловые резинки</item>
-        <item quantity="drunken_cherry">Пьяная вишня</item><!--81-->
+        <item quantity="drunken_cherry">Пьяная вишня</item><!--82-->
         <item quantity="mint">Мята</item>
         <item quantity="walnuts">Грецкие орехи</item>
         <item quantity="brandy">Коньяк</item>
         <item quantity="spices">Специи</item>
         <item quantity="cherries">Черинда</item>
-        <item quantity="almonds">Миндаль (миндальный сироп)</item><!--87-->
-        <item quantity="almonds_milk">Миндальое молоко</item>
-        <item quantity="almonds_nut">Миндальный орех</item>
-        <item quantity="ice">Лёд</item><!--90-->
-        <item quantity="ice-cream">Мороженое</item><!--91-->
+        <item quantity="almonds">Миндаль (миндальный сироп)</item><!--88-->
+        <item quantity="almonds_milk">Миндальое молоко</item><!--89-->
+        <item quantity="almonds_nut">Миндальный орех</item><!--90-->
+        <item quantity="ice">Лёд</item><!--91-->
+        <item quantity="ice-cream">Мороженое</item><!--92-->
         <item quantity="pastry_baskets">Корзиночки из теста</item>
         <item quantity="pecans">Пекан</item>
         <item quantity="nutmeg">Мускатный орех</item>

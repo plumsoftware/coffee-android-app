@@ -185,7 +185,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[7],
                     allIngredients[9],
                     allIngredients[8],
-                    allIngredients[21],
+                    allIngredients[22],
                 )
             )
         )
@@ -205,7 +205,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[7],
                     allIngredients[9],
                     allIngredients[16],
-                    allIngredients[21],
+                    allIngredients[22],
                 )
             )
         )
@@ -224,7 +224,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[1],
                     allIngredients[7],
                     allIngredients[6],
-                    allIngredients[21],
+                    allIngredients[22],
                 )
             )
         )
@@ -241,10 +241,10 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[1],
-                    allIngredients[87],
                     allIngredients[88],
-                    allIngredients[21],
                     allIngredients[89],
+                    allIngredients[22],
+                    allIngredients[90],
                 )
             )
         )
@@ -262,7 +262,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[2],
-                    allIngredients[57]
+                    allIngredients[58]
                 )
             )
         )
@@ -310,6 +310,70 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         )
 //        endregion
 
+//        region::Raf
+        list.add(
+            Coffee(
+                id = 15,
+                name = coffeeNames[15],
+                ageRating = 14,
+                imageResId = C.drawable.raf_classic,
+                type = context.getString(C.string.raf),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[15],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[14],
+                    allIngredients[8],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 16,
+                name = coffeeNames[16],
+                ageRating = 14,
+                imageResId = C.drawable.raf_honey,
+                type = context.getString(C.string.raf),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[16],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[7],
+                    allIngredients[14],
+                    allIngredients[22],
+                    allIngredients[24],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 17,
+                name = coffeeNames[17],
+                ageRating = 14,
+                imageResId = C.drawable.raf_caramel,
+                type = context.getString(C.string.raf),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[17],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[2],
+                    allIngredients[7],
+                    allIngredients[17],
+                    allIngredients[14],
+                    allIngredients[22],
+                )
+            )
+        )
+//        endregion
+
 //        region::Cold
         list.add(
             Coffee(
@@ -325,9 +389,9 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[0],
                     allIngredients[1],
                     allIngredients[6],
-                    allIngredients[21],
-                    allIngredients[90],
+                    allIngredients[22],
                     allIngredients[91],
+                    allIngredients[92],
                 )
             )
         )
