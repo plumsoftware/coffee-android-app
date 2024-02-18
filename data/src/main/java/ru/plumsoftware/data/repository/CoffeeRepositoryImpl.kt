@@ -390,6 +390,25 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                 )
             )
         )
+        list.add(
+            Coffee(
+                id = 18,
+                name = coffeeNames[18],
+                ageRating = 14,
+                imageResId = C.drawable.lavendar_raf,
+                type = context.getString(C.string.raf),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[18],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[1],
+                    allIngredients[89],
+                    allIngredients[103],
+                    allIngredients[104],
+                )
+            )
+        )
 //        endregion
 
 //        region::Cold
