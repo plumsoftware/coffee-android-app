@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.LikedDrink
@@ -13,6 +14,7 @@ import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Calendar
 
 class HomeViewModel(
+    age: Int,
     coffeeStorage: CoffeeStorage?,
     name: String,
     private val userDatabase: UserDatabase?,
@@ -61,7 +63,8 @@ class HomeViewModel(
                 coffeeMatrix = coffeeMatrix,
                 coffeeOfTheDay = coffeeOfTheDay,
                 name = name,
-                welcome = welcome()
+                welcome = welcome(),
+                isAdult = age >= App.INSTANCE.getString(R.string.adult_age).toInt()
             )
         )
 

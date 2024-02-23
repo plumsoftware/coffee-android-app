@@ -61,6 +61,7 @@
     <string name="welcome_day">Добрый день,</string>
     <string name="welcome_evening">Добрый вечер,</string>
     <string name="coffee_of_the_day">Кофе дня</string>
+    <string name="adult_age">18</string>
 
     <!--    Privacy Policy-->
     <string name="privacy_policy">

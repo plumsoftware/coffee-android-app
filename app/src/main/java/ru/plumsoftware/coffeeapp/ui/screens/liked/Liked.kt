@@ -15,12 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
+import ru.plumsoftware.coffee.R
 import ru.plumsoftware.coffee.R as C
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.components.lists.TagList
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
+import ru.plumsoftware.coffeeapp.ui.screens.search.SearchViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
@@ -72,7 +74,12 @@ fun Liked(
 
             item {
                 TagList(
-                    tagArray = stringArrayResource(id = C.array.tag_list),
+                    tagArray = stringArrayResource(id = C.array.tag_list).copyOfRange(
+                        fromIndex = 0,
+                        toIndex = if (state.isAdult) stringArrayResource(id = C.array.tag_list).size else stringArrayResource(
+                            id = C.array.tag_list
+                        ).size - 1
+                    ),
                     onClick = { index, item ->
                         onEvent(LikedViewModel.Event.ChangeTag(index = index, item = item))
                     }
@@ -80,15 +87,35 @@ fun Liked(
             }
 
             for (i in state.coffeeMatrix.indices) {
-                item {
-                    HorizontalCoffeeList(
-                        type = state.coffeeMatrix[i][0].type,
-                        coffeeList = state.coffeeMatrix[i],
-                        onCoffeeClick = {
-                            onOutput(LikedViewModel.Output.SelectCoffee(value = it))
-                            onOutput(LikedViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
-                        }
-                    )
+                if (state.isAdult)
+                    item {
+                        HorizontalCoffeeList(
+                            type = state.coffeeMatrix[i][0].type,
+                            coffeeList = state.coffeeMatrix[i],
+                            onLikeClick = {
+                                onEvent(LikedViewModel.Event.Like(coffee = it))
+                            },
+                            onCoffeeClick = {
+                                onOutput(LikedViewModel.Output.SelectCoffee(value = it))
+                                onOutput(LikedViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                            }
+                        )
+                    }
+                else {
+                    item {
+                        if (state.coffeeMatrix[i][0].type != stringArrayResource(id = R.array.tag_list)[9])
+                            HorizontalCoffeeList(
+                                type = state.coffeeMatrix[i][0].type,
+                                coffeeList = state.coffeeMatrix[i],
+                                onLikeClick = {
+                                    onEvent(LikedViewModel.Event.Like(coffee = it))
+                                },
+                                onCoffeeClick = {
+                                    onOutput(LikedViewModel.Output.SelectCoffee(value = it))
+                                    onOutput(LikedViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                }
+                            )
+                    }
                 }
             }
 
@@ -108,6 +135,7 @@ private fun LikedPreview() {
             val viewModel = LikedViewModel(
                 coffeeStorage = null,
                 userDatabase = null,
+                age = 18,
                 output = {}
             )
             Liked(likedViewModel = viewModel, viewModel::onEvent, viewModel::onOutput)

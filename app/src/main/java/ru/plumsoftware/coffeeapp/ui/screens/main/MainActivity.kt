@@ -45,6 +45,7 @@ import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
+import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.storage.CoffeeStorage
@@ -280,6 +281,7 @@ private fun Content(
                             coffeeStorage = coffeeStorage,
                             userDatabase = userDatabase,
                             name = mainState.name,
+                            age = mainState.age,
                             output = { output ->
                                 when (output) {
                                     is HomeViewModel.Output.NavigateTo -> {
@@ -304,6 +306,7 @@ private fun Content(
                     )
                 }
                 composable(route = Screens.LIKED) {
+                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
                     mainViewModel.onEvent(
                         MainViewModel.Event.ChangeStatusBarColor(
                             statusBarColor = MaterialTheme.colorScheme.background
@@ -312,6 +315,7 @@ private fun Content(
                     mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
                     val viewModel = LikedViewModel(
+                        age = mainState.age,
                         coffeeStorage = coffeeStorage,
                         userDatabase = userDatabase,
                         output = { output ->
@@ -372,6 +376,7 @@ private fun Content(
                     Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.SEARCH) {
+                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
                     mainViewModel.onEvent(
                         MainViewModel.Event.ChangeStatusBarColor(
                             statusBarColor = MaterialTheme.colorScheme.background
@@ -381,6 +386,7 @@ private fun Content(
 
                     val viewModel =
                         SearchViewModel(
+                            age = mainState.age,
                             userDatabase = userDatabase,
                             coffeeStorage = coffeeStorage,
                             tag = "",

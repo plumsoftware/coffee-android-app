@@ -80,7 +80,7 @@ fun CoffeeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(height = Size.Coffee.fullCoffeeImageHeight),
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.FillWidth,
                         painter = painterResource(id = state.selectedCoffee.imageResId),
                         contentDescription = stringResource(
                             id = R.string.coffee_image__content_description
@@ -120,7 +120,7 @@ fun CoffeeScreen(
                                 )
                                 Text(
                                     text =
-                                    state.selectedCoffee.ingredients.size.toString() + " " + if (state.selectedCoffee.ingredients.size < 5) stringResource(
+                                    state.selectedCoffee.ingredients.size.toString() + " " + if (state.selectedCoffee.ingredients.size < 5 && state.selectedCoffee.ingredients.size != 0) stringResource(
                                         id = R.string.ingredients_2
                                     ) else stringResource(
                                         id = R.string.ingredients_1

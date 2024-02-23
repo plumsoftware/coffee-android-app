@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
+import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
@@ -19,6 +20,13 @@ class MainViewModel(
     private val vibrator: Vibrator,
     private val output: (Output) -> Unit,
 ) : ViewModel() {
+
+    private val user = User(
+        name = sharedPreferencesStorage.get().name,
+        birthday = sharedPreferencesStorage.get().birthday,
+        theme = sharedPreferencesStorage.get().theme,
+        isFirst = sharedPreferencesStorage.get().isFirst
+    )
 
     private fun vibrate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -34,12 +42,8 @@ class MainViewModel(
     val state = MutableStateFlow(
         MainState(
             name = sharedPreferencesStorage.get().name,
-            user = User(
-                name = sharedPreferencesStorage.get().name,
-                birthday = sharedPreferencesStorage.get().birthday,
-                theme = sharedPreferencesStorage.get().theme,
-                isFirst = sharedPreferencesStorage.get().isFirst,
-            )
+            user = user,
+            age = calculateAge(user.birthday).toInt()
         )
     )
 

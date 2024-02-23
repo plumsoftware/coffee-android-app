@@ -7,4 +7,5 @@ data class HomeState(
     val coffeeOfTheDay: Coffee,
     val name: String,
     val welcome: Int,
+    val isAdult: Boolean,
 )

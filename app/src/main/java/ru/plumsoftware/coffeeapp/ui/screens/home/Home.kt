@@ -21,15 +21,18 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import ru.plumsoftware.coffee.R
 import ru.plumsoftware.coffeeapp.ui.components.cards.CoffeeOfTheDayCard
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.groups.BottomNavBar
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
+import ru.plumsoftware.coffeeapp.ui.screens.liked.LikedViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
@@ -113,29 +116,62 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
             }
 
             for (i in state.coffeeMatrix.indices) {
-                item {
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(
-                                horizontal = Padding.Screens.smallScreenPadding,
-                                vertical = Padding.Screens.extraSmallScreenPadding
+                if (state.isAdult)
+                    item {
+                        Column(
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(
+                                    horizontal = Padding.Screens.smallScreenPadding,
+                                    vertical = Padding.Screens.extraSmallScreenPadding
+                                )
+                        ) {
+                            HorizontalCoffeeList(
+                                type = state.coffeeMatrix[i][0].type,
+                                coffeeList = state.coffeeMatrix[i],
+                                onLikeClick = {
+                                    onEvent(HomeViewModel.Event.Like(coffee = it))
+                                },
+                                onCoffeeClick = {
+                                    homeViewModel.onOutput(HomeViewModel.Output.SelectCoffee(value = it))
+                                    homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                }
                             )
-                    ) {
-                        HorizontalCoffeeList(
-                            type = state.coffeeMatrix[i][0].type,
-                            coffeeList = state.coffeeMatrix[i],
-                            onLikeClick = {
-                                onEvent(HomeViewModel.Event.Like(coffee = it))
-                            },
-                            onCoffeeClick = {
-                                homeViewModel.onOutput(HomeViewModel.Output.SelectCoffee(value = it))
-                                homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                        }
+                    }
+                else {
+                    item {
+                        if (state.coffeeMatrix[i][0].type != stringArrayResource(id = R.array.tag_list)[9])
+                            Column(
+                                verticalArrangement = Arrangement.Top,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(
+                                        horizontal = Padding.Screens.smallScreenPadding,
+                                        vertical = Padding.Screens.extraSmallScreenPadding
+                                    )
+                            ) {
+                                HorizontalCoffeeList(
+                                    type = state.coffeeMatrix[i][0].type,
+                                    coffeeList = state.coffeeMatrix[i],
+                                    onLikeClick = {
+                                        onEvent(HomeViewModel.Event.Like(coffee = it))
+                                    },
+                                    onCoffeeClick = {
+                                        homeViewModel.onOutput(
+                                            HomeViewModel.Output.SelectCoffee(
+                                                value = it
+                                            )
+                                        )
+                                        homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                    }
+                                )
                             }
-                        )
                     }
                 }
             }
@@ -168,6 +204,7 @@ private fun HomePreview() {
             }
 
             val homeViewModel = HomeViewModel(
+                age = 18,
                 coffeeStorage = null,
                 name = "Test",
                 output = {},

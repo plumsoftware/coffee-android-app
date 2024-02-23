@@ -6,4 +6,5 @@ data class LikedState(
     val coffeeMatrix: List<List<Coffee>>,
     val query: String = "",
     val tag: String,
+    val isAdult: Boolean,
 )

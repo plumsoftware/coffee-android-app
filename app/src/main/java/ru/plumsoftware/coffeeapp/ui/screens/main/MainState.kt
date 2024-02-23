@@ -26,5 +26,6 @@ data class MainState(
         description = "",
         ageRating = 0,
         ingredients = emptyList()
-    )
+    ),
+    val age: Int = 1
 )

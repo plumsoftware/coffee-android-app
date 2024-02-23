@@ -8,5 +8,6 @@ data class SearchState(
     val coffeeMatrix: List<List<Coffee>>,
     val tagArray: Int,
     val tag: String,
-    val focusRequester: FocusRequester = FocusRequester()
+    val focusRequester: FocusRequester = FocusRequester(),
+    val isAdult: Boolean,
 )

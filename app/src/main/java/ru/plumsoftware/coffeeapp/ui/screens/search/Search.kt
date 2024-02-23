@@ -17,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringArrayResource
 import kotlinx.coroutines.delay
+import ru.plumsoftware.coffee.R
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.SearchField
 import ru.plumsoftware.coffeeapp.ui.components.lists.HorizontalCoffeeList
 import ru.plumsoftware.coffeeapp.ui.components.lists.TagList
 import ru.plumsoftware.coffeeapp.ui.screens.Screens
+import ru.plumsoftware.coffeeapp.ui.screens.home.HomeViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.coffeeapp.ui.theme.Size
 
@@ -66,7 +68,12 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
 
             item {
                 TagList(
-                    tagArray = stringArrayResource(id = state.tagArray),
+                    tagArray = stringArrayResource(id = R.array.tag_list).copyOfRange(
+                        fromIndex = 0,
+                        toIndex = if (state.isAdult) stringArrayResource(id = R.array.tag_list).size else stringArrayResource(
+                            id = R.array.tag_list
+                        ).size - 1
+                    ),
                     onClick = { index, item ->
                         onEvent(SearchViewModel.Event.ChangeTag(index = index, item = item))
                     }
@@ -74,15 +81,39 @@ fun Search(searchViewModel: SearchViewModel, onEvent: (SearchViewModel.Event) ->
             }
 
             for (i in state.coffeeMatrix.indices) {
-                item {
-                    HorizontalCoffeeList(
-                        type = state.coffeeMatrix[i][0].type,
-                        coffeeList = state.coffeeMatrix[i],
-                        onCoffeeClick = {
-                            searchViewModel.onOutput(SearchViewModel.Output.SelectCoffee(value = it))
-                            searchViewModel.onOutput(SearchViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
-                        }
-                    )
+                if (state.isAdult)
+                    item {
+                        HorizontalCoffeeList(
+                            type = state.coffeeMatrix[i][0].type,
+                            coffeeList = state.coffeeMatrix[i],
+                            onLikeClick = {
+                                onEvent(SearchViewModel.Event.Like(coffee = it))
+                            },
+                            onCoffeeClick = {
+                                searchViewModel.onOutput(SearchViewModel.Output.SelectCoffee(value = it))
+                                searchViewModel.onOutput(SearchViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                            }
+                        )
+                    }
+                else {
+                    item {
+                        if (state.coffeeMatrix[i][0].type != stringArrayResource(id = R.array.tag_list)[9])
+                            HorizontalCoffeeList(
+                                type = state.coffeeMatrix[i][0].type,
+                                coffeeList = state.coffeeMatrix[i],
+                                onLikeClick = {
+                                    onEvent(SearchViewModel.Event.Like(coffee = it))
+                                },
+                                onCoffeeClick = {
+                                    searchViewModel.onOutput(
+                                        SearchViewModel.Output.SelectCoffee(
+                                            value = it
+                                        )
+                                    )
+                                    searchViewModel.onOutput(SearchViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                }
+                            )
+                    }
                 }
             }
 

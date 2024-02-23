@@ -1,15 +1,22 @@
 package ru.plumsoftware.coffeeapp.ui.screens.liked
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.application.App
+import ru.plumsoftware.coffeeapp.ui.screens.search.SearchViewModel
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
+import ru.plumsoftware.data.models.LikedDrink
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Locale
 
 class LikedViewModel(
+    age: Int,
     coffeeStorage: CoffeeStorage?,
     private val userDatabase: UserDatabase?,
     private val output: (Output) -> Unit
@@ -47,7 +54,13 @@ class LikedViewModel(
         }
     }
 
-    val state = MutableStateFlow(LikedState(coffeeMatrix = coffeeMatrix, tag = ""))
+    val state = MutableStateFlow(
+        LikedState(
+            coffeeMatrix = coffeeMatrix,
+            tag = "",
+            isAdult = age >= App.INSTANCE.getString(R.string.adult_age).toInt()
+        )
+    )
 
     fun onEvent(event: Event) {
         when (event) {
@@ -92,6 +105,22 @@ class LikedViewModel(
                     )
                 }
             }
+
+            is Event.Like -> {
+                viewModelScope.launch {
+                    with(event.coffee) {
+                        if (isLiked == 1)
+                            userDatabase!!.dao.deleteById(drinkId = id)
+                        else {
+                            userDatabase!!.dao.upsert(
+                                LikedDrink(
+                                    drinkId = event.coffee.id
+                                )
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -109,5 +138,6 @@ class LikedViewModel(
         data class ChangeTag(val index: Int, val item: String) : Event()
         data object Search : Event()
         data object ClearQuery : Event()
+        data class Like(val coffee: Coffee) : Event()
     }
 }
