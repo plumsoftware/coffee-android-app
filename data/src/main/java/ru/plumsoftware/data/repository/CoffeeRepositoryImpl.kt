@@ -411,8 +411,24 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         )
 //        endregion
 
-//        region::Glasse
-
+//        region::Americano
+        list.add(
+            Coffee(
+                id = 20,
+                name = coffeeNames[20],
+                ageRating = 14,
+                imageResId = C.drawable.americano,
+                type = context.getString(C.string.americano),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[20],
+                ingredients = listOf(
+                    allIngredients[4],
+                    allIngredients[40],
+                    allIngredients[105],
+                )
+            )
+        )
 //        endregion
 
 //        region::Cold
@@ -452,6 +468,27 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[9],
                     allIngredients[18],
                     allIngredients[92]
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 21,
+                name = coffeeNames[21],
+                ageRating = 14,
+                imageResId = C.drawable.ice_americano,
+                type = context.getString(C.string.cold),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[21],
+                ingredients = listOf(
+                    allIngredients[106],
+                    allIngredients[40],
+                    allIngredients[105],
+                    allIngredients[91],
+                    allIngredients[1],
+                    allIngredients[14],
+                    allIngredients[107],
                 )
             )
         )

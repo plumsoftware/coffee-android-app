@@ -22,7 +22,7 @@
     <string name="taste">Изысканный вкус</string>
 
     <!--    Intolerable ingredients-->
-    <string name="intolerable_ingredients">Непеносимость компонентов</string>
+    <string name="intolerable_ingredients">Непереносимость компонентов</string>
 
     <!--    Content descriptions-->
     <string name="calendar_content_description">Иконка календаря для указания возраста</string>
