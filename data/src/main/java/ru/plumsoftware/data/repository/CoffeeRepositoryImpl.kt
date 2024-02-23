@@ -431,6 +431,64 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         )
 //        endregion
 
+//        region::Espresso
+        list.add(
+            Coffee(
+                id = 22,
+                name = coffeeNames[22],
+                ageRating = 14,
+                imageResId = C.drawable.espresso,
+                type = context.getString(C.string.espresso),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[22],
+                ingredients = listOf(
+                    allIngredients[3],
+                )
+            )
+        )
+//        endregion
+
+//        region::Alcohol
+        list.add(
+            Coffee(
+                id = 23,
+                name = coffeeNames[23],
+                ageRating = 14,
+                imageResId = C.drawable.irish_coffee,
+                type = context.getString(C.string.alcohol),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[23],
+                ingredients = listOf(
+                    allIngredients[109],
+                    allIngredients[2],
+                    allIngredients[14],
+                    allIngredients[108],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 24,
+                name = coffeeNames[24],
+                ageRating = 14,
+                imageResId = C.drawable.espresso_martini,
+                type = context.getString(C.string.alcohol),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[24],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[8],
+                    allIngredients[20],
+                    allIngredients[91],
+                    allIngredients[110],
+                )
+            )
+        )
+//        endregion
+
 //        region::Cold
         list.add(
             Coffee(
