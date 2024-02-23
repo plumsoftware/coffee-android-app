@@ -21,6 +21,7 @@
         <item>Медовый Раф</item>
         <item>Арахисовый Раф</item>
         <item>Лавандовый Раф</item>
+        <item>Гляссе</item>
     </array>
 
     <!--    Tag list-->
@@ -31,7 +32,7 @@
         <item>Мокачино</item>
         <item>Флэт уайт</item>
         <item>Раф</item>
-        <item>Гляссе</item>
+<!--        <item>Гляссе</item>-->
         <item>Американо</item>
         <item>Эспрессо</item>
         <item>Какао</item>
@@ -44,7 +45,7 @@
     <string name="mochacchino">Мокачино</string>
     <string name="flat_white">Флэт уайт</string>
     <string name="raf">Раф</string>
-    <string name="glace">Гляссе</string>
+<!--    <string name="glace">Гляссе</string>-->
     <string name="americano">Американо</string>
     <string name="espresso">Эспрессо</string>
     <string name="cacao">Какао</string>
@@ -235,6 +236,14 @@
             4. Добавьте пенку из молока сверху.\n\n
             5. По желанию украсьте напиток лавандовыми цветками.\n\n
         </item>
+
+        <item>
+            1. Сначала сварите эспрессо.\n\n
+            2. Процеживаем эспрессо в кружку. Добавляем в напиток сахар и хорошенько размешиваем.\n\n
+            3. В кружку выкладываем 2-3 шарика ванильного мороженного и начинаем выливать тонкой струйкой наше ароматное кофе.\n\n
+            *При желании можно пункты 2 и 3 поменять местами.\n\n
+            Готово! Остается только украсить получившийся кофе с мороженым. Для украшения подойдет шоколадный сироп или какао-порошок.\n\n
+        </item>
     </array>
 
     <!--    Ingredients-->
@@ -419,7 +428,7 @@
         <item quantity="spices">Специи</item>
         <item quantity="cherries">Черинда</item>
         <item quantity="almonds">Миндаль (миндальный сироп)</item><!--88-->
-        <item quantity="almonds_milk">Миндальое молоко</item><!--89-->
+        <item quantity="almonds_milk">Миндальное молоко</item><!--89-->
         <item quantity="almonds_nut">Миндальный орех</item><!--90-->
         <item quantity="ice">Лёд</item><!--91-->
         <item quantity="ice-cream">Мороженое</item><!--92-->

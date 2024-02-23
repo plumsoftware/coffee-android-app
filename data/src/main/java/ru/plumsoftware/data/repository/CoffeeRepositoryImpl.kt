@@ -411,6 +411,10 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
         )
 //        endregion
 
+//        region::Glasse
+
+//        endregion
+
 //        region::Cold
         list.add(
             Coffee(
@@ -429,6 +433,25 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                     allIngredients[22],
                     allIngredients[91],
                     allIngredients[92],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 19,
+                name = coffeeNames[19],
+                ageRating = 14,
+                imageResId = C.drawable.glasse,
+                type = context.getString(C.string.cold),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[19],
+                ingredients = listOf(
+                    allIngredients[0],
+                    allIngredients[2],
+                    allIngredients[9],
+                    allIngredients[18],
+                    allIngredients[92]
                 )
             )
         )
