@@ -454,7 +454,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
             Coffee(
                 id = 23,
                 name = coffeeNames[23],
-                ageRating = 14,
+                ageRating = 18,
                 imageResId = C.drawable.irish_coffee,
                 type = context.getString(C.string.alcohol),
                 isLiked = 0,
@@ -472,7 +472,7 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
             Coffee(
                 id = 24,
                 name = coffeeNames[24],
-                ageRating = 14,
+                ageRating = 18,
                 imageResId = C.drawable.espresso_martini,
                 type = context.getString(C.string.alcohol),
                 isLiked = 0,
@@ -481,6 +481,23 @@ class CoffeeRepositoryImpl(private val context: Context) : CoffeeRepository {
                 ingredients = listOf(
                     allIngredients[0],
                     allIngredients[8],
+                    allIngredients[20],
+                    allIngredients[91],
+                    allIngredients[110],
+                )
+            )
+        )
+        list.add(
+            Coffee(
+                id = 25,
+                name = coffeeNames[25],
+                ageRating = 18,
+                imageResId = C.drawable.black_russian,
+                type = context.getString(C.string.alcohol),
+                isLiked = 0,
+                roastingLevel = roastingLevels[1],
+                description = descriptions[25],
+                ingredients = listOf(
                     allIngredients[20],
                     allIngredients[91],
                     allIngredients[110],
