@@ -19,6 +19,7 @@ fun getTitleSmallFontSize() = 16.sp
 
 fun getLabelMediumFontSize() = 16.sp
 fun getLabelSmallFontSize() = 14.sp
+fun getBodySmallFontSize() = 10.sp
 
 fun getHeadlineLargeFontSize() = 32.sp
 //endregion
@@ -37,6 +38,8 @@ fun getLabelMediumLetterSpacing() = 0.04.sp
 fun getLabelSmallLetterSpacing() = 0.04.sp
 
 fun getHeadlineLargeLetterSpacing() = 0.04.sp
+
+fun getBodySmallLetterSpacing() = 0.04.sp
 //endregion
 
 //region::Line height
@@ -48,4 +51,6 @@ fun getLabelMediumLineHeight() = 20.sp
 fun getLabelSmallLineHeight() = 20.sp
 
 fun getHeadlineLargeLineHeight() = 20.sp
+
+fun getBodySmallLineHeight() = 20.sp
 //endregion

@@ -14,6 +14,7 @@ import ru.plumsoftware.domain.usecases.drinks.GetRandomDrinkUseCase
 import ru.plumsoftware.domain.usecases.drinks.GetTagsUseCase
 import ru.plumsoftware.domain.usecases.drinks.ToMatrixUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.GetUserUseCase
+import ru.plumsoftware.domain.usecases.sharedpreferences.SetAgreeDateUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.SetBirthdayUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.SetIsFirstUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.SetNameUseCase
@@ -39,7 +40,8 @@ internal val domainModule = module {
             setBirthdayUseCase = SetBirthdayUseCase(sharedPreferencesRepository = get()),
             setIsFirstUseCase = SetIsFirstUseCase(sharedPreferencesRepository = get()),
             setNameUseCase = SetNameUseCase(sharedPreferencesRepository = get()),
-            setThemeUseCase = SetThemeUseCase(sharedPreferencesRepository = get())
+            setThemeUseCase = SetThemeUseCase(sharedPreferencesRepository = get()),
+            setAgreeDateUseCase = SetAgreeDateUseCase(sharedPreferencesRepository = get())
         )
     }
 }

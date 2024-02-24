@@ -3,7 +3,7 @@ package ru.plumsoftware.coffeeapp.utilities
 import java.util.Calendar
 
 fun calculateAge(dob: Long): String {
-    return if (dob == 1L) ""
+    return if (dob == 1L) "0"
     else
         try {
             val cal1 = Calendar.getInstance()
@@ -17,6 +17,6 @@ fun calculateAge(dob: Long): String {
 
             diffInYears.toString()
         } catch (_: Exception) {
-            ""
+            "0"
         }
 }

@@ -12,14 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.flow.asSharedFlow
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.AgeHint
 import ru.plumsoftware.coffeeapp.ui.components.buttons.RButton
@@ -41,12 +45,29 @@ import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
 import ru.plumsoftware.coffeeapp.ui.theme.LightColors
 import ru.plumsoftware.coffeeapp.ui.theme.Padding
 import ru.plumsoftware.data.models.User
+import java.text.SimpleDateFormat
+import java.util.Date
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Settings(settingsViewModel: SettingsViewModel, onEvent: (SettingsViewModel.Event) -> Unit) {
 
     val state = settingsViewModel.state.collectAsState().value
+
+    LaunchedEffect(Unit) {
+        settingsViewModel.label.asSharedFlow().collect { label ->
+            when (label) {
+                SettingsViewModel.Label.ShowBottomSheetDialog -> {
+                    state.sheetState.expand()
+                }
+
+                SettingsViewModel.Label.HideBottomSheetDialog -> {
+                    state.sheetState.hide()
+                }
+            }
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -201,10 +222,64 @@ fun Settings(settingsViewModel: SettingsViewModel, onEvent: (SettingsViewModel.E
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
+                        style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Start
                     )
                 }
+
+                TextButton(
+                    onClick = {
+                        onEvent(SettingsViewModel.Event.ShowBottomSheetDialog)
+                    },
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.pp_hint),
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                    )
+                }
             }
+
+            if (state.showBottomSheet)
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        onEvent(SettingsViewModel.Event.HideBottomSheetDialog)
+                    },
+                    sheetState = state.sheetState
+                ) {
+                    LazyColumn(content = {
+                        item {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(all = Padding.Screens.smallScreenPadding),
+                                text = stringResource(id = R.string.privacy_policy),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                        item {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(all = Padding.Screens.smallScreenPadding),
+                                text = stringResource(id = R.string.agree_date_hint) + SimpleDateFormat(
+                                    "dd.MM.yyyy",
+                                    java.util.Locale.getDefault()
+                                ).format(
+                                    Date(
+                                        state.agreeDate
+                                    )
+                                ),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    })
+                }
         }
     }
 }

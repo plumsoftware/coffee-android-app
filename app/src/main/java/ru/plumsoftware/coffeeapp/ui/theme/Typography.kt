@@ -48,4 +48,12 @@ internal val Typography = Typography(
         lineHeight = getLabelSmallLineHeight(),
         letterSpacing = getLabelSmallLetterSpacing(),
     ),
+
+    bodySmall = TextStyle(
+        fontFamily = getMainFont(),
+        fontWeight = getRegularWeight(),
+        fontSize = getBodySmallFontSize(),
+        lineHeight = getBodySmallLineHeight(),
+        letterSpacing = getBodySmallLetterSpacing(),
+    ),
 )

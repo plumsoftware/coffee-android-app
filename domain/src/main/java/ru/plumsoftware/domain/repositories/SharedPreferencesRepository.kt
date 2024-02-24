@@ -9,4 +9,5 @@ interface SharedPreferencesRepository {
     fun set(birthday: Long)
     fun set(theme: Boolean)
     fun set(isFirst: Int)
+    fun setAgreeDate(agreeDate: Long)
 }

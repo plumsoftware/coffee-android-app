@@ -2,6 +2,7 @@ package ru.plumsoftware.domain.storage
 
 import ru.plumsoftware.domain.models.UserModel
 import ru.plumsoftware.domain.usecases.sharedpreferences.GetUserUseCase
+import ru.plumsoftware.domain.usecases.sharedpreferences.SetAgreeDateUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.SetBirthdayUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.SetIsFirstUseCase
 import ru.plumsoftware.domain.usecases.sharedpreferences.SetNameUseCase
@@ -12,7 +13,8 @@ class SharedPreferencesStorage(
     private val setBirthdayUseCase: SetBirthdayUseCase,
     private val setIsFirstUseCase: SetIsFirstUseCase,
     private val setNameUseCase: SetNameUseCase,
-    private val setThemeUseCase: SetThemeUseCase
+    private val setThemeUseCase: SetThemeUseCase,
+    private val setAgreeDateUseCase: SetAgreeDateUseCase
 ) {
 
     fun get(): UserModel = getUserUseCase.execute()
@@ -31,5 +33,9 @@ class SharedPreferencesStorage(
 
     fun set(name: String) {
         setNameUseCase.execute(name)
+    }
+
+    fun setAgreeDate(agreeDate: Long) {
+        setAgreeDateUseCase.execute(agreeDate)
     }
 }

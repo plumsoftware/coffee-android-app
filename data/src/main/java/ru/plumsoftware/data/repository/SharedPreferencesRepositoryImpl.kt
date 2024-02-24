@@ -13,7 +13,8 @@ class SharedPreferencesRepositoryImpl(private val context: Context) : SharedPref
             name = sharedPreferences.getString(Constants.NAME_SP, "")!!,
             birthday = sharedPreferences.getLong(Constants.BIRTHDAY_SP, 1L),
             theme = sharedPreferences.getBoolean(Constants.THEME_SP, false),
-            isFirst = sharedPreferences.getInt(Constants.ISFIRST_SP, 1)
+            isFirst = sharedPreferences.getInt(Constants.ISFIRST_SP, 1),
+            agreeDate = sharedPreferences.getLong(Constants.AGREE_DATE, 0L)
         )
     }
 
@@ -46,6 +47,14 @@ class SharedPreferencesRepositoryImpl(private val context: Context) : SharedPref
             context.getSharedPreferences(Constants.SP_NAME, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putInt(Constants.ISFIRST_SP, isFirst)
+        editor.apply()
+    }
+
+    override fun setAgreeDate(agreeDate: Long) {
+        val sharedPreferences =
+            context.getSharedPreferences(Constants.SP_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putLong(Constants.AGREE_DATE, agreeDate)
         editor.apply()
     }
 }

@@ -6,4 +6,5 @@ interface UserModel {
     val birthday: Long
     val theme: Boolean
     val isFirst: Int
+    val agreeDate: Long
 }

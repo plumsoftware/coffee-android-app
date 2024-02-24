@@ -11,10 +11,12 @@ data class User(
     override val id: Int = 0,
     @ColumnInfo(defaultValue = "")
     override val name: String = "",
-    @ColumnInfo(defaultValue = "")
-    override val birthday: Long = 1,
+    @ColumnInfo(defaultValue = "1L")
+    override val birthday: Long = 1L,
     @ColumnInfo(defaultValue = "false")
     override val theme: Boolean = false,
     @ColumnInfo(defaultValue = "1")
     override val isFirst: Int = 1,
+    @ColumnInfo(defaultValue = "0L")
+    override val agreeDate: Long = 0L,
 ) : UserModel
