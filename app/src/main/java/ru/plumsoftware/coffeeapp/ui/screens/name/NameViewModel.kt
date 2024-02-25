@@ -34,9 +34,7 @@ class NameViewModel(
                 state.update {
                     it.copy(
                         birthday = event.birthday,
-                        isActive = state.value.name.isNotEmpty() && event.birthday.isNotEmpty() && state.value.checkBox && calculateAge(
-                            dob = dateToLong(inputString = event.birthday)!!
-                        ).toInt() > 14,
+                        isActive = getActive(name = state.value.name, birthday = event.birthday, accepted = state.value.checkBox),
                         age = calculateAge(
                             dob = dateToLong(inputString = event.birthday)!!
                         )
@@ -48,9 +46,7 @@ class NameViewModel(
                 state.update {
                     it.copy(
                         name = event.name,
-                        isActive = event.name.isNotEmpty() && state.value.birthday.isNotEmpty() && state.value.checkBox && calculateAge(
-                            dob = dateToLong(inputString = state.value.birthday)!!
-                        ).toInt() > 14
+                        isActive = getActive(name = event.name, birthday = state.value.birthday, accepted = state.value.checkBox)
                     )
                 }
             }
@@ -64,9 +60,11 @@ class NameViewModel(
                 state.update {
                     it.copy(
                         checkBox = event.checked,
-                        isActive = state.value.name.isNotEmpty() && state.value.birthday.isNotEmpty() && event.checked && calculateAge(
-                            dob = dateToLong(inputString = state.value.birthday)!!
-                        ).toInt() > 14,
+                        isActive = getActive(
+                            name = state.value.name,
+                            birthday = state.value.birthday,
+                            accepted = event.checked
+                        )
                     )
                 }
 
@@ -101,10 +99,31 @@ class NameViewModel(
         }
     }
 
+    private fun getActive(name: String, birthday: String, accepted: Boolean): Boolean {
+        if (
+            name.isNotEmpty() &&
+            birthday.isNotEmpty() &&
+            accepted &&
+            calculateAge(dob = dateToLong(inputString = birthday)!!).toInt() >= 14
+        ) return true
+        else if (
+            name.isNotEmpty() &&
+            birthday.isNotEmpty() &&
+            accepted &&
+            calculateAge(dob = dateToLong(inputString = birthday)!!).toInt() < 14
+        ) {
+            viewModelScope.launch {
+                label.emit(Label.ShowSnackBar)
+            }
+            return false
+        } else return false
+    }
+
     @Immutable
     sealed class Label {
         data object ShowBottomSheetDialog : Label()
         data object HideBottomSheetDialog : Label()
+        data object ShowSnackBar : Label()
     }
 
     @Immutable

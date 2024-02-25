@@ -84,8 +84,9 @@ private fun Content(
     val mainViewModel
             by remember {
                 mutableStateOf(
-                    MainViewModel(sharedPreferencesStorage = sharedPreferencesStorage,
-                        App.INSTANCE.getSystemService(
+                    MainViewModel(
+                        sharedPreferencesStorage = sharedPreferencesStorage,
+                        vibrator = App.INSTANCE.getSystemService(
                             Context.VIBRATOR_SERVICE
                         ) as Vibrator,
                         output = { output ->

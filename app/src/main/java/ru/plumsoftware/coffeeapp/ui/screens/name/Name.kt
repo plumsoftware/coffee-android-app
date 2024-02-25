@@ -16,6 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -30,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.flow.asSharedFlow
 import ru.plumsoftware.coffeeapp.R
+import ru.plumsoftware.coffeeapp.application.App
 import ru.plumsoftware.coffeeapp.ui.components.fill_in.AgeHint
 import ru.plumsoftware.coffeeapp.ui.components.other.Dividers
 import ru.plumsoftware.coffeeapp.ui.components.buttons.PrimaryButton
@@ -59,11 +62,27 @@ fun Profile(
                 NameViewModel.Label.HideBottomSheetDialog -> {
                     state.sheetState.hide()
                 }
+
+                NameViewModel.Label.ShowSnackBar -> {
+                    state.snackbarHostState.showSnackbar(
+                        message = App.INSTANCE.getString(R.string.not_enough_age),
+                        duration = SnackbarDuration.Indefinite
+                    )
+                }
             }
         }
     }
 
-    Scaffold {
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = state.snackbarHostState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            )
+        }
+    ) {
         Column(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,

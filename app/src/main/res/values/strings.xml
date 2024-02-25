@@ -20,6 +20,7 @@
     <string name="agree_with_hint">Я согласен(согласна) с</string>
     <string name="pp_hint">Политика конфиденциальности</string>
     <string name="agree_date_hint">Дата согласия: </string>
+    <string name="not_enough_age">Не достаточно возраста</string>
 
     <!--    Coffee card-->
     <string name="taste">Изысканный вкус</string>
