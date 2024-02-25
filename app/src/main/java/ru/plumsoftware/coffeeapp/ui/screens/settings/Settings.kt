@@ -222,8 +222,7 @@ fun Settings(settingsViewModel: SettingsViewModel, onEvent: (SettingsViewModel.E
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight(),
-                        style = MaterialTheme.typography.labelSmall,
-                        textAlign = TextAlign.Start
+                        style = MaterialTheme.typography.labelSmall
                     )
                 }
 

@@ -45,7 +45,6 @@ import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
-import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.storage.CoffeeStorage
@@ -411,6 +410,7 @@ private fun Content(
                     Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                 }
                 composable(route = Screens.COFFEE_DRINK) {
+                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
                     mainViewModel.onEvent(
                         MainViewModel.Event.ChangeStatusBarColor(
                             statusBarColor = Color.Transparent
@@ -422,6 +422,7 @@ private fun Content(
                         userDatabase = userDatabase,
                         coffeeStorage = coffeeStorage,
                         selectedCoffee = mainState.selectedCoffee,
+                        age = mainState.age,
                         output = { output ->
                             when (output) {
                                 is CoffeeViewModel.Output.NavigateTo -> {

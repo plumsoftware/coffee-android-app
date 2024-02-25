@@ -59,6 +59,7 @@
     <string name="ingredients_1">игредиентов</string>
     <string name="ingredients_2">игредиента</string>
     <string name="also_you_would_like_drinks">Также могут понравиться</string>
+    <string name="content_unavailable">Контект не доступен</string>
 
     <!--    Home-->
     <string name="welcome_morning">Доброе утро,</string>

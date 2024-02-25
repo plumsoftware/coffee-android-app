@@ -15,7 +15,8 @@ class CoffeeViewModel(
     private val userDatabase: UserDatabase?,
     private val coffeeStorage: CoffeeStorage?,
     private val output: (Output) -> Unit,
-    selectedCoffee: Coffee
+    selectedCoffee: Coffee,
+    age: Int
 ) : ViewModel() {
 
     private val list: MutableList<IntolerableIngredients> = mutableListOf()
@@ -53,7 +54,8 @@ class CoffeeViewModel(
         CoffeeState(
             intolerableIngredients = list,
             selectedCoffee = selectedCoffee,
-            randomCoffeeDrinks = randomList
+            randomCoffeeDrinks = randomList,
+            age = age
         )
     )
 
