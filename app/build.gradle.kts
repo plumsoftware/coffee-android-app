@@ -53,13 +53,14 @@ android {
 
 dependencies {
 
-    val yandex_ads_version = "6.3.0"
-    val ui_controller = "0.30.1"
+    val yandex_ads_version = "6.4.0"
+    val ui_controller = "0.32.0"
     val koin_version = "3.4.2"
-    val nav_version = "2.7.6"
+    val nav_version = "2.7.7"
     val room_version = "2.6.1"
     val kapt_version = "2.6.1"
 
+    //Auto generate
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -98,7 +99,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$kapt_version")
 
     //Firebase Messaging
-    implementation("com.google.firebase:firebase-messaging:23.4.0")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
 
     //Corner smoothing

@@ -8,4 +8,5 @@ data class HomeState(
     val name: String,
     val welcome: Int,
     val isAdult: Boolean,
+    val isAdsLoading: Boolean,
 )

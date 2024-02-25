@@ -4,23 +4,32 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Vibrator
+import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.yandex.mobile.ads.appopenad.AppOpenAd
+import com.yandex.mobile.ads.appopenad.AppOpenAdLoadListener
+import com.yandex.mobile.ads.common.AdRequestError
+import com.yandex.mobile.ads.common.MobileAds
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.plumsoftware.coffeeapp.application.App
@@ -59,236 +68,327 @@ class MainActivity : ComponentActivity(), KoinComponent {
         val coffeeStorage by inject<CoffeeStorage>()
         val sharedPreferencesStorage by inject<SharedPreferencesStorage>()
 
+        MobileAds.initialize(this) {}
+
         setContent {
             Content(
                 userDatabase = userDatabase,
                 coffeeStorage = coffeeStorage,
-                sharedPreferencesStorage = sharedPreferencesStorage
+                sharedPreferencesStorage = sharedPreferencesStorage,
+                onBack = {
+                    this.finish()
+                }
             )
         }
     }
-}
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-private fun Content(
-    userDatabase: UserDatabase,
-    coffeeStorage: CoffeeStorage,
-    sharedPreferencesStorage: SharedPreferencesStorage
-) {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @Composable
+    private fun Content(
+        userDatabase: UserDatabase,
+        coffeeStorage: CoffeeStorage,
+        sharedPreferencesStorage: SharedPreferencesStorage,
+        onBack: () -> Unit
+    ) {
 
-    val systemUiController = rememberSystemUiController()
-    val navController = rememberNavController()
+        val systemUiController = rememberSystemUiController()
+        val navController = rememberNavController()
 
-    val mainViewModel
-            by remember {
-                mutableStateOf(
-                    MainViewModel(
-                        sharedPreferencesStorage = sharedPreferencesStorage,
-                        vibrator = App.INSTANCE.getSystemService(
-                            Context.VIBRATOR_SERVICE
-                        ) as Vibrator,
-                        output = { output ->
-                            when (output) {
-                                is MainViewModel.Output.NavigateTo -> {
-                                    navController.navigate(route = output.route)
+        val mainViewModel
+                by remember {
+                    mutableStateOf(
+                        MainViewModel(
+                            sharedPreferencesStorage = sharedPreferencesStorage,
+                            vibrator = App.INSTANCE.getSystemService(
+                                Context.VIBRATOR_SERVICE
+                            ) as Vibrator,
+                            output = { output ->
+                                when (output) {
+                                    is MainViewModel.Output.NavigateTo -> {
+                                        navController.navigate(route = output.route)
+                                    }
                                 }
-                            }
-                        })
+                            })
+                    )
+                }
+        val mainState = mainViewModel.state.collectAsState().value
+        val backCallback = remember {
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (navController.currentBackStackEntry?.destination?.route == Screens.SPLASH)
+                        onBack()
+                }
+            }
+        }
+
+        if (mainState.user.isFirst != 0) {
+            mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = true))
+            val appOpenAdLoadListener = object : AppOpenAdLoadListener {
+                override fun onAdLoaded(appOpenAd: AppOpenAd) {
+                    // The ad was loaded successfully. Now you can show loaded ad.
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
+                    mainViewModel.onEvent(MainViewModel.Event.LoadAppOpenAds(ads = appOpenAd))
+                    mainState.myAppOpenAd?.show(this@MainActivity)
+                    Log.i("TTT", appOpenAd.toString())
+                }
+
+                override fun onAdFailedToLoad(adRequestError: AdRequestError) {
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
+                    Log.i("TTT", adRequestError.toString())
+                    // Ad failed to load with AdRequestError.
+                    // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
+                }
+            }
+            mainState.myAppOpenAd?.setAdEventListener(mainState.appOpenAdEventListener)
+            mainState.appOpenAdLoader.setAdLoadListener(appOpenAdLoadListener)
+            mainState.appOpenAdLoader.loadAd(mainState.adRequestConfigurationOpenAds)
+        }
+        // On every successful composition, update the callback with the `enabled` value
+        SideEffect {
+            backCallback.isEnabled = true
+        }
+        val backDispatcher = checkNotNull(LocalOnBackPressedDispatcherOwner.current) {
+            "No OnBackPressedDispatcherOwner was provided via LocalOnBackPressedDispatcherOwner"
+        }.onBackPressedDispatcher
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner, backDispatcher) {
+            // Add callback to the backDispatcher
+            backDispatcher.addCallback(lifecycleOwner, backCallback)
+            // When the effect leaves the Composition, remove the callback
+            onDispose {
+                backCallback.remove()
+            }
+        }
+
+        Crossfade(
+            targetState = mainState.targetColorScheme,
+            animationSpec = tween(400),
+            label = "change theme"
+        ) { colorScheme ->
+
+            SideEffect {
+                systemUiController.setStatusBarColor(
+                    color = mainState.statusBarColor,
+                )
+                systemUiController.setNavigationBarColor(
+                    color = mainState.navColor
                 )
             }
 
-    val mainState = mainViewModel.state.collectAsState().value
-    Crossfade(
-        targetState = mainState.targetColorScheme,
-        animationSpec = tween(400),
-        label = "change theme"
-    ) { colorScheme ->
-
-        SideEffect {
-            systemUiController.setStatusBarColor(
-                color = mainState.statusBarColor,
-            )
-            systemUiController.setNavigationBarColor(
-                color = mainState.navColor
-            )
-        }
-
-        CoffeeAppTheme(useDarkTheme = mainState.useDark) {
-            NavHost(
-                navController = navController,
-                startDestination = Screens.SPLASH,
-                enterTransition = {
-                    when (initialState.destination.route) {
-                        Screens.COFFEE_DRINK ->
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(800)
-                            )
-
-                        else ->
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(0)
-                            )
-                    }
-                },
-                exitTransition = {
-                    when (targetState.destination.route) {
-                        Screens.COFFEE_DRINK ->
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(800)
-                            )
-
-                        else ->
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Left,
-                                animationSpec = tween(0)
-                            )
-                    }
-                },
-                popEnterTransition = {
-                    when (initialState.destination.route) {
-                        Screens.COFFEE_DRINK ->
-                            slideIntoContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(800)
-                            )
-
-                        else -> slideIntoContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Right,
-                            animationSpec = tween(0)
-                        )
-                    }
-                },
-                popExitTransition = {
-                    when (targetState.destination.route) {
-                        Screens.COFFEE_DRINK ->
-                            slideOutOfContainer(
-                                AnimatedContentTransitionScope.SlideDirection.Right,
-                                animationSpec = tween(800)
-                            )
-
-                        else -> slideOutOfContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Right,
-                            animationSpec = tween(0)
-                        )
-                    }
-                }
-            ) {
-                composable(route = Screens.SPLASH) {
-                    val viewModel =
-                        SplashScreenViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    is SplashScreenViewModel.Output.GetUser -> {
-                                        navController.navigate(route = if (output.isFirst) Screens.APPEARANCE else Screens.HOME)
-                                    }
-                                }
-                            }
-                        )
-
-                    SplashScreen(
-                        splashScreenViewModel = viewModel
-                    )
-                }
-                composable(route = Screens.APPEARANCE) {
-                    val viewModel =
-                        AppearanceViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    is AppearanceViewModel.Output.ChangeTheme -> {
-                                        mainViewModel.onEvent(
-                                            MainViewModel.Event.ChangeColorScheme(
-                                                targetColorScheme = output.targetColorScheme,
-                                                useDark = output.useDark
-                                            )
-                                        )
-                                        mainViewModel.onEvent(MainViewModel.Event.Vibrate)
-                                    }
-
-                                    AppearanceViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.NAME)
-                                    }
-                                }
-                            }
-                        )
-
-                    Appearance(
-                        appearanceViewModel = viewModel,
-                        onEvent = viewModel::onEvent
-                    )
-                }
-                composable(route = Screens.NAME) {
-                    val viewModel =
-                        NameViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    NameViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.INGREDIENTS)
-                                    }
-                                }
-                            }
-                        )
-
-                    Profile(
-                        nameViewModel = viewModel,
-                        onEvent = viewModel::onEvent
-                    )
-                }
-                composable(route = Screens.INGREDIENTS) {
-                    val viewModel =
-                        IntolerableIngredientsViewModel(
-                            ingredients = coffeeStorage.getI().map {
-                                Ingredient(
-                                    id = it.id,
-                                    name = it.name,
-                                    iconId = it.iconId
+            CoffeeAppTheme(useDarkTheme = mainState.useDark) {
+                NavHost(
+                    navController = navController,
+                    startDestination = Screens.SPLASH,
+                    enterTransition = {
+                        when (initialState.destination.route) {
+                            Screens.COFFEE_DRINK ->
+                                slideIntoContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Left,
+                                    animationSpec = tween(800)
                                 )
-                            },
-                            userDatabase = userDatabase,
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            output = { output ->
-                                when (output) {
-                                    is IntolerableIngredientsViewModel.Output.Go -> {
-                                        navController.navigate(route = Screens.HOME)
+
+                            else ->
+                                slideIntoContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Left,
+                                    animationSpec = tween(0)
+                                )
+                        }
+                    },
+                    exitTransition = {
+                        when (targetState.destination.route) {
+                            Screens.COFFEE_DRINK ->
+                                slideOutOfContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Left,
+                                    animationSpec = tween(800)
+                                )
+
+                            else ->
+                                slideOutOfContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Left,
+                                    animationSpec = tween(0)
+                                )
+                        }
+                    },
+                    popEnterTransition = {
+                        when (initialState.destination.route) {
+                            Screens.COFFEE_DRINK ->
+                                slideIntoContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Right,
+                                    animationSpec = tween(800)
+                                )
+
+                            else -> slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(0)
+                            )
+                        }
+                    },
+                    popExitTransition = {
+                        when (targetState.destination.route) {
+                            Screens.COFFEE_DRINK ->
+                                slideOutOfContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Right,
+                                    animationSpec = tween(800)
+                                )
+
+                            else -> slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                animationSpec = tween(0)
+                            )
+                        }
+                    }
+                ) {
+                    composable(route = Screens.SPLASH) {
+                        val viewModel =
+                            SplashScreenViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        is SplashScreenViewModel.Output.GetUser -> {
+                                            navController.navigate(route = if (output.isFirst) Screens.APPEARANCE else Screens.HOME)
+                                        }
                                     }
                                 }
-                            }
+                            )
+
+                        SplashScreen(
+                            splashScreenViewModel = viewModel
                         )
+                    }
+                    composable(route = Screens.APPEARANCE) {
+                        val viewModel =
+                            AppearanceViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        is AppearanceViewModel.Output.ChangeTheme -> {
+                                            mainViewModel.onEvent(
+                                                MainViewModel.Event.ChangeColorScheme(
+                                                    targetColorScheme = output.targetColorScheme,
+                                                    useDark = output.useDark
+                                                )
+                                            )
+                                            mainViewModel.onEvent(MainViewModel.Event.Vibrate)
+                                        }
 
+                                        AppearanceViewModel.Output.Go -> {
+                                            navController.navigate(route = Screens.NAME)
+                                        }
+                                    }
+                                }
+                            )
 
-                    IntolerableIngredients(
-                        intolerableIngredientsViewModel = viewModel,
-                        onEvent = viewModel::onEvent
-                    )
-                }
-                composable(route = Screens.HOME) {
-                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = getExtendedColors().welcomeBackgroundColor
+                        Appearance(
+                            appearanceViewModel = viewModel,
+                            onEvent = viewModel::onEvent
                         )
-                    )
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
+                    }
+                    composable(route = Screens.NAME) {
+                        val viewModel =
+                            NameViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        NameViewModel.Output.Go -> {
+                                            navController.navigate(route = Screens.INGREDIENTS)
+                                        }
+                                    }
+                                }
+                            )
 
-                    val viewModel =
-                        HomeViewModel(
+                        Profile(
+                            nameViewModel = viewModel,
+                            onEvent = viewModel::onEvent
+                        )
+                    }
+                    composable(route = Screens.INGREDIENTS) {
+                        val viewModel =
+                            IntolerableIngredientsViewModel(
+                                ingredients = coffeeStorage.getI().map {
+                                    Ingredient(
+                                        id = it.id,
+                                        name = it.name,
+                                        iconId = it.iconId
+                                    )
+                                },
+                                userDatabase = userDatabase,
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                output = { output ->
+                                    when (output) {
+                                        is IntolerableIngredientsViewModel.Output.Go -> {
+                                            navController.navigate(route = Screens.HOME)
+                                        }
+                                    }
+                                }
+                            )
+
+
+                        IntolerableIngredients(
+                            intolerableIngredientsViewModel = viewModel,
+                            onEvent = viewModel::onEvent
+                        )
+                    }
+                    composable(route = Screens.HOME) {
+                        mainViewModel.onEvent(MainViewModel.Event.SetUser)
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeStatusBarColor(
+                                statusBarColor = getExtendedColors().welcomeBackgroundColor
+                            )
+                        )
+                        mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
+
+                        val viewModel =
+                            HomeViewModel(
+                                coffeeStorage = coffeeStorage,
+                                userDatabase = userDatabase,
+                                isAdsLoading = false,
+                                name = mainState.name,
+                                age = mainState.age,
+                                output = { output ->
+                                    when (output) {
+                                        is HomeViewModel.Output.NavigateTo -> {
+                                            navController.navigate(route = output.route)
+                                        }
+
+                                        is HomeViewModel.Output.SelectCoffee -> {
+                                            mainViewModel.onEvent(
+                                                MainViewModel.Event.SelectCoffeeDrink(
+                                                    value = output.value
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                            )
+
+
+                        Home(
+                            homeViewModel = viewModel,
+                            onEvent = viewModel::onEvent
+                        )
+                    }
+                    composable(route = Screens.LIKED) {
+                        mainViewModel.onEvent(MainViewModel.Event.SetUser)
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeStatusBarColor(
+                                statusBarColor = MaterialTheme.colorScheme.background
+                            )
+                        )
+                        mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
+
+                        val viewModel = LikedViewModel(
+                            age = mainState.age,
                             coffeeStorage = coffeeStorage,
                             userDatabase = userDatabase,
-                            name = mainState.name,
-                            age = mainState.age,
                             output = { output ->
                                 when (output) {
-                                    is HomeViewModel.Output.NavigateTo -> {
-                                        navController.navigate(route = output.route)
+                                    is LikedViewModel.Output.NavigateTo -> {
+                                        navController.navigate(
+                                            route = output.route
+                                        )
                                     }
 
-                                    is HomeViewModel.Output.SelectCoffee -> {
+                                    is LikedViewModel.Output.SelectCoffee -> {
                                         mainViewModel.onEvent(
                                             MainViewModel.Event.SelectCoffeeDrink(
                                                 value = output.value
@@ -298,157 +398,120 @@ private fun Content(
                                 }
                             }
                         )
-
-
-                    Home(
-                        homeViewModel = viewModel,
-                        onEvent = viewModel::onEvent
-                    )
-                }
-                composable(route = Screens.LIKED) {
-                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = MaterialTheme.colorScheme.background
+                        Liked(
+                            likedViewModel = viewModel,
+                            onEvent = viewModel::onEvent,
+                            onOutput = viewModel::onOutput
                         )
-                    )
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
-
-                    val viewModel = LikedViewModel(
-                        age = mainState.age,
-                        coffeeStorage = coffeeStorage,
-                        userDatabase = userDatabase,
-                        output = { output ->
-                            when (output) {
-                                is LikedViewModel.Output.NavigateTo -> {
-                                    navController.navigate(
-                                        route = output.route
-                                    )
-                                }
-
-                                is LikedViewModel.Output.SelectCoffee -> {
-                                    mainViewModel.onEvent(
-                                        MainViewModel.Event.SelectCoffeeDrink(
-                                            value = output.value
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    )
-                    Liked(
-                        likedViewModel = viewModel,
-                        onEvent = viewModel::onEvent,
-                        onOutput = viewModel::onOutput
-                    )
-                }
-                composable(route = Screens.SETTINGS) {
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = MaterialTheme.colorScheme.background
+                    }
+                    composable(route = Screens.SETTINGS) {
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeStatusBarColor(
+                                statusBarColor = MaterialTheme.colorScheme.background
+                            )
                         )
-                    )
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
+                        mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
-                    val viewModel =
-                        SettingsViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            user = mainState.user,
-                            output = { output ->
-                                when (output) {
-                                    is SettingsViewModel.Output.ChangeTheme -> {
-                                        mainViewModel.onEvent(
-                                            MainViewModel.Event.ChangeColorScheme(
-                                                targetColorScheme = output.targetColorScheme,
-                                                useDark = output.useDark
+                        val viewModel =
+                            SettingsViewModel(
+                                sharedPreferencesStorage = sharedPreferencesStorage,
+                                user = mainState.user,
+                                output = { output ->
+                                    when (output) {
+                                        is SettingsViewModel.Output.ChangeTheme -> {
+                                            mainViewModel.onEvent(
+                                                MainViewModel.Event.ChangeColorScheme(
+                                                    targetColorScheme = output.targetColorScheme,
+                                                    useDark = output.useDark
+                                                )
                                             )
-                                        )
-                                        mainViewModel.onEvent(MainViewModel.Event.Vibrate)
-                                    }
+                                            mainViewModel.onEvent(MainViewModel.Event.Vibrate)
+                                        }
 
-                                    is SettingsViewModel.Output.NavigateTo -> {
-                                        navController.navigate(route = output.route)
+                                        is SettingsViewModel.Output.NavigateTo -> {
+                                            navController.navigate(route = output.route)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
 
-                    Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
-                }
-                composable(route = Screens.SEARCH) {
-                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = MaterialTheme.colorScheme.background
+                        Settings(settingsViewModel = viewModel, onEvent = viewModel::onEvent)
+                    }
+                    composable(route = Screens.SEARCH) {
+                        mainViewModel.onEvent(MainViewModel.Event.SetUser)
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeStatusBarColor(
+                                statusBarColor = MaterialTheme.colorScheme.background
+                            )
                         )
-                    )
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
+                        mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = MaterialTheme.colorScheme.background))
 
-                    val viewModel =
-                        SearchViewModel(
-                            age = mainState.age,
+                        val viewModel =
+                            SearchViewModel(
+                                age = mainState.age,
+                                userDatabase = userDatabase,
+                                coffeeStorage = coffeeStorage,
+                                tag = "",
+                                output = { output ->
+                                    when (output) {
+                                        is SearchViewModel.Output.NavigateTo -> {
+                                            navController.navigate(route = output.route)
+                                        }
+
+                                        is SearchViewModel.Output.SelectCoffee -> {
+                                            mainViewModel.onEvent(
+                                                MainViewModel.Event.SelectCoffeeDrink(
+                                                    value = output.value
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                            )
+
+                        Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
+                    }
+                    composable(route = Screens.COFFEE_DRINK) {
+                        mainViewModel.onEvent(MainViewModel.Event.SetUser)
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeStatusBarColor(
+                                statusBarColor = Color.Transparent
+                            )
+                        )
+                        mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = Color.Transparent))
+
+                        val viewModel = CoffeeViewModel(
                             userDatabase = userDatabase,
                             coffeeStorage = coffeeStorage,
-                            tag = "",
+                            selectedCoffee = mainState.selectedCoffee,
+                            age = mainState.age,
                             output = { output ->
                                 when (output) {
-                                    is SearchViewModel.Output.NavigateTo -> {
+                                    is CoffeeViewModel.Output.NavigateTo -> {
                                         navController.navigate(route = output.route)
                                     }
 
-                                    is SearchViewModel.Output.SelectCoffee -> {
+                                    is CoffeeViewModel.Output.SelectCoffee -> {
                                         mainViewModel.onEvent(
                                             MainViewModel.Event.SelectCoffeeDrink(
                                                 value = output.value
                                             )
                                         )
                                     }
+
+                                    CoffeeViewModel.Output.PopBackStack -> {
+                                        navController.popBackStack()
+                                    }
                                 }
                             }
                         )
 
-                    Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
-                }
-                composable(route = Screens.COFFEE_DRINK) {
-                    mainViewModel.onEvent(MainViewModel.Event.SetUser)
-                    mainViewModel.onEvent(
-                        MainViewModel.Event.ChangeStatusBarColor(
-                            statusBarColor = Color.Transparent
+                        CoffeeScreen(
+                            coffeeViewModel = viewModel,
+                            output = viewModel::onOutput,
+                            event = viewModel::onEvent
                         )
-                    )
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeNavBarColor(navBarColor = Color.Transparent))
-
-                    val viewModel = CoffeeViewModel(
-                        userDatabase = userDatabase,
-                        coffeeStorage = coffeeStorage,
-                        selectedCoffee = mainState.selectedCoffee,
-                        age = mainState.age,
-                        output = { output ->
-                            when (output) {
-                                is CoffeeViewModel.Output.NavigateTo -> {
-                                    navController.navigate(route = output.route)
-                                }
-
-                                is CoffeeViewModel.Output.SelectCoffee -> {
-                                    mainViewModel.onEvent(
-                                        MainViewModel.Event.SelectCoffeeDrink(
-                                            value = output.value
-                                        )
-                                    )
-                                }
-
-                                CoffeeViewModel.Output.PopBackStack -> {
-                                    navController.popBackStack()
-                                }
-                            }
-                        }
-                    )
-
-                    CoffeeScreen(
-                        coffeeViewModel = viewModel,
-                        output = viewModel::onOutput,
-                        event = viewModel::onEvent
-                    )
+                    }
                 }
             }
         }

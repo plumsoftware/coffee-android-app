@@ -18,10 +18,12 @@ class HomeViewModel(
     coffeeStorage: CoffeeStorage?,
     name: String,
     private val userDatabase: UserDatabase?,
-    private val output: (Output) -> Unit
+    private val output: (Output) -> Unit,
+    isAdsLoading: Boolean
 ) : ViewModel() {
 
-    private val list: MutableList<Coffee> = coffeeStorage!!.getD().map { it as Coffee }.toMutableList()
+    private val list: MutableList<Coffee> =
+        coffeeStorage!!.getD().map { it as Coffee }.toMutableList()
 
     init {
         runBlocking {
@@ -64,7 +66,8 @@ class HomeViewModel(
                 coffeeOfTheDay = coffeeOfTheDay,
                 name = name,
                 welcome = welcome(),
-                isAdult = age >= App.INSTANCE.getString(R.string.adult_age).toInt()
+                isAdult = age >= App.INSTANCE.getString(R.string.adult_age).toInt(),
+                isAdsLoading = isAdsLoading
             )
         )
 
