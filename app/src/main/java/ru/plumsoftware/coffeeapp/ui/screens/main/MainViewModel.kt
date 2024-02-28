@@ -6,7 +6,6 @@ import android.os.Vibrator
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.yandex.mobile.ads.appopenad.AppOpenAd
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.plumsoftware.coffeeapp.ui.theme.DarkColors
@@ -126,14 +125,6 @@ class MainViewModel(
                     )
                 }
             }
-
-            is Event.LoadAppOpenAds -> {
-                state.update {
-                    it.copy(
-                        myAppOpenAd = event.ads
-                    )
-                }
-            }
         }
     }
 
@@ -156,6 +147,5 @@ class MainViewModel(
         data object SetUser : Event()
         data object Vibrate : Event()
         data class ChangeLoadingState(val value: Boolean) : Event()
-        data class LoadAppOpenAds(val ads: AppOpenAd) : Event()
     }
 }

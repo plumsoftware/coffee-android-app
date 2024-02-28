@@ -3,7 +3,6 @@ package ru.plumsoftware.coffeeapp.ui.screens.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -54,80 +52,102 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
             )
         }
     ) {
-        if (state.isAdsLoading)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
-            ) {
-                CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center))
-            }
-        else
-            LazyColumn(
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            ) {
+        LazyColumn(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
 
-                item {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(space = Padding.Items.largeScreenPadding),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .background(color = getExtendedColors().welcomeBackgroundColor)
-                            .padding(all = Padding.Screens.smallScreenPadding)
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(space = Padding.Items.largeScreenPadding),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(color = getExtendedColors().welcomeBackgroundColor)
+                        .padding(all = Padding.Screens.smallScreenPadding)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = Padding.Items.mediumScreenPadding,
+                            alignment = Alignment.End
+                        )
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(
-                                space = Padding.Items.mediumScreenPadding,
-                                alignment = Alignment.End
-                            )
+                        Text(
+                            text = "${stringResource(id = state.welcome)} ${state.name}",
+                            style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            textAlign = TextAlign.Start
+                        )
+                    }
+
+                    SearchField(
+                        onFocusChange = {
+                            homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.SEARCH))
+                        }
+                    )
+                }
+            }
+
+            item {
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(all = Padding.Screens.smallScreenPadding)
+                ) {
+                    CoffeeOfTheDayCard(
+                        coffee = state.coffeeOfTheDay,
+                        onCoffeeClick = {
+                            homeViewModel.onOutput(HomeViewModel.Output.SelectCoffee(value = it))
+                            homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                        }
+                    )
+                }
+            }
+
+            for (i in state.coffeeMatrix.indices) {
+                if (state.isAdult)
+                    item {
+                        Column(
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(
+                                    horizontal = Padding.Screens.smallScreenPadding,
+                                    vertical = Padding.Screens.extraSmallScreenPadding
+                                )
                         ) {
-                            Text(
-                                text = "${stringResource(id = state.welcome)} ${state.name}",
-                                style = MaterialTheme.typography.titleLarge.copy(color = getExtendedColors().welcomeTextColor),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                textAlign = TextAlign.Start
+                            HorizontalCoffeeList(
+                                type = state.coffeeMatrix[i][0].type,
+                                coffeeList = state.coffeeMatrix[i],
+                                onLikeClick = {
+                                    onEvent(HomeViewModel.Event.Like(coffee = it))
+                                },
+                                onCoffeeClick = {
+                                    homeViewModel.onOutput(
+                                        HomeViewModel.Output.SelectCoffee(
+                                            value = it
+                                        )
+                                    )
+                                    homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                }
                             )
                         }
-
-                        SearchField(
-                            onFocusChange = {
-                                homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.SEARCH))
-                            }
-                        )
                     }
-                }
-
-                item {
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(all = Padding.Screens.smallScreenPadding)
-                    ) {
-                        CoffeeOfTheDayCard(
-                            coffee = state.coffeeOfTheDay,
-                            onCoffeeClick = {
-                                homeViewModel.onOutput(HomeViewModel.Output.SelectCoffee(value = it))
-                                homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
-                            }
-                        )
-                    }
-                }
-
-                for (i in state.coffeeMatrix.indices) {
-                    if (state.isAdult)
-                        item {
+                else {
+                    item {
+                        if (state.coffeeMatrix[i][0].type != stringArrayResource(id = R.array.tag_list)[9])
                             Column(
                                 verticalArrangement = Arrangement.Top,
                                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -151,53 +171,22 @@ fun Home(homeViewModel: HomeViewModel, onEvent: (HomeViewModel.Event) -> Unit) {
                                                 value = it
                                             )
                                         )
-                                        homeViewModel.onOutput(HomeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                        homeViewModel.onOutput(
+                                            HomeViewModel.Output.NavigateTo(
+                                                route = Screens.COFFEE_DRINK
+                                            )
+                                        )
                                     }
                                 )
                             }
-                        }
-                    else {
-                        item {
-                            if (state.coffeeMatrix[i][0].type != stringArrayResource(id = R.array.tag_list)[9])
-                                Column(
-                                    verticalArrangement = Arrangement.Top,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentHeight()
-                                        .padding(
-                                            horizontal = Padding.Screens.smallScreenPadding,
-                                            vertical = Padding.Screens.extraSmallScreenPadding
-                                        )
-                                ) {
-                                    HorizontalCoffeeList(
-                                        type = state.coffeeMatrix[i][0].type,
-                                        coffeeList = state.coffeeMatrix[i],
-                                        onLikeClick = {
-                                            onEvent(HomeViewModel.Event.Like(coffee = it))
-                                        },
-                                        onCoffeeClick = {
-                                            homeViewModel.onOutput(
-                                                HomeViewModel.Output.SelectCoffee(
-                                                    value = it
-                                                )
-                                            )
-                                            homeViewModel.onOutput(
-                                                HomeViewModel.Output.NavigateTo(
-                                                    route = Screens.COFFEE_DRINK
-                                                )
-                                            )
-                                        }
-                                    )
-                                }
-                        }
                     }
                 }
-
-                item {
-                    Spacer(modifier = Modifier.height(height = Size.Divider.homeHeight))
-                }
             }
+
+            item {
+                Spacer(modifier = Modifier.height(height = Size.Divider.homeHeight))
+            }
+        }
     }
 }
 

@@ -12,6 +12,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -20,16 +24,28 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.yandex.mobile.ads.appopenad.AppOpenAd
+import com.yandex.mobile.ads.appopenad.AppOpenAdEventListener
 import com.yandex.mobile.ads.appopenad.AppOpenAdLoadListener
+import com.yandex.mobile.ads.appopenad.AppOpenAdLoader
+import com.yandex.mobile.ads.common.AdError
+import com.yandex.mobile.ads.common.AdRequestConfiguration
 import com.yandex.mobile.ads.common.AdRequestError
+import com.yandex.mobile.ads.common.ImpressionData
 import com.yandex.mobile.ads.common.MobileAds
+import com.yandex.mobile.ads.interstitial.InterstitialAd
+import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener
+import com.yandex.mobile.ads.interstitial.InterstitialAdLoadListener
+import com.yandex.mobile.ads.interstitial.InterstitialAdLoader
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ru.plumsoftware.coffeeapp.application.App
@@ -60,6 +76,16 @@ import ru.plumsoftware.domain.storage.CoffeeStorage
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class MainActivity : ComponentActivity(), KoinComponent {
+
+    private var interstitialAd: InterstitialAd? = null
+    private var interstitialAdLoader: InterstitialAdLoader? = null
+
+    private var appOpenAd: AppOpenAd? = null
+    private var appOpenAdLoader: AppOpenAdLoader? = null
+    private val AD_UNIT_ID = "demo-appopenad-yandex"
+    private val adRequestConfiguration = AdRequestConfiguration.Builder(AD_UNIT_ID).build()
+    private val appOpenAdEventListener = AdEventListener()
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,25 +149,26 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
         if (mainState.user.isFirst != 0) {
             mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = true))
+            appOpenAdLoader = AppOpenAdLoader(this@MainActivity)
+
             val appOpenAdLoadListener = object : AppOpenAdLoadListener {
                 override fun onAdLoaded(appOpenAd: AppOpenAd) {
                     // The ad was loaded successfully. Now you can show loaded ad.
+                    this@MainActivity.appOpenAd = appOpenAd
+                    showAppOpenAd()
                     mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
-                    mainViewModel.onEvent(MainViewModel.Event.LoadAppOpenAds(ads = appOpenAd))
-                    mainState.myAppOpenAd?.show(this@MainActivity)
-                    Log.i("TTT", appOpenAd.toString())
+                    Log.i("Yandex", appOpenAd.toString())
                 }
 
                 override fun onAdFailedToLoad(adRequestError: AdRequestError) {
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
-                    Log.i("TTT", adRequestError.toString())
                     // Ad failed to load with AdRequestError.
                     // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
+                    Log.i("Yandex", adRequestError.toString())
+                    mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
                 }
             }
-            mainState.myAppOpenAd?.setAdEventListener(mainState.appOpenAdEventListener)
-            mainState.appOpenAdLoader.setAdLoadListener(appOpenAdLoadListener)
-            mainState.appOpenAdLoader.loadAd(mainState.adRequestConfigurationOpenAds)
+            appOpenAd?.setAdEventListener(appOpenAdEventListener)
+            appOpenAdLoader?.setAdLoadListener(appOpenAdLoadListener)
         }
         // On every successful composition, update the callback with the `enabled` value
         SideEffect {
@@ -175,7 +202,17 @@ class MainActivity : ComponentActivity(), KoinComponent {
                 )
             }
 
+
             CoffeeAppTheme(useDarkTheme = mainState.useDark) {
+
+                if (mainState.isAdsLoading)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center))
+                    }
                 NavHost(
                     navController = navController,
                     startDestination = Screens.SPLASH,
@@ -472,6 +509,22 @@ class MainActivity : ComponentActivity(), KoinComponent {
                         Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                     }
                     composable(route = Screens.COFFEE_DRINK) {
+                        interstitialAdLoader = InterstitialAdLoader(this@MainActivity).apply {
+                            setAdLoadListener(object : InterstitialAdLoadListener {
+                                override fun onAdLoaded(ad: InterstitialAd) {
+                                    interstitialAd = ad
+                                    Log.i("YandexADS", ad.toString())
+                                }
+
+                                override fun onAdFailedToLoad(adRequestError: AdRequestError) {
+                                    // Ad failed to load with AdRequestError.
+                                    // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
+                                    Log.i("YandexADS", adRequestError.toString())
+                                }
+                            })
+                        }
+                        loadInterstitialAd()
+
                         mainViewModel.onEvent(MainViewModel.Event.SetUser)
                         mainViewModel.onEvent(
                             MainViewModel.Event.ChangeStatusBarColor(
@@ -500,7 +553,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                     }
 
                                     CoffeeViewModel.Output.PopBackStack -> {
-                                        navController.popBackStack()
+                                        showAd(navController = navController)
                                     }
                                 }
                             }
@@ -515,5 +568,97 @@ class MainActivity : ComponentActivity(), KoinComponent {
                 }
             }
         }
+    }
+
+    private fun loadInterstitialAd() {
+        val adRequestConfiguration =
+            AdRequestConfiguration.Builder("demo-interstitial-yandex").build()
+        interstitialAdLoader?.loadAd(adRequestConfiguration)
+    }
+
+    private fun showAd(navController: NavController) {
+        interstitialAd?.apply {
+            setAdEventListener(object : InterstitialAdEventListener {
+                override fun onAdShown() {
+                    // Called when ad is shown.
+                }
+
+                override fun onAdFailedToShow(adError: AdError) {
+                    // Called when an InterstitialAd failed to show.
+                    // Clean resources after Ad dismissed
+                    interstitialAd?.setAdEventListener(null)
+                    interstitialAd = null
+                    navController.popBackStack()
+                }
+
+                override fun onAdDismissed() {
+                    // Called when ad is dismissed.
+                    // Clean resources after Ad dismissed
+                    interstitialAd?.setAdEventListener(null)
+                    interstitialAd = null
+                    navController.popBackStack()
+                }
+
+                override fun onAdClicked() {
+                    // Called when a click is recorded for an ad.
+                }
+
+                override fun onAdImpression(impressionData: ImpressionData?) {
+                    // Called when an impression is recorded for an ad.
+                }
+            })
+            show(this@MainActivity)
+        }
+    }
+
+    private fun loadAppOpenAd() {
+        appOpenAdLoader?.loadAd(adRequestConfiguration)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        interstitialAdLoader?.setAdLoadListener(null)
+        interstitialAdLoader = null
+        destroyInterstitialAd()
+    }
+
+    private fun destroyInterstitialAd() {
+        interstitialAd?.setAdEventListener(null)
+        interstitialAd = null
+    }
+
+    private inner class AdEventListener : AppOpenAdEventListener {
+        override fun onAdShown() {
+            // Called when ad is shown.
+        }
+
+        override fun onAdFailedToShow(adError: AdError) {
+            // Called when ad failed to show.
+        }
+
+        override fun onAdDismissed() {
+            // Called when ad is dismissed.
+            // Clean resources after dismiss and preload new ad.
+            clearAppOpenAd()
+            loadAppOpenAd()
+        }
+
+        override fun onAdClicked() {
+            // Called when a click is recorded for an ad.
+        }
+
+        override fun onAdImpression(impressionData: ImpressionData?) {
+            // Called when an impression is recorded for an ad.
+            // Get Impression Level Revenue Data in argument.
+        }
+    }
+
+    private fun showAppOpenAd() {
+        appOpenAd?.show(this@MainActivity)
+    }
+
+    private fun clearAppOpenAd() {
+        appOpenAd?.setAdEventListener(null)
+        appOpenAd = null
     }
 }
