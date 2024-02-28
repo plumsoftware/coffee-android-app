@@ -509,6 +509,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                         Search(searchViewModel = viewModel, onEvent = viewModel::onEvent)
                     }
                     composable(route = Screens.COFFEE_DRINK) {
+                        mainViewModel.onEvent(MainViewModel.Event.SetUser)
                         interstitialAdLoader = InterstitialAdLoader(this@MainActivity).apply {
                             setAdLoadListener(object : InterstitialAdLoadListener {
                                 override fun onAdLoaded(ad: InterstitialAd) {
@@ -662,3 +663,4 @@ class MainActivity : ComponentActivity(), KoinComponent {
         appOpenAd = null
     }
 }
+

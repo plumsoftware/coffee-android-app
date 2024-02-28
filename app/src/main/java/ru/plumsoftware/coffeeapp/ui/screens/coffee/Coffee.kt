@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,7 +55,6 @@ import ru.plumsoftware.coffeeapp.ui.theme.Size
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.Ingredient
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CoffeeScreen(
@@ -66,104 +66,125 @@ fun CoffeeScreen(
     val state = coffeeViewModel.state.collectAsState().value
 
     Scaffold(modifier = Modifier.fillMaxSize()) {
-        if (state.age >= stringResource(id = R.string.adult_age).toInt())
-            Box {
-                LazyColumn(
+        if (state.selectedCoffee.type == stringArrayResource(id = C.array.tag_list).last())
+            if (state.age >= stringResource(id = R.string.adult_age).toInt())
+                Coffee_(state = state, output = output, event = event)
+            else
+                Text(
+                    text = stringResource(id = R.string.content_unavailable),
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.fillMaxSize(),
+                    textAlign = TextAlign.Center
+                )
+        else
+            Coffee_(state = state, output = output, event = event)
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@Composable
+private fun Coffee_(
+    state: CoffeeState,
+    output: (CoffeeViewModel.Output) -> Unit,
+    event: (CoffeeViewModel.Event) -> Unit
+) {
+    Box {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(
+                space = Padding.Items.smallScreenPadding,
+                alignment = Alignment.Top
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = Size.Coffee.fullCoffeeImageHeight),
+                    contentScale = ContentScale.FillWidth,
+                    painter = painterResource(id = state.selectedCoffee.imageResId),
+                    contentDescription = stringResource(
+                        id = R.string.coffee_image__content_description
+                    )
+                )
+            }
+
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = Padding.Screens.smallScreenPadding),
                     verticalArrangement = Arrangement.spacedBy(
                         space = Padding.Items.smallScreenPadding,
                         alignment = Alignment.Top
                     ),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    item {
-                        Image(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(height = Size.Coffee.fullCoffeeImageHeight),
-                            contentScale = ContentScale.FillWidth,
-                            painter = painterResource(id = state.selectedCoffee.imageResId),
-                            contentDescription = stringResource(
-                                id = R.string.coffee_image__content_description
-                            )
-                        )
-                    }
-
-                    item {
+                    Row(
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
                         Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = Padding.Screens.smallScreenPadding),
                             verticalArrangement = Arrangement.spacedBy(
                                 space = Padding.Items.smallScreenPadding,
                                 alignment = Alignment.Top
-                            ),
-                            horizontalAlignment = Alignment.Start
+                            ), horizontalAlignment = Alignment.Start,
+                            modifier = Modifier
+                                .weight(.5f)
+                                .wrapContentHeight()
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.Top,
-                                horizontalArrangement = Arrangement.Center,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(
-                                        space = Padding.Items.smallScreenPadding,
-                                        alignment = Alignment.Top
-                                    ), horizontalAlignment = Alignment.Start,
-                                    modifier = Modifier
-                                        .weight(.5f)
-                                        .wrapContentHeight()
-                                ) {
-                                    Text(
-                                        text = state.selectedCoffee.name,
-                                        style = MaterialTheme.typography.titleMedium
-                                    )
-                                    Text(
-                                        text =
-                                        state.selectedCoffee.ingredients.size.toString() + " " + if (state.selectedCoffee.ingredients.size < 5 && state.selectedCoffee.ingredients.size != 0) stringResource(
-                                            id = R.string.ingredients_2
-                                        ) else stringResource(
-                                            id = R.string.ingredients_1
-                                        ),
-                                        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
-                                    )
-                                }
+                            Text(
+                                text = state.selectedCoffee.name,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text =
+                                state.selectedCoffee.ingredients.size.toString() + " " + if (state.selectedCoffee.ingredients.size < 5 && state.selectedCoffee.ingredients.size != 0) stringResource(
+                                    id = R.string.ingredients_2
+                                ) else stringResource(
+                                    id = R.string.ingredients_1
+                                ),
+                                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.outline)
+                            )
+                        }
 
-                                Tag(
-                                    imageResId = C.drawable.coffee_beans,
-                                    title = state.selectedCoffee.roastingLevel,
-                                    isIntolerable = false
-                                )
+                        Tag(
+                            imageResId = C.drawable.coffee_beans,
+                            title = state.selectedCoffee.roastingLevel,
+                            isIntolerable = false
+                        )
+                    }
+
+                    FlowRow(
+                        verticalArrangement = Arrangement.spacedBy(
+                            space = Padding.Items.smallScreenPadding,
+                            alignment = Alignment.Top
+                        ),
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                    ) {
+                        state.selectedCoffee.ingredients.forEachIndexed { index1, ingredient ->
+
+                            var isIntolerable = false
+
+                            for (i in state.intolerableIngredients) {
+                                if (i.ingredientId == ingredient.id) {
+                                    isIntolerable = true
+                                    break
+                                }
                             }
 
-                            FlowRow(
-                                verticalArrangement = Arrangement.spacedBy(
-                                    space = Padding.Items.smallScreenPadding,
-                                    alignment = Alignment.Top
-                                ),
-                                horizontalArrangement = Arrangement.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight()
-                            ) {
-                                state.selectedCoffee.ingredients.forEachIndexed { index1, ingredient ->
-
-                                    var isIntolerable = false
-
-                                    for (i in state.intolerableIngredients) {
-                                        if (i.ingredientId == ingredient.id) {
-                                            isIntolerable = true
-                                            break
-                                        }
-                                    }
-
-                                    Tag(
-                                        imageResId = ingredient.iconId,
-                                        title = ingredient.name,
-                                        isIntolerable = isIntolerable
-                                    )
-                                    Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
+                            Tag(
+                                imageResId = ingredient.iconId,
+                                title = ingredient.name,
+                                isIntolerable = isIntolerable
+                            )
+                            Spacer(modifier = Modifier.width(width = Padding.Items.smallScreenPadding))
 //                        if (
 //                            ingrediient.id == 1 ||
 //                            ingrediient.id == 11 ||
@@ -183,133 +204,125 @@ fun CoffeeScreen(
 //                            ingrediient.id == 48 ||
 //                            ingrediient.id == 51
 //                            )
-                                }
-                            }
-                        }
-                    }
-
-                    item {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = Padding.Screens.smallScreenPadding,
-                                    end = Padding.Screens.smallScreenPadding,
-                                    top = Padding.Screens.smallScreenPadding
-                                ),
-                            verticalArrangement = Arrangement.spacedBy(
-                                space = Padding.Items.smallScreenPadding,
-                                alignment = Alignment.Top
-                            ),
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.how_to_cook),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Text(
-                                text = state.selectedCoffee.description,
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        }
-                    }
-
-                    item {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    start = Padding.Screens.smallScreenPadding,
-                                    end = Padding.Screens.smallScreenPadding,
-                                    top = Padding.Screens.smallScreenPadding
-                                ),
-                            verticalArrangement = Arrangement.spacedBy(
-                                space = Padding.Items.smallScreenPadding,
-                                alignment = Alignment.Top
-                            ),
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.also_you_would_like_drinks),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-
-                            LazyRow(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                horizontalArrangement = Arrangement.Start,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                itemsIndexed(state.randomCoffeeDrinks) { _, item ->
-                                    Box(modifier = Modifier.wrapContentSize()) {
-                                        CoffeeCard(
-                                            coffee = item,
-                                            modifier = Modifier
-                                                .width(width = Size.Coffee.coffeeCardWidth),
-                                            onLikeClick = {
-                                                event(CoffeeViewModel.Event.AddToLiked(coffee = it))
-                                            },
-                                            onCoffeeClick = {
-                                                output(CoffeeViewModel.Output.SelectCoffee(value = it))
-                                                output(CoffeeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
-                                            }
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.width(width = Padding.Items.mediumScreenPadding))
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(height = Padding.Screens.smallScreenPadding))
                         }
                     }
                 }
+            }
 
-                TopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background.copy(alpha = .5f)
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = Padding.Screens.smallScreenPadding,
+                            end = Padding.Screens.smallScreenPadding,
+                            top = Padding.Screens.smallScreenPadding
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(
+                        space = Padding.Items.smallScreenPadding,
+                        alignment = Alignment.Top
                     ),
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.drink),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            style = MaterialTheme.typography.titleLarge,
-                            textAlign = TextAlign.Center
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            colors = IconButtonDefaults.iconButtonColors(
-                                containerColor = Color.Transparent
-                            ),
-                            onClick = {
-                                output(CoffeeViewModel.Output.PopBackStack)
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.ArrowBack,
-                                contentDescription = stringResource(
-                                    id = R.string.back_icon_content_description
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.how_to_cook),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = state.selectedCoffee.description,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+            }
+
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = Padding.Screens.smallScreenPadding,
+                            end = Padding.Screens.smallScreenPadding,
+                            top = Padding.Screens.smallScreenPadding
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(
+                        space = Padding.Items.smallScreenPadding,
+                        alignment = Alignment.Top
+                    ),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.also_you_would_like_drinks),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        itemsIndexed(state.randomCoffeeDrinks) { _, item ->
+                            Box(modifier = Modifier.wrapContentSize()) {
+                                CoffeeCard(
+                                    coffee = item,
+                                    modifier = Modifier
+                                        .width(width = Size.Coffee.coffeeCardWidth),
+                                    onLikeClick = {
+                                        event(CoffeeViewModel.Event.AddToLiked(coffee = it))
+                                    },
+                                    onCoffeeClick = {
+                                        output(CoffeeViewModel.Output.SelectCoffee(value = it))
+                                        output(CoffeeViewModel.Output.NavigateTo(route = Screens.COFFEE_DRINK))
+                                    }
                                 )
-                            )
-                        }
-                    },
-                    actions = {
-                        LikeButton(isCoffeeLiked = state.selectedCoffee.isLiked) {
-                            event(CoffeeViewModel.Event.AddToLiked(coffee = state.selectedCoffee))
+                            }
+                            Spacer(modifier = Modifier.width(width = Padding.Items.mediumScreenPadding))
                         }
                     }
-                )
+
+                    Spacer(modifier = Modifier.height(height = Padding.Screens.smallScreenPadding))
+                }
             }
-        else
-            Text(
-                text = stringResource(id = R.string.content_unavailable),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxSize(),
-                textAlign = TextAlign.Center
-            )
+        }
+
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.background.copy(alpha = .5f)
+            ),
+            title = {
+                Text(
+                    text = stringResource(id = R.string.drink),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
+                )
+            },
+            navigationIcon = {
+                IconButton(
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = Color.Transparent
+                    ),
+                    onClick = {
+                        output(CoffeeViewModel.Output.PopBackStack)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowBack,
+                        contentDescription = stringResource(
+                            id = R.string.back_icon_content_description
+                        )
+                    )
+                }
+            },
+            actions = {
+                LikeButton(isCoffeeLiked = state.selectedCoffee.isLiked) {
+                    event(CoffeeViewModel.Event.AddToLiked(coffee = state.selectedCoffee))
+                }
+            }
+        )
     }
 }
 
