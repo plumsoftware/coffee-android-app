@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.home
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,7 @@ import ru.plumsoftware.data.models.LikedDrink
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Calendar
 
+@Immutable
 class HomeViewModel(
     age: Int,
     coffeeStorage: CoffeeStorage?,

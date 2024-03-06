@@ -1,11 +1,13 @@
 package ru.plumsoftware.coffeeapp.ui.screens.appearance
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
+@Immutable
 class AppearanceViewModel(
     private val sharedPreferencesStorage: SharedPreferencesStorage?,
     private val output: (Output) -> Unit

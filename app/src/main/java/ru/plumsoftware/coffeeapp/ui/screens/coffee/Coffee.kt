@@ -68,15 +68,6 @@ fun CoffeeScreen(
     val state = coffeeViewModel.state.collectAsState().value
 
     Scaffold(modifier = Modifier.fillMaxSize()) {
-        if (state.isInterstitialLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
-            ) {
-                CircularProgressIndicator()
-            }
-        }
         if (state.selectedCoffee.type == stringArrayResource(id = C.array.tag_list).last())
             if (state.age >= stringResource(id = R.string.adult_age).toInt())
                 Coffee_(state = state, output = output, event = event)
@@ -89,6 +80,16 @@ fun CoffeeScreen(
                 )
         else
             Coffee_(state = state, output = output, event = event)
+
+        if (state.isInterstitialLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
+            ) {
+                CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center))
+            }
+        }
     }
 }
 

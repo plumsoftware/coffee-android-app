@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.os.Vibrator
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.Crossfade
@@ -17,18 +15,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -77,14 +74,16 @@ import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
 class MainActivity : ComponentActivity(), KoinComponent {
 
+    private lateinit var navController: NavHostController
+    private lateinit var mainViewModel: MainViewModel
+
     private var interstitialAd: InterstitialAd? = null
     private var interstitialAdLoader: InterstitialAdLoader? = null
 
-    private var appOpenAd: AppOpenAd? = null
-    private var appOpenAdLoader: AppOpenAdLoader? = null
+    private val appOpenAdEventListener = AdEventListener()
+    private var myAppOpenAd: AppOpenAd? = null
     private val AD_UNIT_ID = "demo-appopenad-yandex"
     private val adRequestConfiguration = AdRequestConfiguration.Builder(AD_UNIT_ID).build()
-    private val appOpenAdEventListener = AdEventListener()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,10 +99,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
             Content(
                 userDatabase = userDatabase,
                 coffeeStorage = coffeeStorage,
-                sharedPreferencesStorage = sharedPreferencesStorage,
-                onBack = {
-                    this.finish()
-                }
+                sharedPreferencesStorage = sharedPreferencesStorage
             )
         }
     }
@@ -113,66 +109,30 @@ class MainActivity : ComponentActivity(), KoinComponent {
     private fun Content(
         userDatabase: UserDatabase,
         coffeeStorage: CoffeeStorage,
-        sharedPreferencesStorage: SharedPreferencesStorage,
-        onBack: () -> Unit
+        sharedPreferencesStorage: SharedPreferencesStorage
     ) {
 
         val systemUiController = rememberSystemUiController()
-        val navController = rememberNavController()
+        val appOpenAdLoader = AppOpenAdLoader(application)
+        navController = rememberNavController()
 
-        val mainViewModel
-                by remember {
-                    mutableStateOf(
-                        MainViewModel(
-                            sharedPreferencesStorage = sharedPreferencesStorage,
-                            vibrator = App.INSTANCE.getSystemService(
-                                Context.VIBRATOR_SERVICE
-                            ) as Vibrator,
-                            output = { output ->
-                                when (output) {
-                                    is MainViewModel.Output.NavigateTo -> {
-                                        navController.navigate(route = output.route)
-                                    }
-                                }
-                            })
-                    )
-                }
+        mainViewModel = remember {
+            mutableStateOf(
+                MainViewModel(
+                    sharedPreferencesStorage = sharedPreferencesStorage,
+                    vibrator = App.INSTANCE.getSystemService(
+                        Context.VIBRATOR_SERVICE
+                    ) as Vibrator,
+                    output = { output ->
+                        when (output) {
+                            is MainViewModel.Output.NavigateTo -> {
+                                navController.navigate(route = output.route)
+                            }
+                        }
+                    })
+            )
+        }.value
         val mainState = mainViewModel.state.collectAsState().value
-
-        val backCallback = remember {
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    Log.i("LOG", navController.currentBackStackEntry?.destination?.route!!)
-                    if (navController.currentBackStackEntry?.destination?.route == Screens.SPLASH) {
-                        onBack()
-                    }
-                    else {
-                        mainViewModel.onEvent(
-                            MainViewModel.Event.ChangeInterstitialLoadingState(
-                                value = true
-                            )
-                        )
-                        showAd(navController = navController, onEvent = mainViewModel::onEvent)
-                    }
-                }
-            }
-        }
-
-        SideEffect {
-            backCallback.isEnabled = true
-        }
-
-        val backDispatcher = checkNotNull(LocalOnBackPressedDispatcherOwner.current) {
-            "No OnBackPressedDispatcherOwner was provided via LocalOnBackPressedDispatcherOwner"
-        }.onBackPressedDispatcher
-        val lifecycleOwner = LocalLifecycleOwner.current
-
-        DisposableEffect(lifecycleOwner, backDispatcher) {
-            backDispatcher.addCallback(lifecycleOwner, backCallback)
-            onDispose {
-                backCallback.remove()
-            }
-        }
 
         Crossfade(
             targetState = mainState.targetColorScheme,
@@ -191,15 +151,6 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
 
             CoffeeAppTheme(useDarkTheme = mainState.useDark) {
-
-                if (mainState.isAppOpenAdsLoading)
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center))
-                    }
                 NavHost(
                     navController = navController,
                     startDestination = Screens.SPLASH,
@@ -270,26 +221,30 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                     when (output) {
                                         is SplashScreenViewModel.Output.GetUser -> {
                                             navController.navigate(route = if (output.isFirst) Screens.APPEARANCE else Screens.HOME)
+
+//                                            region::App open ads
                                             if (!output.isFirst) {
                                                 mainViewModel.onEvent(
                                                     MainViewModel.Event.ChangeAppOpenLoadingState(
                                                         value = true
                                                     )
                                                 )
-                                                appOpenAdLoader = AppOpenAdLoader(this@MainActivity)
 
                                                 val appOpenAdLoadListener =
                                                     object : AppOpenAdLoadListener {
                                                         override fun onAdLoaded(appOpenAd: AppOpenAd) {
                                                             // The ad was loaded successfully. Now you can show loaded ad.
-                                                            this@MainActivity.appOpenAd = appOpenAd
-                                                            showAppOpenAd()
+                                                            myAppOpenAd = appOpenAd
+                                                            myAppOpenAd?.setAdEventListener(
+                                                                appOpenAdEventListener
+                                                            )
                                                             mainViewModel.onEvent(
                                                                 MainViewModel.Event.ChangeAppOpenLoadingState(
                                                                     value = false
                                                                 )
                                                             )
                                                             Log.i("Yandex", appOpenAd.toString())
+                                                            showAppOpenAd()
                                                         }
 
                                                         override fun onAdFailedToLoad(adRequestError: AdRequestError) {
@@ -306,11 +261,12 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                                             )
                                                         }
                                                     }
-                                                appOpenAd?.setAdEventListener(appOpenAdEventListener)
-                                                appOpenAdLoader?.setAdLoadListener(
+                                                appOpenAdLoader.setAdLoadListener(
                                                     appOpenAdLoadListener
                                                 )
+                                                appOpenAdLoader.loadAd(adRequestConfiguration)
                                             }
+//                                        endregion
                                         }
                                     }
                                 }
@@ -604,7 +560,42 @@ class MainActivity : ComponentActivity(), KoinComponent {
                         )
                     }
                 }
+
+                if (mainState.isAppOpenAdsLoading)
+                    Scaffold {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center))
+                        }
+                    }
             }
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        if (
+            navController.currentBackStackEntry!!.destination.route!! == Screens.HOME ||
+            navController.currentBackStackEntry!!.destination.route!! == Screens.LIKED ||
+            navController.currentBackStackEntry!!.destination.route!! == Screens.SETTINGS ||
+            navController.currentBackStackEntry!!.destination.route!! == Screens.APPEARANCE ||
+            navController.currentBackStackEntry!!.destination.route!! == Screens.SPLASH
+        ) {
+            this.finish()
+        } else if (
+            navController.currentBackStackEntry!!.destination.route!! == Screens.INGREDIENTS ||
+            navController.currentBackStackEntry!!.destination.route!! == Screens.SEARCH
+        ) {
+            navController.popBackStack()
+        } else {
+            showAd(
+                navController = navController,
+                onEvent = mainViewModel::onEvent
+            )
         }
     }
 
@@ -651,10 +642,6 @@ class MainActivity : ComponentActivity(), KoinComponent {
         }
     }
 
-    private fun loadAppOpenAd() {
-        appOpenAdLoader?.loadAd(adRequestConfiguration)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         interstitialAdLoader?.setAdLoadListener(null)
@@ -674,13 +661,13 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
         override fun onAdFailedToShow(adError: AdError) {
             // Called when ad failed to show.
+            clearAppOpenAd()
         }
 
         override fun onAdDismissed() {
             // Called when ad is dismissed.
             // Clean resources after dismiss and preload new ad.
             clearAppOpenAd()
-            loadAppOpenAd()
         }
 
         override fun onAdClicked() {
@@ -694,12 +681,12 @@ class MainActivity : ComponentActivity(), KoinComponent {
     }
 
     private fun showAppOpenAd() {
-        appOpenAd?.show(this@MainActivity)
+        myAppOpenAd?.show(this)
     }
 
     private fun clearAppOpenAd() {
-        appOpenAd?.setAdEventListener(null)
-        appOpenAd = null
+        myAppOpenAd?.setAdEventListener(null)
+        myAppOpenAd = null
     }
 }
 

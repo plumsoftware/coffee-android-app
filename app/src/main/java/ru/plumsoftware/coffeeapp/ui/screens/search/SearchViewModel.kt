@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.search
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.application.App
-import ru.plumsoftware.coffeeapp.ui.screens.home.HomeViewModel
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.LikedDrink
@@ -16,6 +16,7 @@ import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Locale
 import ru.plumsoftware.coffee.R as C
 
+@Immutable
 class SearchViewModel(
     age: Int,
     private val userDatabase: UserDatabase?,

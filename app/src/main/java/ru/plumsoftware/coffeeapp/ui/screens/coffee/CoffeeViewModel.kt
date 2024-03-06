@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.coffee
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +12,7 @@ import ru.plumsoftware.data.models.IntolerableIngredients
 import ru.plumsoftware.data.models.LikedDrink
 import ru.plumsoftware.domain.storage.CoffeeStorage
 
+@Immutable
 class CoffeeViewModel(
     private val userDatabase: UserDatabase?,
     private val coffeeStorage: CoffeeStorage?,

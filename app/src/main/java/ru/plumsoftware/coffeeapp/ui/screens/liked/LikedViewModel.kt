@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.liked
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,13 +9,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ru.plumsoftware.coffeeapp.R
 import ru.plumsoftware.coffeeapp.application.App
-import ru.plumsoftware.coffeeapp.ui.screens.search.SearchViewModel
 import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.LikedDrink
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import java.util.Locale
 
+@Immutable
 class LikedViewModel(
     age: Int,
     coffeeStorage: CoffeeStorage?,

@@ -1,5 +1,6 @@
 package ru.plumsoftware.coffeeapp.ui.screens.ingredients
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +10,7 @@ import ru.plumsoftware.data.database.UserDatabase
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
+@Immutable
 class IntolerableIngredientsViewModel(
     private val output: (Output) -> Unit,
     ingredients: List<Ingredient>,

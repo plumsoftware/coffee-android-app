@@ -14,7 +14,9 @@ import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
+import javax.annotation.concurrent.Immutable
 
+@Immutable
 class MainViewModel(
     private val sharedPreferencesStorage: SharedPreferencesStorage,
     private val vibrator: Vibrator,

@@ -1,9 +1,11 @@
 package ru.plumsoftware.coffeeapp.ui.screens.splash
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import org.koin.core.component.KoinComponent
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
+@Immutable
 class SplashScreenViewModel(
     private val output: (Output) -> Unit,
     private val sharedPreferencesStorage: SharedPreferencesStorage?

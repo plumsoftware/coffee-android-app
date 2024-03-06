@@ -2,9 +2,9 @@ package ru.plumsoftware.coffeeapp.ui.screens.name
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.errorprone.annotations.Immutable
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,6 +13,7 @@ import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.coffeeapp.utilities.dateToLong
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
 
+@Immutable
 @Suppress("OPT_IN_USAGE_FUTURE_ERROR")
 class NameViewModel(
     private val sharedPreferencesStorage: SharedPreferencesStorage?,
