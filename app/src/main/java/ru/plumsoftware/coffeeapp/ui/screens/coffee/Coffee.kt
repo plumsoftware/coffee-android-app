@@ -2,6 +2,7 @@ package ru.plumsoftware.coffeeapp.ui.screens.coffee
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,6 +68,15 @@ fun CoffeeScreen(
     val state = coffeeViewModel.state.collectAsState().value
 
     Scaffold(modifier = Modifier.fillMaxSize()) {
+        if (state.isInterstitialLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         if (state.selectedCoffee.type == stringArrayResource(id = C.array.tag_list).last())
             if (state.age >= stringResource(id = R.string.adult_age).toInt())
                 Coffee_(state = state, output = output, event = event)
@@ -365,7 +376,8 @@ private fun CoffeeScreenPreview() {
         coffeeStorage = null,
         output = {},
         selectedCoffee = mockCoffeeModel,
-        age = 19
+        age = 19,
+        isInterstitialLoading = false
     )
 
     CoffeeAppTheme {

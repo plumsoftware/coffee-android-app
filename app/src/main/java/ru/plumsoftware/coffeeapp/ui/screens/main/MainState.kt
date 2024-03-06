@@ -28,5 +28,6 @@ data class MainState(
         ingredients = emptyList()
     ),
     val age: Int = 1,
-    val isAdsLoading: Boolean
+    val isAppOpenAdsLoading: Boolean,
+    val isInterstitialAdsLoading: Boolean
 )

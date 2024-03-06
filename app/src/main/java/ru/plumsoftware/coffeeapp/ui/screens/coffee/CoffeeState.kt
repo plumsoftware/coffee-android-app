@@ -7,5 +7,6 @@ data class CoffeeState(
     val selectedCoffee: Coffee,
     val intolerableIngredients: MutableList<IntolerableIngredients>,
     val randomCoffeeDrinks: List<Coffee>,
-    val age: Int
+    val age: Int,
+    val isInterstitialLoading: Boolean
 )

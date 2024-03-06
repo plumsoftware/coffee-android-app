@@ -138,50 +138,37 @@ class MainActivity : ComponentActivity(), KoinComponent {
                     )
                 }
         val mainState = mainViewModel.state.collectAsState().value
+
         val backCallback = remember {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (navController.currentBackStackEntry?.destination?.route == Screens.SPLASH)
+                    Log.i("LOG", navController.currentBackStackEntry?.destination?.route!!)
+                    if (navController.currentBackStackEntry?.destination?.route == Screens.SPLASH) {
                         onBack()
+                    }
+                    else {
+                        mainViewModel.onEvent(
+                            MainViewModel.Event.ChangeInterstitialLoadingState(
+                                value = true
+                            )
+                        )
+                        showAd(navController = navController, onEvent = mainViewModel::onEvent)
+                    }
                 }
             }
         }
 
-        if (mainState.user.isFirst != 0) {
-            mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = true))
-            appOpenAdLoader = AppOpenAdLoader(this@MainActivity)
-
-            val appOpenAdLoadListener = object : AppOpenAdLoadListener {
-                override fun onAdLoaded(appOpenAd: AppOpenAd) {
-                    // The ad was loaded successfully. Now you can show loaded ad.
-                    this@MainActivity.appOpenAd = appOpenAd
-                    showAppOpenAd()
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
-                    Log.i("Yandex", appOpenAd.toString())
-                }
-
-                override fun onAdFailedToLoad(adRequestError: AdRequestError) {
-                    // Ad failed to load with AdRequestError.
-                    // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
-                    Log.i("Yandex", adRequestError.toString())
-                    mainViewModel.onEvent(MainViewModel.Event.ChangeLoadingState(value = false))
-                }
-            }
-            appOpenAd?.setAdEventListener(appOpenAdEventListener)
-            appOpenAdLoader?.setAdLoadListener(appOpenAdLoadListener)
-        }
-        // On every successful composition, update the callback with the `enabled` value
         SideEffect {
             backCallback.isEnabled = true
         }
+
         val backDispatcher = checkNotNull(LocalOnBackPressedDispatcherOwner.current) {
             "No OnBackPressedDispatcherOwner was provided via LocalOnBackPressedDispatcherOwner"
         }.onBackPressedDispatcher
         val lifecycleOwner = LocalLifecycleOwner.current
+
         DisposableEffect(lifecycleOwner, backDispatcher) {
-            // Add callback to the backDispatcher
             backDispatcher.addCallback(lifecycleOwner, backCallback)
-            // When the effect leaves the Composition, remove the callback
             onDispose {
                 backCallback.remove()
             }
@@ -205,7 +192,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
             CoffeeAppTheme(useDarkTheme = mainState.useDark) {
 
-                if (mainState.isAdsLoading)
+                if (mainState.isAppOpenAdsLoading)
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -283,6 +270,47 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                     when (output) {
                                         is SplashScreenViewModel.Output.GetUser -> {
                                             navController.navigate(route = if (output.isFirst) Screens.APPEARANCE else Screens.HOME)
+                                            if (!output.isFirst) {
+                                                mainViewModel.onEvent(
+                                                    MainViewModel.Event.ChangeAppOpenLoadingState(
+                                                        value = true
+                                                    )
+                                                )
+                                                appOpenAdLoader = AppOpenAdLoader(this@MainActivity)
+
+                                                val appOpenAdLoadListener =
+                                                    object : AppOpenAdLoadListener {
+                                                        override fun onAdLoaded(appOpenAd: AppOpenAd) {
+                                                            // The ad was loaded successfully. Now you can show loaded ad.
+                                                            this@MainActivity.appOpenAd = appOpenAd
+                                                            showAppOpenAd()
+                                                            mainViewModel.onEvent(
+                                                                MainViewModel.Event.ChangeAppOpenLoadingState(
+                                                                    value = false
+                                                                )
+                                                            )
+                                                            Log.i("Yandex", appOpenAd.toString())
+                                                        }
+
+                                                        override fun onAdFailedToLoad(adRequestError: AdRequestError) {
+                                                            // Ad failed to load with AdRequestError.
+                                                            // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
+                                                            Log.i(
+                                                                "Yandex",
+                                                                adRequestError.toString()
+                                                            )
+                                                            mainViewModel.onEvent(
+                                                                MainViewModel.Event.ChangeAppOpenLoadingState(
+                                                                    value = false
+                                                                )
+                                                            )
+                                                        }
+                                                    }
+                                                appOpenAd?.setAdEventListener(appOpenAdEventListener)
+                                                appOpenAdLoader?.setAdLoadListener(
+                                                    appOpenAdLoadListener
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -538,6 +566,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                             userDatabase = userDatabase,
                             coffeeStorage = coffeeStorage,
                             selectedCoffee = mainState.selectedCoffee,
+                            isInterstitialLoading = mainState.isInterstitialAdsLoading,
                             age = mainState.age,
                             output = { output ->
                                 when (output) {
@@ -554,7 +583,15 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                     }
 
                                     CoffeeViewModel.Output.PopBackStack -> {
-                                        showAd(navController = navController)
+                                        mainViewModel.onEvent(
+                                            MainViewModel.Event.ChangeInterstitialLoadingState(
+                                                value = true
+                                            )
+                                        )
+                                        showAd(
+                                            navController = navController,
+                                            onEvent = mainViewModel::onEvent
+                                        )
                                     }
                                 }
                             }
@@ -577,7 +614,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
         interstitialAdLoader?.loadAd(adRequestConfiguration)
     }
 
-    private fun showAd(navController: NavController) {
+    private fun showAd(navController: NavController, onEvent: (MainViewModel.Event) -> Unit) {
         interstitialAd?.apply {
             setAdEventListener(object : InterstitialAdEventListener {
                 override fun onAdShown() {
@@ -589,6 +626,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                     // Clean resources after Ad dismissed
                     interstitialAd?.setAdEventListener(null)
                     interstitialAd = null
+                    onEvent(MainViewModel.Event.ChangeInterstitialLoadingState(value = false))
                     navController.popBackStack()
                 }
 
@@ -597,6 +635,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                     // Clean resources after Ad dismissed
                     interstitialAd?.setAdEventListener(null)
                     interstitialAd = null
+                    onEvent(MainViewModel.Event.ChangeInterstitialLoadingState(value = false))
                     navController.popBackStack()
                 }
 

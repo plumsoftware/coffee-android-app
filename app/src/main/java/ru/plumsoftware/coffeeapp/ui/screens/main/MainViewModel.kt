@@ -44,7 +44,8 @@ class MainViewModel(
             name = sharedPreferencesStorage.get().name,
             user = user,
             age = calculateAge(user.birthday).toInt(),
-            isAdsLoading = true
+            isAppOpenAdsLoading = true,
+            isInterstitialAdsLoading = false
         )
     )
 
@@ -118,10 +119,18 @@ class MainViewModel(
                 }
             }
 
-            is Event.ChangeLoadingState -> {
+            is Event.ChangeAppOpenLoadingState -> {
                 state.update {
                     it.copy(
-                        isAdsLoading = event.value
+                        isAppOpenAdsLoading = event.value
+                    )
+                }
+            }
+
+            is Event.ChangeInterstitialLoadingState -> {
+                state.update {
+                    it.copy(
+                        isInterstitialAdsLoading = event.value
                     )
                 }
             }
@@ -146,6 +155,7 @@ class MainViewModel(
         data class SelectCoffeeDrink(val value: Coffee) : Event()
         data object SetUser : Event()
         data object Vibrate : Event()
-        data class ChangeLoadingState(val value: Boolean) : Event()
+        data class ChangeAppOpenLoadingState(val value: Boolean) : Event()
+        data class ChangeInterstitialLoadingState(val value: Boolean) : Event()
     }
 }
