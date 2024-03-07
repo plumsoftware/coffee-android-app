@@ -499,12 +499,14 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                 override fun onAdLoaded(ad: InterstitialAd) {
                                     interstitialAd = ad
                                     Log.i("YandexADS", ad.toString())
+                                    mainViewModel.onEvent(MainViewModel.Event.ChangeInterstitialLoadingState(value = false))
                                 }
 
                                 override fun onAdFailedToLoad(adRequestError: AdRequestError) {
                                     // Ad failed to load with AdRequestError.
                                     // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
                                     Log.i("YandexADS", adRequestError.toString())
+                                    mainViewModel.onEvent(MainViewModel.Event.ChangeInterstitialLoadingState(value = false))
                                 }
                             })
                         }

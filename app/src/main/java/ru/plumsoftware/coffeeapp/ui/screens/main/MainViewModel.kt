@@ -46,7 +46,7 @@ class MainViewModel(
             name = sharedPreferencesStorage.get().name,
             user = user,
             age = calculateAge(user.birthday).toInt(),
-            isAppOpenAdsLoading = true,
+            isAppOpenAdsLoading = false,
             isInterstitialAdsLoading = false
         )
     )
