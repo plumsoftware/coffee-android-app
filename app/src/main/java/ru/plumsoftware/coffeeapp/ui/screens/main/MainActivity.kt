@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
     private val appOpenAdEventListener = AdEventListener()
     private var myAppOpenAd: AppOpenAd? = null
-    private val AD_UNIT_ID = "demo-appopenad-yandex"
+    private val AD_UNIT_ID = "R-M-6292390-1"
     private val adRequestConfiguration = AdRequestConfiguration.Builder(AD_UNIT_ID).build()
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -601,7 +601,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
     private fun loadInterstitialAd() {
         val adRequestConfiguration =
-            AdRequestConfiguration.Builder("demo-interstitial-yandex").build()
+            AdRequestConfiguration.Builder("R-M-6292390-2").build()
         interstitialAdLoader?.loadAd(adRequestConfiguration)
     }
 
