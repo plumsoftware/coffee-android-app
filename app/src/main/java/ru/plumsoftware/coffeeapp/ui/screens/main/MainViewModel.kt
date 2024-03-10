@@ -106,9 +106,10 @@ class MainViewModel(
             }
 
             is Event.SelectCoffeeDrink -> {
+                state.value.selectedCoffeeList.add(event.value)
                 state.update {
                     it.copy(
-                        selectedCoffee = event.value
+                        selectedCoffeeList = it.selectedCoffeeList
                     )
                 }
             }
@@ -136,6 +137,15 @@ class MainViewModel(
                     )
                 }
             }
+
+            Event.RemoveLast -> {
+                state.value.selectedCoffeeList.removeLast()
+                state.update {
+                    it.copy(
+                        selectedCoffeeList = state.value.selectedCoffeeList
+                    )
+                }
+            }
         }
     }
 
@@ -159,5 +169,6 @@ class MainViewModel(
         data object Vibrate : Event()
         data class ChangeAppOpenLoadingState(val value: Boolean) : Event()
         data class ChangeInterstitialLoadingState(val value: Boolean) : Event()
+        data object RemoveLast: Event()
     }
 }

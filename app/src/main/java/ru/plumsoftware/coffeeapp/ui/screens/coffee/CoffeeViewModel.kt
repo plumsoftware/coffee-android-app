@@ -17,7 +17,7 @@ class CoffeeViewModel(
     private val userDatabase: UserDatabase?,
     private val coffeeStorage: CoffeeStorage?,
     private val output: (Output) -> Unit,
-    selectedCoffee: Coffee,
+    selectedCoffee: Coffee?,
     age: Int,
     isInterstitialLoading: Boolean
 ) : ViewModel() {
@@ -31,19 +31,15 @@ class CoffeeViewModel(
             intolerableIngredients?.forEachIndexed { _, intolerableIngredient ->
                 list.add(intolerableIngredient)
             }
-        }
 
-        runBlocking {
             for (i in coffeeStorage?.getD()!!.indices) {
                 val randomDrink = coffeeStorage.getR() as Coffee
                 if (!randomList.contains(randomDrink)) {
                     randomList.add(randomDrink)
                 }
             }
-        }
 
-        runBlocking {
-            val likedDrinks: List<LikedDrink>? = userDatabase?.dao?.get()
+            val likedDrinks: List<LikedDrink> = userDatabase.dao.get()
             likedDrinks!!.forEachIndexed { _, likedDrink ->
                 randomList.forEachIndexed { index, coffee ->
                     if (likedDrink.drinkId == coffee.id)
@@ -72,12 +68,12 @@ class CoffeeViewModel(
             is Event.AddToLiked -> {
                 viewModelScope.launch {
                     with(event.coffee) {
-                        if (isLiked == 1)
+                        if (this?.isLiked?.equals(1) == true)
                             userDatabase!!.dao.deleteById(drinkId = id)
                         else {
                             userDatabase!!.dao.upsert(
                                 LikedDrink(
-                                    drinkId = event.coffee.id
+                                    drinkId = event.coffee?.id ?: 1
                                 )
                             )
                         }
@@ -88,7 +84,7 @@ class CoffeeViewModel(
     }
 
     sealed class Event {
-        data class AddToLiked(val coffee: Coffee) : Event()
+        data class AddToLiked(val coffee: Coffee?) : Event()
     }
 
     sealed class Output {

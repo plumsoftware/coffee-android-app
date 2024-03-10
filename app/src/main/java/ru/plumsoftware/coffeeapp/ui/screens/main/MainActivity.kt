@@ -67,7 +67,9 @@ import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreen
 import ru.plumsoftware.coffeeapp.ui.screens.splash.SplashScreenViewModel
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
+import ru.plumsoftware.coffeeapp.utilities.emptyCoffee
 import ru.plumsoftware.data.database.UserDatabase
+import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.Ingredient
 import ru.plumsoftware.domain.storage.CoffeeStorage
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
@@ -498,15 +500,19 @@ class MainActivity : ComponentActivity(), KoinComponent {
                             setAdLoadListener(object : InterstitialAdLoadListener {
                                 override fun onAdLoaded(ad: InterstitialAd) {
                                     interstitialAd = ad
-                                    Log.i("YandexADS", ad.toString())
-                                    mainViewModel.onEvent(MainViewModel.Event.ChangeInterstitialLoadingState(value = false))
+                                    mainViewModel.onEvent(
+                                        MainViewModel.Event.ChangeInterstitialLoadingState(
+                                            value = false
+                                        )
+                                    )
                                 }
 
                                 override fun onAdFailedToLoad(adRequestError: AdRequestError) {
-                                    // Ad failed to load with AdRequestError.
-                                    // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
-                                    Log.i("YandexADS", adRequestError.toString())
-                                    mainViewModel.onEvent(MainViewModel.Event.ChangeInterstitialLoadingState(value = false))
+                                    mainViewModel.onEvent(
+                                        MainViewModel.Event.ChangeInterstitialLoadingState(
+                                            value = false
+                                        )
+                                    )
                                 }
                             })
                         }
@@ -523,7 +529,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                         val viewModel = CoffeeViewModel(
                             userDatabase = userDatabase,
                             coffeeStorage = coffeeStorage,
-                            selectedCoffee = mainState.selectedCoffee,
+                            selectedCoffee = if (mainState.selectedCoffeeList.isNotEmpty()) mainState.selectedCoffeeList.last() else emptyCoffee(),
                             isInterstitialLoading = mainState.isInterstitialAdsLoading,
                             age = mainState.age,
                             output = { output ->
@@ -541,6 +547,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
                                     }
 
                                     CoffeeViewModel.Output.PopBackStack -> {
+                                        mainViewModel.onEvent(MainViewModel.Event.RemoveLast)
                                         mainViewModel.onEvent(
                                             MainViewModel.Event.ChangeInterstitialLoadingState(
                                                 value = true
@@ -593,6 +600,12 @@ class MainActivity : ComponentActivity(), KoinComponent {
             navController.currentBackStackEntry!!.destination.route!! == Screens.SEARCH
         ) {
             navController.popBackStack()
+        } else if (navController.currentBackStackEntry!!.destination.route!! == Screens.COFFEE_DRINK) {
+            mainViewModel.onEvent(MainViewModel.Event.RemoveLast)
+            showAd(
+                navController = navController,
+                onEvent = mainViewModel::onEvent
+            )
         } else {
             showAd(
                 navController = navController,

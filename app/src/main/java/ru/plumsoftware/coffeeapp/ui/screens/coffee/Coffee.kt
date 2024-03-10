@@ -68,7 +68,7 @@ fun CoffeeScreen(
     val state = coffeeViewModel.state.collectAsState().value
 
     Scaffold(modifier = Modifier.fillMaxSize()) {
-        if (state.selectedCoffee.type == stringArrayResource(id = C.array.tag_list).last())
+        if (state.selectedCoffee?.type == stringArrayResource(id = C.array.tag_list).last())
             if (state.age >= stringResource(id = R.string.adult_age).toInt())
                 Coffee_(state = state, output = output, event = event)
             else
@@ -115,7 +115,7 @@ private fun Coffee_(
                         .fillMaxWidth()
                         .height(height = Size.Coffee.fullCoffeeImageHeight),
                     contentScale = ContentScale.FillWidth,
-                    painter = painterResource(id = state.selectedCoffee.imageResId),
+                    painter = painterResource(id = state.selectedCoffee?.imageResId ?: R.drawable.mock_coffee_drink),
                     contentDescription = stringResource(
                         id = R.string.coffee_image__content_description
                     )
@@ -149,12 +149,12 @@ private fun Coffee_(
                                 .wrapContentHeight()
                         ) {
                             Text(
-                                text = state.selectedCoffee.name,
+                                text = state.selectedCoffee?.name ?: "",
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Text(
                                 text =
-                                state.selectedCoffee.ingredients.size.toString() + " " + if (state.selectedCoffee.ingredients.size < 5 && state.selectedCoffee.ingredients.size != 0) stringResource(
+                                state.selectedCoffee?.ingredients?.size.toString() + " " + if (state.selectedCoffee?.ingredients?.size!! < 5 && state.selectedCoffee.ingredients.size != 0) stringResource(
                                     id = R.string.ingredients_2
                                 ) else stringResource(
                                     id = R.string.ingredients_1
@@ -165,7 +165,7 @@ private fun Coffee_(
 
                         Tag(
                             imageResId = C.drawable.coffee_beans,
-                            title = state.selectedCoffee.roastingLevel,
+                            title = state.selectedCoffee?.roastingLevel ?: "",
                             isIntolerable = false
                         )
                     }
@@ -180,7 +180,7 @@ private fun Coffee_(
                             .fillMaxWidth()
                             .wrapContentHeight()
                     ) {
-                        state.selectedCoffee.ingredients.forEachIndexed { index1, ingredient ->
+                        state.selectedCoffee?.ingredients?.forEachIndexed { index1, ingredient ->
 
                             var isIntolerable = false
 
@@ -241,7 +241,7 @@ private fun Coffee_(
                         style = MaterialTheme.typography.titleSmall
                     )
                     Text(
-                        text = state.selectedCoffee.description,
+                        text = state.selectedCoffee?.description ?: "",
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
@@ -330,7 +330,7 @@ private fun Coffee_(
                 }
             },
             actions = {
-                LikeButton(isCoffeeLiked = state.selectedCoffee.isLiked) {
+                LikeButton(isCoffeeLiked = state.selectedCoffee?.isLiked ?: 0) {
                     event(CoffeeViewModel.Event.AddToLiked(coffee = state.selectedCoffee))
                 }
             }

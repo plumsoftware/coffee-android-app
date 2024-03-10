@@ -16,17 +16,7 @@ data class MainState(
     val navColor: Color = targetColorScheme.background,
     val statusBarColor: Color = targetColorScheme.background,
     val currentScreen: Screens.Screens = Screens.Screens.Home,
-    val selectedCoffee: Coffee = Coffee(
-        id = 0,
-        name = "",
-        imageResId = 0,
-        type = "",
-        isLiked = 0,
-        roastingLevel = "",
-        description = "",
-        ageRating = 0,
-        ingredients = emptyList()
-    ),
+    val selectedCoffeeList: MutableList<Coffee> = mutableListOf(),
     val age: Int = 1,
     val isAppOpenAdsLoading: Boolean,
     val isInterstitialAdsLoading: Boolean
