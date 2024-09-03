@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,6 @@ import ru.plumsoftware.coffeeapp.utilities.calculateAge
 import ru.plumsoftware.data.models.Coffee
 import ru.plumsoftware.data.models.User
 import ru.plumsoftware.domain.storage.SharedPreferencesStorage
-import javax.annotation.concurrent.Immutable
 
 @Immutable
 class MainViewModel(

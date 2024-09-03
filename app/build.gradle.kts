@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -13,8 +13,8 @@ android {
         applicationId = "ru.plumsoftware.coffeeapp"
         minSdk = 24
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.4"
+        versionCode = 5
+        versionName = "1.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -53,7 +53,7 @@ android {
 
 dependencies {
 
-    val yandex_ads_version = "6.4.0"
+    val yandex_ads_version = "7.4.0"
     val ui_controller = "0.32.0"
     val koin_version = "3.4.2"
     val nav_version = "2.7.7"
@@ -61,18 +61,17 @@ dependencies {
     val kapt_version = "2.6.1"
 
     //Auto generate
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+    implementation("androidx.activity:activity-compose:1.9.1")
+    implementation(platform("androidx.compose:compose-bom:2024.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
@@ -96,11 +95,11 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     //Kapt
-    kapt("androidx.room:room-compiler:$kapt_version")
+    ksp("androidx.room:room-compiler:$kapt_version")
 
     //Firebase Messaging
-    implementation("com.google.firebase:firebase-messaging:23.4.1")
-    implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
+    implementation("com.google.firebase:firebase-messaging:24.0.1")
+    implementation("com.google.firebase:firebase-inappmessaging-display:21.0.0")
 
     //Corner smoothing
     implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")

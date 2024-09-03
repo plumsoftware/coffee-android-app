@@ -1,6 +1,5 @@
 package ru.plumsoftware.coffeeapp.ui.components.buttons
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
@@ -12,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import ru.plumsoftware.coffeeapp.ui.theme.CoffeeAppTheme
 import ru.plumsoftware.coffeeapp.ui.theme.getExtendedColors
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimaryChip(selected: Boolean, text: String, onClick: () -> Unit) {
     FilterChip(
@@ -28,7 +26,9 @@ fun PrimaryChip(selected: Boolean, text: String, onClick: () -> Unit) {
             borderColor = Color.Transparent,
             borderWidth = 0.dp,
             selectedBorderColor = Color.Transparent,
-            selectedBorderWidth = 0.dp
+            selectedBorderWidth = 0.dp,
+            selected = selected,
+            enabled = true
         ),
         onClick = onClick,
         label = {
