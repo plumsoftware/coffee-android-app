@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://jitpack.io")
     }
 }
 
@@ -17,3 +18,4 @@ rootProject.name = "Бариста - кофе и напитки"
 include(":app")
 include(":data")
 include(":domain")
+include(":coffee")

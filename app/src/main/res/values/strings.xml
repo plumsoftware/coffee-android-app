@@ -1,3 +1,94 @@
 <resources>
-    <string name="app_name">Бариста - кофе и напитки</string>
+    <string name="app_name">Кофе и напитки</string>
+
+    <!--    Splash screen-->
+    <string name="splash_screen_title_1">Ваш</string>
+    <string name="splash_screen_title_2">персональный бариста</string>
+    <string name="splash_screen_logo_cd">Изображение кружки с кофе</string>
+
+    <!--    Components-->
+    <string name="primary_button_text">Далее</string>
+
+    <!--    Appearance-->
+    <string name="appearance_text_example">Aa</string>
+    <string name="appearance_title">Оформление</string>
+
+    <!--    Name register-->
+    <string name="name_register">Регистрация</string>
+    <string name="name_placeholder">Имя</string>
+    <string name="age_placeholder">Возраст</string>
+    <string name="agree_with_hint">Я согласен(согласна) с</string>
+    <string name="pp_hint">Политика конфиденциальности</string>
+    <string name="agree_date_hint">Дата согласия: </string>
+    <string name="not_enough_age">Не достаточно возраста</string>
+
+    <!--    Coffee card-->
+    <string name="taste">Изысканный вкус</string>
+
+    <!--    Intolerable ingredients-->
+    <string name="intolerable_ingredients">Непереносимость компонентов</string>
+
+    <!--    Content descriptions-->
+    <string name="calendar_content_description">Иконка календаря для указания возраста</string>
+    <string name="close_content_description">Кнопка очистки текстового поля</string>
+    <string name="search_content_description">Иконка поиска</string>
+    <string name="coffee_image__content_description">Изображение кофейного напитка</string>
+    <string name="coffee_like_content_description">Кнопка для добавления напитка в избранное</string>
+    <string name="coffee_of_the_day_content_description">изображение кофе дня</string>
+    <string name="profile_icon_content_description">Иконка профиля</string>
+    <string name="back_icon_content_description">Кнопка назад</string>
+    <string name="tag_content_description">Тэг</string>
+
+    <!--    Bottom nav bar-->
+    <string name="home">Главная</string>
+    <string name="liked">Избранное</string>
+    <string name="settings">Настройки</string>
+
+    <!--    Search-->
+    <string name="search">Поиск</string>
+
+    <!--    Settings-->
+    <string name="appearance">Оформление</string>
+    <string name="select_ii">Выбрать</string>
+
+    <!--    Coffee-->
+    <string name="drink">Напиток</string>
+    <string name="with_milk">С молоком</string>
+    <string name="without_milk">Без молока</string>
+    <string name="how_to_cook">Как готовить</string>
+    <string name="ingredients_1">ингредиентов</string>
+    <string name="ingredients_2">ингредиента</string>
+    <string name="also_you_would_like_drinks">Также могут понравиться</string>
+    <string name="content_unavailable">Контект не доступен</string>
+
+    <!--    Home-->
+    <string name="welcome_morning">Доброе утро,</string>
+    <string name="welcome_day">Добрый день,</string>
+    <string name="welcome_evening">Добрый вечер,</string>
+    <string name="coffee_of_the_day">Кофе дня</string>
+    <string name="adult_age">18</string>
+
+    <!--    Privacy Policy-->
+    <string name="privacy_policy">
+        Мобильное приложение "Кофе и напитки" уважает конфиденциальность пользователей и обеспечивает защиту их личных данных. Ниже приведено описание того, как мы собираем, используем и защищаем информацию о пользователях.\n\n
+
+1. Сбор и использование информации\n
+
+- Мы не собираем информацию о пользователях. Все данные хранятся локально на устройстве пользователя.\n
+\n
+2. Раскрытие информации\n
+
+- Мы не передаем личные данные пользователей третьим лицам без их согласия, поскольку все данные пользователя хранятся в памяти устройства, на котором было скачано наше приложение.\n
+\n
+3. Ответственность\n
+
+- Мы не несем ответственности за последствия использования рецептов кофейных напитков, включая алкогольные, представленных в приложении.\n
+- Пользователи используют рецепты на свой страх и риск, и обязаны соблюдать все меры предосторожности при их приготовлении.\n
+\n
+Пользуясь нашим приложением, вы соглашаетесь с нашей политикой конфиденциальности. Мы оставляем за собой право вносить изменения в политику в любое время. Пожалуйста, регулярно проверяйте данную страницу для получения актуальной информации.
+
+Если у вас есть вопросы или предложения относительно нашей политики конфиденциальности, пожалуйста, свяжитесь с нами по электронной почте plumsoftwareofficial@gmail.com.\n
+
+Дата вступления в силу: 01.01.2024.\n
+    </string>
 </resources>

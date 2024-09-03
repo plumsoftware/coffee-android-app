@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
     id("com.google.gms.google-services")
 }
 
@@ -11,10 +11,10 @@ android {
 
     defaultConfig {
         applicationId = "ru.plumsoftware.coffeeapp"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -53,16 +53,17 @@ android {
 
 dependencies {
 
-    val yandex_ads_version = "6.3.0"
-    val ui_controller = "0.30.1"
+    val yandex_ads_version = "6.4.0"
+    val ui_controller = "0.32.0"
     val koin_version = "3.4.2"
-    val nav_version = "2.7.6"
+    val nav_version = "2.7.7"
     val room_version = "2.6.1"
-    val ksp_version = "2.6.1"
+    val kapt_version = "2.6.1"
 
+    //Auto generate
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -94,14 +95,18 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
-    //KSP
-    ksp("androidx.room:room-compiler:$ksp_version")
+    //Kapt
+    kapt("androidx.room:room-compiler:$kapt_version")
 
     //Firebase Messaging
-    implementation("com.google.firebase:firebase-messaging:23.4.0")
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
 
+    //Corner smoothing
+    implementation("com.github.racra:smooth-corner-rect-android-compose:v1.0.0")
+
     //Modules
-    project(path=":data")
-    project(path=":domain")
+    implementation(project(path = ":data"))
+    implementation(project(path = ":domain"))
+    implementation(project(path = ":coffee"))
 }
