@@ -11,3 +11,5 @@
  - Koin
  - UI controller
  - Google navigation
+ - MVI
+ - Clean architecture
