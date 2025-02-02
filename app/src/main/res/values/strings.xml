@@ -59,7 +59,7 @@
     <string name="ingredients_1">ингредиентов</string>
     <string name="ingredients_2">ингредиента</string>
     <string name="also_you_would_like_drinks">Также могут понравиться</string>
-    <string name="content_unavailable">Контект не доступен</string>
+    <string name="content_unavailable">Контент не доступен</string>
 
     <!--    Home-->
     <string name="welcome_morning">Доброе утро,</string>
@@ -69,8 +69,7 @@
     <string name="adult_age">18</string>
 
     <!--    Privacy Policy-->
-    <string name="privacy_policy">
-        Мобильное приложение "Кофе и напитки" уважает конфиденциальность пользователей и обеспечивает защиту их личных данных. Ниже приведено описание того, как мы собираем, используем и защищаем информацию о пользователях.\n\n
+    <string name="privacy_policy">Мобильное приложение "Кофе и напитки" уважает конфиденциальность пользователей и обеспечивает защиту их личных данных. Ниже приведено описание того, как мы собираем, используем и защищаем информацию о пользователях.\n\n
 
 1. Сбор и использование информации\n
 

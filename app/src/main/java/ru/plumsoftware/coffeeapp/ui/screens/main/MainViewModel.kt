@@ -139,7 +139,11 @@ class MainViewModel(
             }
 
             Event.RemoveLast -> {
-                state.value.selectedCoffeeList.removeLast()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                    state.value.selectedCoffeeList.removeLast()
+                } else {
+                    state.value.selectedCoffeeList.removeAt(state.value.selectedCoffeeList.lastIndex)
+                }
                 state.update {
                     it.copy(
                         selectedCoffeeList = state.value.selectedCoffeeList

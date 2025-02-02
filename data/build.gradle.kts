@@ -1,12 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "ru.plumsoftware.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -36,7 +36,7 @@ android {
 dependencies {
 
     val room_version = "2.6.1"
-    val kapt_version = "2.6.1"
+    val ksp_version = "2.6.1"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -50,7 +50,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     //Kapt
-    kapt("androidx.room:room-compiler:$kapt_version")
+    ksp("androidx.room:room-compiler:$ksp_version")
 
     //Modules
     implementation(project(":domain"))

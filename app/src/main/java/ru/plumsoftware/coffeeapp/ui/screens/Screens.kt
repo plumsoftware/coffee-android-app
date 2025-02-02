@@ -10,6 +10,7 @@ object Screens {
     const val APPEARANCE = "appearance"
     const val NAME = "name"
     const val INGREDIENTS = "ingredients"
+    const val PROGRESS_DIALOG = "progress_dialog"
 
     sealed class Screens {
         data object Home : Screens()
