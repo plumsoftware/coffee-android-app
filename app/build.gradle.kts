@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "ru.plumsoftware.coffeeapp"
-    compileSdk = 35
+    compileSdk = 36
 
 
     val openAdsId = gradleLocalProperties(rootDir, providers).getProperty("openAdsId")
@@ -18,9 +18,9 @@ android {
     defaultConfig {
         applicationId = "ru.plumsoftware.coffeeapp"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 6
-        versionName = "1.0.6"
+        targetSdk = 36
+        versionCode = 7
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -64,7 +64,7 @@ android {
 
 dependencies {
 
-    val yandex_ads_version = "7.9.0"
+    val yandex_ads_version = "7.14.1"
     val ui_controller = "0.32.0"
     val koin_version = "4.0.2"
     val nav_version = "2.7.7"
