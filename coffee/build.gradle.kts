@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "ru.plumsoftware.coffee"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
